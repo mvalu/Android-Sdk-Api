@@ -60,7 +60,11 @@ object NetworkModule {
                 )
                 .addHeader(
                     "x-signed-key",
-                    BettrApiSdk.getSignedSecretKey()
+                    BettrApiSdk.getSignedSecretKey().replace("\n", "")
+                )
+                .addHeader(
+                    "Authorization",
+                    "Bearer " + BettrApiSdk.getAccessToken()
                 )
                 .build()
             it.proceed(request)
@@ -69,7 +73,7 @@ object NetworkModule {
         val clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         clientBuilder.readTimeout(3 * 60, TimeUnit.SECONDS)
         clientBuilder.connectTimeout(60, TimeUnit.SECONDS)
-        if (BuildConfig.DEBUG) {
+        if (BettrApiSdk.isLoggingBehaviourEnabled()) {
             clientBuilder.addInterceptor(loggingInterceptor)
         }
         clientBuilder.addInterceptor(headerInterceptor)

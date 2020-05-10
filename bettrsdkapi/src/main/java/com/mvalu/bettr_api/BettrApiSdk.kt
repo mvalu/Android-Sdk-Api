@@ -35,7 +35,7 @@ object BettrApiSdk : ApiSdkBase() {
     private var USER_ID: String = ""
     private var isSdkInitialized = false
     private var isLoggingBehaviourEnabled: Boolean = false
-    private var ACCESS_TOKEN: String? = null
+    private var ACCESS_TOKEN: String = ""
     private var initCallback: BettrApiSdkCallback? = null
 
     internal fun getAppComponent(): AppComponent {
@@ -43,7 +43,7 @@ object BettrApiSdk : ApiSdkBase() {
     }
 
     fun isSdkInitialized(): Boolean {
-        return isSdkInitialized
+        return isSdkInitialized && !ACCESS_TOKEN.isNullOrEmpty()
     }
 
     fun isLoggingBehaviourEnabled(): Boolean {
@@ -51,7 +51,7 @@ object BettrApiSdk : ApiSdkBase() {
     }
 
     fun getAccessToken(): String {
-        return ACCESS_TOKEN!!
+        return ACCESS_TOKEN
     }
 
     fun getAccessKey(): String {
@@ -96,7 +96,7 @@ object BettrApiSdk : ApiSdkBase() {
         } else {
             Validate.notNull(applicationContext, "Application context")
             Validate.hasInternetPermissions(applicationContext, true)
-            Validate.hasReadPhoneStatePermissions(applicationContext, true)
+//            Validate.hasReadPhoneStatePermissions(applicationContext, true)
             Validate.notNullorEmpty(ACCESS_KEY, "ACCESS_KEY")
             Validate.notNullorEmpty(SECRET_KEY, "SECRET_KEY")
             Validate.notNullorEmpty(ORGANIZATION_ID, "ORGANIZATION_ID")
@@ -119,7 +119,7 @@ object BettrApiSdk : ApiSdkBase() {
             val request = GenerateTokenRequest()
             request.deviceInfo = getDeviceInfo()
             request.marketCampaign = campaignInfo
-            request.imei = getImei(applicationContext)
+            request.imei = "4384834"//getImei(applicationContext)
             callApi(
                 serviceApi.generateToken(getOrganizationId(), request),
                 ApiTag.GENERATE_ACCESS_TOKEN_API
@@ -177,7 +177,7 @@ object BettrApiSdk : ApiSdkBase() {
             ApiTag.GENERATE_ACCESS_TOKEN_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Token generated successfully")
                 val tokenResponse = response as GenerateTokenResponse
-                ACCESS_TOKEN = tokenResponse.result?.token
+                ACCESS_TOKEN = tokenResponse.result?.token!!
                 isSdkInitialized = true
                 initCallback?.onSuccess()
             }

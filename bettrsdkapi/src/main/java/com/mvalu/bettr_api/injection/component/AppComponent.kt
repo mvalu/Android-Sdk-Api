@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.injection.component
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.card_user.CardUser
 import com.mvalu.bettr_api.injection.module.NetworkModule
 import com.mvalu.bettr_api.login.TokenGeneration
 import dagger.Component
@@ -14,4 +15,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(apiSdk: BettrApiSdk)
     fun inject(tokenGeneration: TokenGeneration)
+    fun inject(cardUser: CardUser)
 }
