@@ -6,6 +6,9 @@ import android.widget.Toast
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.BettrApiSdkCallback
 import com.mvalu.bettr_api.card_user.CardUser
+import com.mvalu.bettr_api.card_user.CardUserRequest
+import com.mvalu.bettr_api.card_user.CardUserResponse
+import com.mvalu.bettr_api.network.ApiResponseCallback
 
 class MainActivity : AppCompatActivity(), BettrApiSdkCallback {
     override fun onSuccess() {
@@ -28,6 +31,17 @@ class MainActivity : AppCompatActivity(), BettrApiSdkCallback {
             "123",
             null,
             this)
+
+        CardUser.getUserDetails(CardUserRequest(), object : ApiResponseCallback<CardUserResponse>{
+            override fun onSuccess(response: CardUserResponse) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onError(errorMessage: String) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
 
     }
 }

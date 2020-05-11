@@ -3,18 +3,19 @@ package com.mvalu.bettr_api.card_user
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
+import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object CardUser : ApiSdkBase() {
     private const val TAG = "CardUser"
-    private var cardUserCallback: CardUserCallback? = null
+    private var cardUserCallback: ApiResponseCallback<CardUserResponse>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
     }
 
-    fun getUserDetails(cardUserRequest: CardUserRequest, cardUserCallback: CardUserCallback) {
+    fun getUserDetails(cardUserRequest: CardUserRequest, cardUserCallback: ApiResponseCallback<CardUserResponse>) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
