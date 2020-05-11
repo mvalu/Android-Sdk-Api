@@ -10,6 +10,6 @@ import retrofit2.http.Path
 
 
 interface ServiceApi {
-    @POST("v1/{organizationId}/generateToken")
+    @POST("v1/{organizationId}/auth/generateToken")
     fun generateToken(@Path("organizationId") organizationId: String, @Body generateTokenRequest: GenerateTokenRequest): Observable<Response<GenerateTokenResponse>>
 }

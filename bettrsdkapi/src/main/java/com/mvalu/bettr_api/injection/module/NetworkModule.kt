@@ -1,5 +1,6 @@
 package com.mvalu.bettr_api.injection.module
 
+import android.util.Base64
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.BuildConfig
 import com.mvalu.bettr_api.network.ServiceApi
@@ -60,7 +61,7 @@ object NetworkModule {
                 )
                 .addHeader(
                     "x-signed-key",
-                    BettrApiSdk.getSignedSecretKey().replace("\n", "")
+                    Base64.encodeToString(BettrApiSdk.generateSignedSecretKey().toByteArray(), Base64.NO_WRAP)
                 )
                 .addHeader(
                     "Authorization",

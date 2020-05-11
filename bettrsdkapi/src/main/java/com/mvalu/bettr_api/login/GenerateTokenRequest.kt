@@ -13,6 +13,9 @@ class GenerateTokenRequest : ApiBaseRequest() {
     @field:Json(name = "loginType")
     var loginType: String = "CUSTOMER"
 
+    @field:Json(name = "identifier")
+    var identifier: String ?= null
+
     @field:Json(name = "signUpRole")
     var signUpRole: String = "CUSTOMER"
 

@@ -30,7 +30,6 @@ object BettrApiSdk : ApiSdkBase() {
     private var campaignInfo: CampaignInfo? = null
     private var ACCESS_KEY: String = ""
     private var SECRET_KEY: String = ""
-    private var SIGNED_SECRET_KEY: String = ""
     private var ORGANIZATION_ID: String = ""
     private var USER_ID: String = ""
     private var isSdkInitialized = false
@@ -70,10 +69,6 @@ object BettrApiSdk : ApiSdkBase() {
         return USER_ID
     }
 
-    fun getSignedSecretKey(): String {
-        return SIGNED_SECRET_KEY
-    }
-
     /**
      * Initialize sdk here with required parameters
      * if required parameters are null or empty throw error
@@ -102,7 +97,6 @@ object BettrApiSdk : ApiSdkBase() {
             Validate.notNullorEmpty(ORGANIZATION_ID, "ORGANIZATION_ID")
             Validate.notNullorEmpty(USER_ID, "USER_ID")
 
-            this.SIGNED_SECRET_KEY = generateSignedSecretKey()
             this.campaignInfo = campaignInfo
             this.applicationContext = applicationContext.applicationContext
             this.ACCESS_KEY = ACCESS_KEY
@@ -117,6 +111,7 @@ object BettrApiSdk : ApiSdkBase() {
             )
 
             val request = GenerateTokenRequest()
+            request.identifier = USER_ID
             request.deviceInfo = getDeviceInfo()
             request.marketCampaign = campaignInfo
             request.imei = "4384834"//getImei(applicationContext)
@@ -127,7 +122,7 @@ object BettrApiSdk : ApiSdkBase() {
         }
     }
 
-    private fun generateSignedSecretKey(): String {
+    fun generateSignedSecretKey(): String {
         val key =
             ORGANIZATION_ID + "##" + ACCESS_KEY + "##" + SECRET_KEY + "##" + System.currentTimeMillis()
         return CryptLib().encryptPlainTextWithRandomIV(key, SECRET_KEY)

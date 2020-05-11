@@ -20,13 +20,14 @@ class MainActivity : AppCompatActivity(), BettrApiSdkCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        BettrApiSdk.enableLoggingBehaviour(true)
         BettrApiSdk.initializeSDK(applicationContext,
             "712ef65f-7b43-4240-8577-6e89f3bcbdcd",
             "97ec49fc-f226-47dc-8fb9-1e0cfe227b2f",
             "6f7016b5-ef39-4c1e-a6ce-dd069fb96c01",
-            "abc",
+            "123",
             null,
             this)
-        BettrApiSdk.enableLoggingBehaviour(true)
+
     }
 }
