@@ -3,12 +3,12 @@ package com.mvalu.bettr_api.network
 import com.squareup.moshi.Json
 
 open class ApiBaseResponse {
-    @field:Json(name = "name")
-    var name: String? = null
+    @field:Json(name = "success")
+    var success: Boolean? = false
 
-    @field:Json(name = "message")
+    @field:Json(name = "error")
+    var errorResponse: ApiErrorResponse? = null
+
+    @field:Json(name = "msg")
     var message: String? = null
-
-    @field:Json(name = "stack")
-    var stack: String? = null
 }
