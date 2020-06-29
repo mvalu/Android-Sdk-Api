@@ -9,13 +9,13 @@ import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object HomeModule : ApiSdkBase() {
     private const val TAG = "HomeModule"
-    private var homeModuleDetailsCallback: ApiResponseCallback<List<HomeModuleDetails>>? = null
+    private var homeModuleDetailsCallback: ApiResponseCallback<List<HomeModuleResults>>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
     }
 
-    fun getHomeModuleDetails(homeModuleDetailsCallback: ApiResponseCallback<List<HomeModuleDetails>>) {
+    fun getHomeModuleDetails(homeModuleDetailsCallback: ApiResponseCallback<List<HomeModuleResults>>) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }

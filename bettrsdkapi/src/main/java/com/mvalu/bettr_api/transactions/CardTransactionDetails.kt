@@ -1,10 +1,10 @@
-package com.mvalu.bettr_api.home_module
+package com.mvalu.bettr_api.transactions
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.squareup.moshi.Json
 
-class RecentTransaction() : Parcelable {
+class CardTransactionDetails() : Parcelable {
     @field:Json(name = "id")
     var id: String? = null
 
@@ -90,12 +90,12 @@ class RecentTransaction() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<RecentTransaction> {
-        override fun createFromParcel(parcel: Parcel): RecentTransaction {
-            return RecentTransaction(parcel)
+    companion object CREATOR : Parcelable.Creator<CardTransactionDetails> {
+        override fun createFromParcel(parcel: Parcel): CardTransactionDetails {
+            return CardTransactionDetails(parcel)
         }
 
-        override fun newArray(size: Int): Array<RecentTransaction?> {
+        override fun newArray(size: Int): Array<CardTransactionDetails?> {
             return arrayOfNulls(size)
         }
     }

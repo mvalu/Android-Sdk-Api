@@ -5,5 +5,5 @@ import com.squareup.moshi.Json
 
 class HomeModuleApiResponse : ApiBaseResponse() {
     @field:Json(name = "results")
-    var results: List<HomeModuleDetails>? = null
+    var results: List<HomeModuleResults>? = null
 }

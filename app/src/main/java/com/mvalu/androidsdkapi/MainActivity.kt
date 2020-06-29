@@ -6,22 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.BettrApiSdkCallback
 import com.mvalu.bettr_api.home_module.HomeModule
-import com.mvalu.bettr_api.home_module.HomeModuleDetails
+import com.mvalu.bettr_api.home_module.HomeModuleResults
 import com.mvalu.bettr_api.network.ApiResponseCallback
+import com.mvalu.bettr_api.transactions.CardTransactions
+import com.mvalu.bettr_api.transactions.CardTransactionsResults
 
 class MainActivity : AppCompatActivity(), BettrApiSdkCallback {
     override fun onSuccess() {
         Toast.makeText(applicationContext, "Sdk initialized", Toast.LENGTH_SHORT).show()
-        HomeModule.getHomeModuleDetails(object : ApiResponseCallback<List<HomeModuleDetails>> {
-            override fun onSuccess(response: List<HomeModuleDetails>) {
-                Toast.makeText(applicationContext, response.get(0).id, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onError(errorMessage: String) {
-                TODO("Not yet implemented")
-            }
-
-        })
+//        CardTransactions.getStatementTransactions(object : ApiResponseCallback<CardTransactionsResults> {
+//            override fun onSuccess(response: CardTransactionsResults) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onError(errorMessage: String) {
+//                TODO("Not yet implemented")
+//            }
+//
+//
+//        }, )
     }
 
     override fun onError(error: String) {
