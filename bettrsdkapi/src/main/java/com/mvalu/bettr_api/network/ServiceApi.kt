@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.network
 
 import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
+import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
@@ -46,4 +47,10 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementId") statementId: String
     ): Observable<Response<AccountStatementTransactionsApiResponse>>
+
+    @GET("v1/{organizationId}/cc/account/{accountId}/statementTransaction/{statementTransactionId}")
+    fun getAccountStatementTransactionInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("statementTransactionId") statementTransactionId: String
+    ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
 }

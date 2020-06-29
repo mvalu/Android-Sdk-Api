@@ -1,8 +1,10 @@
 package com.mvalu.bettr_api.account_statements
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsResult
+import com.mvalu.bettr_api.account_statements.transactions.StatementTransactionInfo
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
@@ -12,7 +14,10 @@ import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 object AccountStatements : ApiSdkBase() {
     private const val TAG = "AccountStatements"
     private var accountStatementsCallback: ApiResponseCallback<AccountStatementsResult>? = null
-    private var accountStatementTransactionsCallback: ApiResponseCallback<AccountStatementTransactionsResult>? = null
+    private var accountStatementTransactionsCallback: ApiResponseCallback<AccountStatementTransactionsResult>? =
+        null
+    private var accountStatementTransactionInfoCallback: ApiResponseCallback<StatementTransactionInfo>? =
+        null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -54,6 +59,23 @@ object AccountStatements : ApiSdkBase() {
         )
     }
 
+    fun getAccountStatementTransactionInfo(
+        accountStatementTransactionInfoCallback: ApiResponseCallback<StatementTransactionInfo>,
+        statementTransactionId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.accountStatementTransactionInfoCallback = accountStatementTransactionInfoCallback
+        callApi(
+            serviceApi.getAccountStatementTransactionInfo(
+                BettrApiSdk.getOrganizationId(),
+                statementTransactionId
+            ),
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API
+        )
+    }
+
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
@@ -65,8 +87,20 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Account Statement Transactions fetched")
-                val accountStatementTransactionsApiResponse = response as AccountStatementTransactionsApiResponse
-                accountStatementTransactionsCallback?.onSuccess(accountStatementTransactionsApiResponse.results!!)
+                val accountStatementTransactionsApiResponse =
+                    response as AccountStatementTransactionsApiResponse
+                accountStatementTransactionsCallback?.onSuccess(
+                    accountStatementTransactionsApiResponse.results!!
+                )
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Account Statement Transaction Info fetched")
+                val accountStatementTransactionInfoApiResponse =
+                    response as AccountStatementTransactionInfoApiResponse
+                accountStatementTransactionInfoCallback?.onSuccess(
+                    accountStatementTransactionInfoApiResponse.results!!
+                )
             }
         }
     }
@@ -80,6 +114,10 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
                 accountStatementTransactionsCallback?.onError(errorMessage)
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
+                accountStatementTransactionInfoCallback?.onError(errorMessage)
             }
         }
     }
@@ -97,6 +135,10 @@ object AccountStatements : ApiSdkBase() {
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
                 accountStatementTransactionsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
+                accountStatementTransactionInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -113,6 +155,10 @@ object AccountStatements : ApiSdkBase() {
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
                 accountStatementTransactionsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
+                accountStatementTransactionInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -128,6 +174,10 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
                 accountStatementTransactionsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
+                accountStatementTransactionInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
