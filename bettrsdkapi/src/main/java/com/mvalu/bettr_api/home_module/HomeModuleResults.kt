@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.home_module
 
-import com.mvalu.bettr_api.transactions.CardTransactionDetails
+import com.mvalu.bettr_api.account_statements.StatementInfo
+import com.mvalu.bettr_api.account_statements.transactions.StatementTransactionInfo
 import com.squareup.moshi.Json
 
 class HomeModuleResults {
@@ -8,10 +9,10 @@ class HomeModuleResults {
     var id: String? = null
 
     @field:Json(name = "recentTransaction")
-    var recentTransactions: List<CardTransactionDetails>? = null
+    var recentTransactions: List<StatementTransactionInfo>? = null
 
     @field:Json(name = "statementSummary")
-    var statementSummary: StatementSummary? = null
+    var statementSummary: StatementInfo? = null
 
     @field:Json(name = "accountInfo")
     var accountInfo: AccountInfo? = null

@@ -1,11 +1,12 @@
 package com.mvalu.bettr_api.transactions
 
+import com.mvalu.bettr_api.account_statements.transactions.StatementTransactionInfo
 import com.mvalu.bettr_api.home_module.AccountInfo
 import com.squareup.moshi.Json
 
 class CardTransactionsResults {
     @field:Json(name = "docs")
-    var transactions: List<CardTransactionDetails>? = null
+    var transactions: List<StatementTransactionInfo>? = null
 
     @field:Json(name = "offset")
     var offset: Int? = null

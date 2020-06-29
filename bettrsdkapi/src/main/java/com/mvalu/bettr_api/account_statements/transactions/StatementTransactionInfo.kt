@@ -1,10 +1,10 @@
-package com.mvalu.bettr_api.transactions
+package com.mvalu.bettr_api.account_statements.transactions
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.squareup.moshi.Json
 
-class CardTransactionDetails() : Parcelable {
+class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "id")
     var id: String? = null
 
@@ -90,12 +90,14 @@ class CardTransactionDetails() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<CardTransactionDetails> {
-        override fun createFromParcel(parcel: Parcel): CardTransactionDetails {
-            return CardTransactionDetails(parcel)
+    companion object CREATOR : Parcelable.Creator<StatementTransactionInfo> {
+        override fun createFromParcel(parcel: Parcel): StatementTransactionInfo {
+            return StatementTransactionInfo(
+                parcel
+            )
         }
 
-        override fun newArray(size: Int): Array<CardTransactionDetails?> {
+        override fun newArray(size: Int): Array<StatementTransactionInfo?> {
             return arrayOfNulls(size)
         }
     }

@@ -23,7 +23,8 @@ object CardTransactions : ApiSdkBase() {
         endMonth: String,
         status: String,
         amountStart: Int,
-        amountEnd: Int
+        amountEnd: Int,
+        category: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -38,7 +39,8 @@ object CardTransactions : ApiSdkBase() {
                 endMonth,
                 status,
                 amountStart,
-                amountEnd
+                amountEnd,
+                category
             ),
             ApiTag.STATEMENT_TRANSACTIONS_API
         )

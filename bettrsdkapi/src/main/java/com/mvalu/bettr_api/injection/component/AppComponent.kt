@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.injection.component
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.account_statements.AccountStatements
 import com.mvalu.bettr_api.card_user.CardUser
 import com.mvalu.bettr_api.home_module.HomeModule
 import com.mvalu.bettr_api.injection.module.NetworkModule
@@ -20,4 +21,5 @@ interface AppComponent {
     fun inject(cardUser: CardUser)
     fun inject(homeModule: HomeModule)
     fun inject(cardTransactions: CardTransactions)
+    fun inject(accountStatements: AccountStatements)
 }

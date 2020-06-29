@@ -1,10 +1,10 @@
-package com.mvalu.bettr_api.home_module
+package com.mvalu.bettr_api.account_statements
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.squareup.moshi.Json
 
-class StatementSummary() : Parcelable {
+class StatementInfo() : Parcelable {
     @field:Json(name = "id")
     var id: String? = null
 
@@ -90,12 +90,12 @@ class StatementSummary() : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<StatementSummary> {
-        override fun createFromParcel(parcel: Parcel): StatementSummary {
-            return StatementSummary(parcel)
+    companion object CREATOR : Parcelable.Creator<StatementInfo> {
+        override fun createFromParcel(parcel: Parcel): StatementInfo {
+            return StatementInfo(parcel)
         }
 
-        override fun newArray(size: Int): Array<StatementSummary?> {
+        override fun newArray(size: Int): Array<StatementInfo?> {
             return arrayOfNulls(size)
         }
     }

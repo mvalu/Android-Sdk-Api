@@ -1,5 +1,7 @@
 package com.mvalu.bettr_api.network
 
+import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
+import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
@@ -28,6 +30,20 @@ interface ServiceApi {
         @Query("endMonth") endMonth: String,
         @Query("status") status: String,
         @Query("amountStart") amountStart: Int,
-        @Query("amountEnd") amountEnd: Int
+        @Query("amountEnd") amountEnd: Int,
+        @Query("category") category: String
     ): Observable<Response<CardTransactionsApiResponse>>
+
+    @GET("v1/{organizationId}/cc/account/{accountId}/statement")
+    fun getAccountStatements(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<AccountStatementsApiResponse>>
+
+    @GET("v1/{organizationId}/cc/account/{accountId}/statement/{statementId}")
+    fun getAccountStatementTransactions(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("statementId") statementId: String
+    ): Observable<Response<AccountStatementTransactionsApiResponse>>
 }
