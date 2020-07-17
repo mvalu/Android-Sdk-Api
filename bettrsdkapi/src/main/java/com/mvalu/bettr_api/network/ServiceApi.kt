@@ -3,6 +3,8 @@ package com.mvalu.bettr_api.network
 import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
+import com.mvalu.bettr_api.application_journey.LeadDetail
+import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
@@ -53,4 +55,11 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
+
+    @PUT("v1/{organizationId}/cc/leads/{leadId}")
+    fun updateLead(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body lead: LeadDetail?
+    ): Observable<Response<LeadDetailApiResponse>>
 }

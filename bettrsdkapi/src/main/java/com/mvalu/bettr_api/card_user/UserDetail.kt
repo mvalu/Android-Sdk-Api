@@ -272,6 +272,15 @@ class UserDetail() : Parcelable {
 //    @field:Json(name = "preApprovalDetail")
 //    var preApprovalDetail: PreApprovalDetail? = null
 
+    @field:Json(name = "mapPinnedLatitude")
+    var mapPinnedLatitude: Double? = null
+
+    @field:Json(name = "mapPinnedLongitude")
+    var mapPinnedLongitude: Double? = null
+
+    @field:Json(name = "mapPinnedAddress")
+    var mapPinnedAddress: String? = null
+
     /**
      * Other method
      */
@@ -364,6 +373,9 @@ class UserDetail() : Parcelable {
         whatsAppConsent = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         preApproval = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
 //        preApprovalDetail = parcel.readParcelable(PreApprovalDetail::class.java.classLoader)
+        mapPinnedAddress = parcel.readString()
+        mapPinnedLatitude = parcel.readValue(Double::class.java.classLoader) as? Double
+        mapPinnedLongitude = parcel.readValue(Double::class.java.classLoader) as? Double
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -450,6 +462,9 @@ class UserDetail() : Parcelable {
         parcel.writeValue(whatsAppConsent)
         parcel.writeValue(preApproval)
 //        parcel.writeParcelable(preApprovalDetail, flags)
+        parcel.writeString(mapPinnedAddress)
+        parcel.writeValue(mapPinnedLatitude)
+        parcel.writeValue(mapPinnedLongitude)
     }
 
     override fun describeContents(): Int {
