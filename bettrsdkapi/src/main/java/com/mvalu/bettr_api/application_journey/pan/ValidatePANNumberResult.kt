@@ -1,4 +1,4 @@
-package com.mvalu.bettr_api.application_journey
+package com.mvalu.bettr_api.application_journey.pan
 
 import com.squareup.moshi.Json
 

@@ -1,6 +1,9 @@
 package com.mvalu.bettr_api.application_journey
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
+import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
+import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
@@ -41,7 +44,8 @@ object ApplicationJourney : ApiSdkBase() {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
         this.validatePANNumberCallBack = validatePANNumberCallBack
-        val validatePANNumberRequest = ValidatePANNumberRequest().apply {
+        val validatePANNumberRequest = ValidatePANNumberRequest()
+            .apply {
             pan = panNumber
             name = leadName
 

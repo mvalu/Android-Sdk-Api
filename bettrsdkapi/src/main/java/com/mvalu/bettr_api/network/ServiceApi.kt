@@ -5,8 +5,8 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
-import com.mvalu.bettr_api.application_journey.ValidatePANNumberApiResponse
-import com.mvalu.bettr_api.application_journey.ValidatePANNumberRequest
+import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
+import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
