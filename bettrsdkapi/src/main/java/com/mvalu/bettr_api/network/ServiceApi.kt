@@ -5,6 +5,8 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
+import com.mvalu.bettr_api.application_journey.ValidatePANNumberApiResponse
+import com.mvalu.bettr_api.application_journey.ValidatePANNumberRequest
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
@@ -62,4 +64,10 @@ interface ServiceApi {
         @Path("leadId") leadId: String,
         @Body lead: LeadDetail?
     ): Observable<Response<LeadDetailApiResponse>>
+
+    @POST("v1/{organizationId}/cc/users/panValidate")
+    fun validatePANNumber(
+        @Path("organizationId") organizationId: String,
+        @Body validatePANRequestModel: ValidatePANNumberRequest
+    ): Observable<Response<ValidatePANNumberApiResponse>>
 }
