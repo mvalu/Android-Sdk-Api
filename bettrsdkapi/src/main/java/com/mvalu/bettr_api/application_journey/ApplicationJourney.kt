@@ -25,6 +25,7 @@ object ApplicationJourney : ApiSdkBase() {
     private var validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>? = null
     private var bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>? = null
     private var bureauQuestionCallBack: ApiResponseCallback<BureauQuestionResult>? = null
+    private var bureauAnswerCallBack: ApiResponseCallback<BureauStatusResult>? = null
 
     fun updateLead(
         leadId: String,
@@ -116,6 +117,29 @@ object ApplicationJourney : ApiSdkBase() {
         )
     }
 
+    fun bureauVerifyAnswer(
+        userId: String,
+        bureauApplicationId: String,
+        bureauChallengeConfigGUID: String,
+        bureauAnswers: List<BureauAnswerRequest.Answer>,
+        bureauAnswerCallBack: ApiResponseCallback<BureauStatusResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.bureauAnswerCallBack = bureauAnswerCallBack
+        val bureauAnswerRequest = BureauAnswerRequest().apply {
+            this.userId = userId
+            this.applicationId = bureauApplicationId
+            this.answer = bureauAnswers
+            this.challengeConfigGUID = bureauChallengeConfigGUID
+        }
+        callApi(
+            serviceApi.bureauVerifyAnswer(BettrApiSdk.getOrganizationId(), bureauAnswerRequest),
+            ApiTag.BUREAU_ANSWER_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -143,6 +167,11 @@ object ApplicationJourney : ApiSdkBase() {
                 val bureauQuestionApiResponse = response as BureauQuestionApiResponse
                 bureauQuestionCallBack?.onSuccess(bureauQuestionApiResponse.results!!)
             }
+            ApiTag.BUREAU_ANSWER_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "bureau answer verified successfully")
+                val bureauAnswerApiResponse = response as BureauStatusApiResponse
+                bureauAnswerCallBack?.onSuccess(bureauAnswerApiResponse.results!!)
+            }
         }
     }
 
@@ -163,6 +192,9 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_QUESTION_API -> {
                 bureauQuestionCallBack?.onError(errorMessage)
+            }
+            ApiTag.BUREAU_ANSWER_API -> {
+                bureauAnswerCallBack?.onError(errorMessage)
             }
         }
     }
@@ -185,6 +217,9 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_QUESTION_API -> {
                 bureauQuestionCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.BUREAU_ANSWER_API -> {
+                bureauAnswerCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -206,6 +241,9 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_QUESTION_API -> {
                 bureauQuestionCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.BUREAU_ANSWER_API -> {
+                bureauAnswerCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -226,6 +264,9 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_QUESTION_API -> {
                 bureauQuestionCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.BUREAU_ANSWER_API -> {
+                bureauAnswerCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

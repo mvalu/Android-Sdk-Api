@@ -5,10 +5,7 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
-import com.mvalu.bettr_api.application_journey.bureau.BureauQuestionApiResponse
-import com.mvalu.bettr_api.application_journey.bureau.BureauQuestionRequest
-import com.mvalu.bettr_api.application_journey.bureau.BureauStatusApiResponse
-import com.mvalu.bettr_api.application_journey.bureau.BureauStatusRequest
+import com.mvalu.bettr_api.application_journey.bureau.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
@@ -93,4 +90,10 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body bureauQuestionRequest: BureauQuestionRequest
     ): Observable<Response<BureauQuestionApiResponse>>
+
+    @POST("v1/{organizationId}/cc/integration/bureau/verifyAnswer")
+    fun bureauVerifyAnswer(
+        @Path("organizationId") organizationId: String,
+        @Body bureauAnswerRequest: BureauAnswerRequest
+    ): Observable<Response<BureauStatusApiResponse>>
 }
