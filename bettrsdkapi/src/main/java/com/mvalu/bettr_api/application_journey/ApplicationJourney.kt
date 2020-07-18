@@ -1,9 +1,14 @@
 package com.mvalu.bettr_api.application_journey
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.application_journey.bureau.BureauStatusApiResponse
+import com.mvalu.bettr_api.application_journey.bureau.BureauStatusRequest
+import com.mvalu.bettr_api.application_journey.bureau.BureauStatusResult
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeResult
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
@@ -19,6 +24,8 @@ object ApplicationJourney : ApiSdkBase() {
 
     private var updateLeadCallBack: ApiResponseCallback<LeadDetail>? = null
     private var validatePANNumberCallBack: ApiResponseCallback<ValidatePANNumberResult>? = null
+    private var validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>? = null
+    private var bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>? = null
 
     fun updateLead(
         leadId: String,
@@ -46,13 +53,46 @@ object ApplicationJourney : ApiSdkBase() {
         this.validatePANNumberCallBack = validatePANNumberCallBack
         val validatePANNumberRequest = ValidatePANNumberRequest()
             .apply {
-            pan = panNumber
-            name = leadName
+                pan = panNumber
+                name = leadName
 
-        }
+            }
         callApi(
             serviceApi.validatePANNumber(BettrApiSdk.getOrganizationId(), validatePANNumberRequest),
             ApiTag.VALIDATE_PAN_API
+        )
+    }
+
+    fun validatePincode(
+        pincode: String,
+        validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.validatePincodeCallBack = validatePincodeCallBack
+        callApi(
+            serviceApi.validatePincode(BettrApiSdk.getOrganizationId(), pincode),
+            ApiTag.VALIDATE_PINCODE_API
+        )
+    }
+
+    fun checkBureauStatus(
+        userId: String,
+        leadId: String,
+        bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.bureauStatusCallBack = bureauStatusCallBack
+        val bureauStatusRequest = BureauStatusRequest().apply {
+            this.userId = userId
+            this.leadId = leadId
+        }
+        callApi(
+            serviceApi.checkBureauStatus(BettrApiSdk.getOrganizationId(), bureauStatusRequest),
+            ApiTag.BUREAU_STATUS_API
         )
     }
 
@@ -68,6 +108,16 @@ object ApplicationJourney : ApiSdkBase() {
                 val validatePANApiResponse = response as ValidatePANNumberApiResponse
                 validatePANNumberCallBack?.onSuccess(validatePANApiResponse.results!!)
             }
+            ApiTag.VALIDATE_PINCODE_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "validate pincode called successfully")
+                val validatePincodeApiResponse = response as ValidatePincodeApiResponse
+                validatePincodeCallBack?.onSuccess(validatePincodeApiResponse.results!!)
+            }
+            ApiTag.BUREAU_STATUS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "bureau status fetched successfully")
+                val bureauStatusApiResponse = response as BureauStatusApiResponse
+                bureauStatusCallBack?.onSuccess(bureauStatusApiResponse.results!!)
+            }
         }
     }
 
@@ -79,6 +129,12 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(errorMessage)
+            }
+            ApiTag.VALIDATE_PINCODE_API -> {
+                validatePincodeCallBack?.onError(errorMessage)
+            }
+            ApiTag.BUREAU_STATUS_API -> {
+                bureauStatusCallBack?.onError(errorMessage)
             }
         }
     }
@@ -92,6 +148,12 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.VALIDATE_PINCODE_API -> {
+                validatePincodeCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.BUREAU_STATUS_API -> {
+                bureauStatusCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -104,6 +166,12 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.VALIDATE_PINCODE_API -> {
+                validatePincodeCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.BUREAU_STATUS_API -> {
+                bureauStatusCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -115,6 +183,12 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.VALIDATE_PINCODE_API -> {
+                validatePincodeCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.BUREAU_STATUS_API -> {
+                bureauStatusCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

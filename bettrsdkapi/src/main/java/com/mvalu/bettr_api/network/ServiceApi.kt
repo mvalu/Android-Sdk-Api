@@ -5,8 +5,11 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
+import com.mvalu.bettr_api.application_journey.bureau.BureauStatusApiResponse
+import com.mvalu.bettr_api.application_journey.bureau.BureauStatusRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
@@ -70,4 +73,16 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body validatePANRequestModel: ValidatePANNumberRequest
     ): Observable<Response<ValidatePANNumberApiResponse>>
+
+    @GET("v1/{organizationId}/cc/leads/pinCheck/{pincode}")
+    fun validatePincode(
+        @Path("organizationId") organizationId: String,
+        @Path("pincode") pinCode: String
+    ): Observable<Response<ValidatePincodeApiResponse>>
+
+    @POST("v1/{organizationId}/cc/integration/bureau")
+    fun checkBureauStatus(
+        @Path("organizationId") organizationId: String,
+        @Body bureauStatusRequest: BureauStatusRequest
+    ): Observable<Response<BureauStatusApiResponse>>
 }
