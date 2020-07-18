@@ -5,6 +5,8 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
+import com.mvalu.bettr_api.application_journey.bureau.BureauQuestionApiResponse
+import com.mvalu.bettr_api.application_journey.bureau.BureauQuestionRequest
 import com.mvalu.bettr_api.application_journey.bureau.BureauStatusApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.BureauStatusRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
@@ -85,4 +87,10 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body bureauStatusRequest: BureauStatusRequest
     ): Observable<Response<BureauStatusApiResponse>>
+
+    @POST("v1/{organizationId}/cc/integration/bureau/generateQuestion")
+    fun getBureauQuestion(
+        @Path("organizationId") organizationId: String,
+        @Body bureauQuestionRequest: BureauQuestionRequest
+    ): Observable<Response<BureauQuestionApiResponse>>
 }

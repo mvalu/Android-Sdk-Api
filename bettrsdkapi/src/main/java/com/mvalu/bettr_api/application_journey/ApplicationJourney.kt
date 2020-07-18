@@ -1,9 +1,7 @@
 package com.mvalu.bettr_api.application_journey
 
 import com.mvalu.bettr_api.BettrApiSdk
-import com.mvalu.bettr_api.application_journey.bureau.BureauStatusApiResponse
-import com.mvalu.bettr_api.application_journey.bureau.BureauStatusRequest
-import com.mvalu.bettr_api.application_journey.bureau.BureauStatusResult
+import com.mvalu.bettr_api.application_journey.bureau.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
@@ -26,6 +24,7 @@ object ApplicationJourney : ApiSdkBase() {
     private var validatePANNumberCallBack: ApiResponseCallback<ValidatePANNumberResult>? = null
     private var validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>? = null
     private var bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>? = null
+    private var bureauQuestionCallBack: ApiResponseCallback<BureauQuestionResult>? = null
 
     fun updateLead(
         leadId: String,
@@ -96,6 +95,27 @@ object ApplicationJourney : ApiSdkBase() {
         )
     }
 
+    fun getBureauQuestion(
+        userId: String,
+        leadId: String,
+        bureauApplicationId: String,
+        bureauQuestionCallBack: ApiResponseCallback<BureauQuestionResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.bureauQuestionCallBack = bureauQuestionCallBack
+        val bureauQuestionRequest = BureauQuestionRequest().apply {
+            this.userId = userId
+            this.applicationId = bureauApplicationId
+            this.leadId = leadId
+        }
+        callApi(
+            serviceApi.getBureauQuestion(BettrApiSdk.getOrganizationId(), bureauQuestionRequest),
+            ApiTag.BUREAU_QUESTION_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -118,6 +138,11 @@ object ApplicationJourney : ApiSdkBase() {
                 val bureauStatusApiResponse = response as BureauStatusApiResponse
                 bureauStatusCallBack?.onSuccess(bureauStatusApiResponse.results!!)
             }
+            ApiTag.BUREAU_QUESTION_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "bureau question fetched successfully")
+                val bureauQuestionApiResponse = response as BureauQuestionApiResponse
+                bureauQuestionCallBack?.onSuccess(bureauQuestionApiResponse.results!!)
+            }
         }
     }
 
@@ -135,6 +160,9 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_STATUS_API -> {
                 bureauStatusCallBack?.onError(errorMessage)
+            }
+            ApiTag.BUREAU_QUESTION_API -> {
+                bureauQuestionCallBack?.onError(errorMessage)
             }
         }
     }
@@ -154,6 +182,9 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_STATUS_API -> {
                 bureauStatusCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.BUREAU_QUESTION_API -> {
+                bureauQuestionCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -172,6 +203,9 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_STATUS_API -> {
                 bureauStatusCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.BUREAU_QUESTION_API -> {
+                bureauQuestionCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -189,6 +223,9 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_STATUS_API -> {
                 bureauStatusCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.BUREAU_QUESTION_API -> {
+                bureauQuestionCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
