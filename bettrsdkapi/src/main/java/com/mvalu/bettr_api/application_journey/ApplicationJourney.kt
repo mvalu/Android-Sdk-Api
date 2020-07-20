@@ -44,6 +44,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var uploadProfilePicCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
         null
+    private var uploadPanCardCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadAadharFrontCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadAadharBackCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
 
     fun updateLead(
         leadId: String,
@@ -298,6 +304,90 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun uploadPanCard(
+        fileUri: Uri, file: File,
+        uploadPanCardCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadPanCardCallBack = uploadPanCardCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.PAN_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadPanCard(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.PAN_UPLOAD_API
+        )
+    }
+
+    fun uploadAadharFront(
+        fileUri: Uri, file: File,
+        uploadAadharFrontCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadAadharFrontCallBack = uploadAadharFrontCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.AADHAR_FRONT_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadAadharFront(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.AADHAR_FRONT_UPLOAD_API
+        )
+    }
+
+    fun uploadAadharBack(
+        fileUri: Uri, file: File,
+        uploadAadharBackCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadAadharBackCallBack = uploadAadharBackCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.AADHAR_BACK_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadAadharBack(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.AADHAR_BACK_UPLOAD_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -355,6 +445,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val profilePicUploadApiResponse = response as DocumentUploadApiResponse
                 uploadProfilePicCallBack?.onSuccess(profilePicUploadApiResponse.results!!)
             }
+            ApiTag.PAN_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "pan card uploaded successfully")
+                val panCardUploadApiResponse = response as DocumentUploadApiResponse
+                uploadPanCardCallBack?.onSuccess(panCardUploadApiResponse.results!!)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "aadhar front uploaded successfully")
+                val aadharFrontUploadApiResponse = response as DocumentUploadApiResponse
+                uploadAadharFrontCallBack?.onSuccess(aadharFrontUploadApiResponse.results!!)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "aadhar back uploaded successfully")
+                val aadharBackUploadApiResponse = response as DocumentUploadApiResponse
+                uploadAadharBackCallBack?.onSuccess(aadharBackUploadApiResponse.results!!)
+            }
         }
     }
 
@@ -393,6 +498,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.PROFILE_PIC_UPLOAD_API -> {
                 uploadProfilePicCallBack?.onError(errorMessage)
+            }
+            ApiTag.PAN_UPLOAD_API -> {
+                uploadPanCardCallBack?.onError(errorMessage)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                uploadAadharFrontCallBack?.onError(errorMessage)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                uploadAadharBackCallBack?.onError(errorMessage)
             }
         }
     }
@@ -433,6 +547,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.PROFILE_PIC_UPLOAD_API -> {
                 uploadProfilePicCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.PAN_UPLOAD_API -> {
+                uploadPanCardCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                uploadAadharFrontCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                uploadAadharBackCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -471,6 +594,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.PROFILE_PIC_UPLOAD_API -> {
                 uploadProfilePicCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.PAN_UPLOAD_API -> {
+                uploadPanCardCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                uploadAadharFrontCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                uploadAadharBackCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
         }
     }
@@ -511,6 +643,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.PROFILE_PIC_UPLOAD_API -> {
                 uploadProfilePicCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
+            ApiTag.PAN_UPLOAD_API -> {
+                uploadPanCardCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                uploadAadharFrontCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                uploadAadharBackCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
         }
     }
 
@@ -530,6 +671,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.PROFILE_PIC_UPLOAD_API -> {
                 uploadProfilePicCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.PAN_UPLOAD_API -> {
+                uploadPanCardCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.AADHAR_FRONT_UPLOAD_API -> {
+                uploadAadharFrontCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.AADHAR_BACK_UPLOAD_API -> {
+                uploadAadharBackCallBack?.progressUpdate(percentage)
             }
         }
     }

@@ -63,45 +63,45 @@ interface ServiceApi {
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
 
-    @PUT("v1/{organizationId}/cc/leads/{leadId}")
+    @PUT("v1/{organizationId}/leads/{leadId}")
     fun updateLead(
         @Path("organizationId") organizationId: String,
         @Path("leadId") leadId: String,
         @Body lead: LeadDetail?
     ): Observable<Response<LeadDetailApiResponse>>
 
-    @POST("v1/{organizationId}/cc/users/panValidate")
+    @POST("v1/{organizationId}/users/panValidate")
     fun validatePANNumber(
         @Path("organizationId") organizationId: String,
         @Body validatePANRequestModel: ValidatePANNumberRequest
     ): Observable<Response<ValidatePANNumberApiResponse>>
 
-    @GET("v1/{organizationId}/cc/leads/pinCheck/{pincode}")
+    @GET("v1/{organizationId}/leads/pinCheck/{pincode}")
     fun validatePincode(
         @Path("organizationId") organizationId: String,
         @Path("pincode") pinCode: String
     ): Observable<Response<ValidatePincodeApiResponse>>
 
-    @POST("v1/{organizationId}/cc/integration/bureau")
+    @POST("v1/{organizationId}/integration/bureau")
     fun checkBureauStatus(
         @Path("organizationId") organizationId: String,
         @Body bureauStatusRequest: BureauStatusRequest
     ): Observable<Response<BureauStatusApiResponse>>
 
-    @POST("v1/{organizationId}/cc/integration/bureau/generateQuestion")
+    @POST("v1/{organizationId}/integration/bureau/generateQuestion")
     fun getBureauQuestion(
         @Path("organizationId") organizationId: String,
         @Body bureauQuestionRequest: BureauQuestionRequest
     ): Observable<Response<BureauQuestionApiResponse>>
 
-    @POST("v1/{organizationId}/cc/integration/bureau/verifyAnswer")
+    @POST("v1/{organizationId}/integration/bureau/verifyAnswer")
     fun bureauVerifyAnswer(
         @Path("organizationId") organizationId: String,
         @Body bureauAnswerRequest: BureauAnswerRequest
     ): Observable<Response<BureauStatusApiResponse>>
 
     @Multipart
-    @POST("v1/{organizationId}/cc/upload/single/idProof")
+    @POST("v1/{organizationId}/upload/single/idProof")
     fun uploadIdProof(
         @Path("organizationId") organizationId: String,
         @Part("fileData") description: RequestBody,
@@ -109,7 +109,7 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
-    @POST("v1/{organizationId}/cc/upload/single/addressProof")
+    @POST("v1/{organizationId}/upload/single/addressProof")
     fun uploadAddressProof(
         @Path("organizationId") organizationId: String,
         @Part("fileData") description: RequestBody,
@@ -117,7 +117,7 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
-    @POST("v1/{organizationId}/cc/upload/single/bankStatement")
+    @POST("v1/{organizationId}/upload/single/bankStatement")
     fun uploadBankStatement(
         @Path("organizationId") organizationId: String,
         @Part("fileData") description: RequestBody,
@@ -125,7 +125,7 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
-    @POST("v1/{organizationId}/cc/upload/single/salarySlip")
+    @POST("v1/{organizationId}/upload/single/salarySlip")
     fun uploadSalarySlip(
         @Path("organizationId") organizationId: String,
         @Part("fileData") description: RequestBody,
@@ -133,8 +133,32 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
-    @POST("v1/{organizationId}/cc/upload/single/photo")
+    @POST("v1/{organizationId}/upload/single/photo")
     fun uploadProfilePic(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/pan")
+    fun uploadPanCard(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/aadharCard")
+    fun uploadAadharFront(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/aadharCardBack")
+    fun uploadAadharBack(
         @Path("organizationId") organizationId: String,
         @Part("fileData") description: RequestBody,
         @Part file: MultipartBody.Part
