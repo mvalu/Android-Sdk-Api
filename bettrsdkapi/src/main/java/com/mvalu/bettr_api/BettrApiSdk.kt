@@ -69,6 +69,10 @@ object BettrApiSdk : ApiSdkBase() {
         return USER_ID
     }
 
+    fun getApplicationContext(): Context {
+        return applicationContext!!
+    }
+
     /**
      * Initialize sdk here with required parameters
      * if required parameters are null or empty throw error

@@ -1,7 +1,10 @@
 package com.mvalu.bettr_api.application_journey
 
+import android.net.Uri
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.application_journey.bureau.*
+import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
+import com.mvalu.bettr_api.application_journey.documents.DocumentUploadResult
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
@@ -11,9 +14,14 @@ import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
+import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
+import com.mvalu.bettr_api.network.ProgressRequestBody
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-object ApplicationJourney : ApiSdkBase() {
+object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCallbacks {
     private const val TAG = "ApplicationJourney"
 
     init {
@@ -26,6 +34,16 @@ object ApplicationJourney : ApiSdkBase() {
     private var bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>? = null
     private var bureauQuestionCallBack: ApiResponseCallback<BureauQuestionResult>? = null
     private var bureauAnswerCallBack: ApiResponseCallback<BureauStatusResult>? = null
+    private var uploadIdProofCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadAddressProofCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadBankStatementCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadSalarySlipCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadProfilePicCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
 
     fun updateLead(
         leadId: String,
@@ -140,6 +158,146 @@ object ApplicationJourney : ApiSdkBase() {
         )
     }
 
+    fun uploadIdProof(
+        fileUri: Uri, file: File,
+        uploadIdProofCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadIdProofCallBack = uploadIdProofCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.ID_PROOF_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadIdProof(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.ID_PROOF_UPLOAD_API
+        )
+    }
+
+    fun uploadAddressProof(
+        fileUri: Uri, file: File,
+        uploadAddressProofCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadAddressProofCallBack = uploadAddressProofCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.ADDRESS_PROOF_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadAddressProof(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.ADDRESS_PROOF_UPLOAD_API
+        )
+    }
+
+    fun uploadBankStatement(
+        fileUri: Uri, file: File,
+        uploadBankStatementCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadBankStatementCallBack = uploadBankStatementCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.BANK_STATEMENT_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadBankStatement(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.BANK_STATEMENT_UPLOAD_API
+        )
+    }
+
+    fun uploadSalarySlip(
+        fileUri: Uri, file: File,
+        uploadSalarySlipCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadSalarySlipCallBack = uploadSalarySlipCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.SALARY_SLIP_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadSalarySlip(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.SALARY_SLIP_UPLOAD_API
+        )
+    }
+
+    fun uploadProfilePic(
+        fileUri: Uri, file: File,
+        uploadProfilePicCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadProfilePicCallBack = uploadProfilePicCallBack
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            file,
+            ApiTag.PROFILE_PIC_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadProfilePic(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.PROFILE_PIC_UPLOAD_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -172,6 +330,31 @@ object ApplicationJourney : ApiSdkBase() {
                 val bureauAnswerApiResponse = response as BureauStatusApiResponse
                 bureauAnswerCallBack?.onSuccess(bureauAnswerApiResponse.results!!)
             }
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "id proof uploaded successfully")
+                val idProofUploadApiResponse = response as DocumentUploadApiResponse
+                uploadIdProofCallBack?.onSuccess(idProofUploadApiResponse.results!!)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "address proof uploaded successfully")
+                val addressProofUploadApiResponse = response as DocumentUploadApiResponse
+                uploadAddressProofCallBack?.onSuccess(addressProofUploadApiResponse.results!!)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "bank statement uploaded successfully")
+                val bankStatementUploadApiResponse = response as DocumentUploadApiResponse
+                uploadBankStatementCallBack?.onSuccess(bankStatementUploadApiResponse.results!!)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "salary slip uploaded successfully")
+                val salarySlipUploadApiResponse = response as DocumentUploadApiResponse
+                uploadSalarySlipCallBack?.onSuccess(salarySlipUploadApiResponse.results!!)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "profile pic uploaded successfully")
+                val profilePicUploadApiResponse = response as DocumentUploadApiResponse
+                uploadProfilePicCallBack?.onSuccess(profilePicUploadApiResponse.results!!)
+            }
         }
     }
 
@@ -195,6 +378,21 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_ANSWER_API -> {
                 bureauAnswerCallBack?.onError(errorMessage)
+            }
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                uploadIdProofCallBack?.onError(errorMessage)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                uploadAddressProofCallBack?.onError(errorMessage)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                uploadBankStatementCallBack?.onError(errorMessage)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                uploadSalarySlipCallBack?.onError(errorMessage)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                uploadProfilePicCallBack?.onError(errorMessage)
             }
         }
     }
@@ -220,6 +418,21 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_ANSWER_API -> {
                 bureauAnswerCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                uploadIdProofCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                uploadAddressProofCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                uploadBankStatementCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                uploadSalarySlipCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                uploadProfilePicCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -244,6 +457,21 @@ object ApplicationJourney : ApiSdkBase() {
             ApiTag.BUREAU_ANSWER_API -> {
                 bureauAnswerCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                uploadIdProofCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                uploadAddressProofCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                uploadBankStatementCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                uploadSalarySlipCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                uploadProfilePicCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -267,6 +495,41 @@ object ApplicationJourney : ApiSdkBase() {
             }
             ApiTag.BUREAU_ANSWER_API -> {
                 bureauAnswerCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                uploadIdProofCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                uploadAddressProofCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                uploadBankStatementCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                uploadSalarySlipCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                uploadProfilePicCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+        }
+    }
+
+    override fun onProgressUpdate(percentage: Int, apiTag: ApiTag) {
+        when (apiTag) {
+            ApiTag.ID_PROOF_UPLOAD_API -> {
+                uploadIdProofCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.ADDRESS_PROOF_UPLOAD_API -> {
+                uploadAddressProofCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.BANK_STATEMENT_UPLOAD_API -> {
+                uploadBankStatementCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.SALARY_SLIP_UPLOAD_API -> {
+                uploadSalarySlipCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.PROFILE_PIC_UPLOAD_API -> {
+                uploadProfilePicCallBack?.progressUpdate(percentage)
             }
         }
     }

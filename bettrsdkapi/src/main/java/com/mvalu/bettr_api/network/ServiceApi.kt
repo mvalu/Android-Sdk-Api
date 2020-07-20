@@ -6,6 +6,7 @@ import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTrans
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.*
+import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
@@ -14,6 +15,8 @@ import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -96,4 +99,44 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body bureauAnswerRequest: BureauAnswerRequest
     ): Observable<Response<BureauStatusApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/cc/upload/single/idProof")
+    fun uploadIdProof(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/cc/upload/single/addressProof")
+    fun uploadAddressProof(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/cc/upload/single/bankStatement")
+    fun uploadBankStatement(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/cc/upload/single/salarySlip")
+    fun uploadSalarySlip(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/cc/upload/single/photo")
+    fun uploadProfilePic(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
 }
