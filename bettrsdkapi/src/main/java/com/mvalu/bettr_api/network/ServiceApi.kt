@@ -7,6 +7,8 @@ import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.*
 import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
+import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsApiResponse
+import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
@@ -163,4 +165,11 @@ interface ServiceApi {
         @Part("fileData") description: RequestBody,
         @Part file: MultipartBody.Part
     ): Observable<Response<DocumentUploadApiResponse>>
+
+    @POST("v1/{organizationId}/application/{applicationId}/leadDocumentVerify")
+    fun verifyDocuments(
+        @Path("organizationId") organizationId: String,
+        @Path("applicationId") applicationId: String,
+        @Body request: VerifyDocumentsRequest
+    ): Observable<Response<VerifyDocumentsApiResponse>>
 }

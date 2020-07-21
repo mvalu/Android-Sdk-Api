@@ -3,8 +3,7 @@ package com.mvalu.bettr_api.application_journey
 import android.net.Uri
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.application_journey.bureau.*
-import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
-import com.mvalu.bettr_api.application_journey.documents.DocumentUploadResult
+import com.mvalu.bettr_api.application_journey.documents.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
@@ -49,6 +48,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     private var uploadAadharFrontCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
         null
     private var uploadAadharBackCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var verifyDocumentsCallBack: DocumentUploadApiResponseCallback<VerifyDocumentsResult>? =
         null
 
     fun updateLead(
@@ -388,6 +389,37 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun verifyDocuments(
+        panCard: String?,
+        profilePic: String?,
+        aadharFront: String?,
+        aadharBack: String?,
+        userId: String,
+        applicationId: String,
+        verifyDocumentsCallBack: DocumentUploadApiResponseCallback<VerifyDocumentsResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.verifyDocumentsCallBack = verifyDocumentsCallBack
+        val verifyDocumentsRequest = VerifyDocumentsRequest().apply {
+            this.userId = userId
+            this.leadId = applicationId
+            this.pan = panCard
+            this.photo = profilePic
+            this.aadharFront = aadharFront
+            this.aadharBack = aadharBack
+        }
+        callApi(
+            serviceApi.verifyDocuments(
+                BettrApiSdk.getOrganizationId(),
+                applicationId,
+                verifyDocumentsRequest
+            ),
+            ApiTag.VERIFY_DOCUMENTS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -460,6 +492,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val aadharBackUploadApiResponse = response as DocumentUploadApiResponse
                 uploadAadharBackCallBack?.onSuccess(aadharBackUploadApiResponse.results!!)
             }
+            ApiTag.VERIFY_DOCUMENTS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "documents verified successfully")
+                val verifyDocumentsApiResponse = response as VerifyDocumentsApiResponse
+                verifyDocumentsCallBack?.onSuccess(verifyDocumentsApiResponse.results!!)
+            }
         }
     }
 
@@ -507,6 +544,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.AADHAR_BACK_UPLOAD_API -> {
                 uploadAadharBackCallBack?.onError(errorMessage)
+            }
+            ApiTag.VERIFY_DOCUMENTS_API -> {
+                verifyDocumentsCallBack?.onError(errorMessage)
             }
         }
     }
@@ -556,6 +596,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.AADHAR_BACK_UPLOAD_API -> {
                 uploadAadharBackCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.VERIFY_DOCUMENTS_API -> {
+                verifyDocumentsCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -604,6 +647,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.AADHAR_BACK_UPLOAD_API -> {
                 uploadAadharBackCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.VERIFY_DOCUMENTS_API -> {
+                verifyDocumentsCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -651,6 +697,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.AADHAR_BACK_UPLOAD_API -> {
                 uploadAadharBackCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.VERIFY_DOCUMENTS_API -> {
+                verifyDocumentsCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
