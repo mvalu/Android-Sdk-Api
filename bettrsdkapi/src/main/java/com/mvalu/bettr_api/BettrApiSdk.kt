@@ -17,6 +17,7 @@ import com.mvalu.bettr_api.network.CampaignInfo
 import com.mvalu.bettr_api.network.DeviceInfo
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
+const val PRODUCT_TYPE = "CC"
 object BettrApiSdk : ApiSdkBase() {
 
     private var daggerComponent: AppComponent? = null
