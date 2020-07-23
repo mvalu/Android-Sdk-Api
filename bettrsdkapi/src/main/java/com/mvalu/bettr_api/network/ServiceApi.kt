@@ -8,6 +8,8 @@ import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.*
 import com.mvalu.bettr_api.application_journey.checklist.CheckListApiResponse
 import com.mvalu.bettr_api.application_journey.checklist.CheckListRequest
+import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentApiResponse
+import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentRequest
 import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
 import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsApiResponse
 import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
@@ -180,4 +182,10 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body request: CheckListRequest
     ): Observable<Response<CheckListApiResponse>>
+
+    @POST("v1/{organizationId}/constants/cc-dropdown")
+    fun fetchApplicationJourneyContent(
+        @Path("organizationId") organizationId: String,
+        @Body request: ApplicationJourneyContentRequest
+    ): Observable<Response<ApplicationJourneyContentApiResponse>>
 }

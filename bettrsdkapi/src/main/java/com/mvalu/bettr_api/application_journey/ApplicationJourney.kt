@@ -7,6 +7,9 @@ import com.mvalu.bettr_api.application_journey.bureau.*
 import com.mvalu.bettr_api.application_journey.checklist.CheckListApiResponse
 import com.mvalu.bettr_api.application_journey.checklist.CheckListRequest
 import com.mvalu.bettr_api.application_journey.checklist.CheckListResult
+import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentApiResponse
+import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentRequest
+import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentResult
 import com.mvalu.bettr_api.application_journey.documents.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
@@ -56,6 +59,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     private var verifyDocumentsCallBack: DocumentUploadApiResponseCallback<VerifyDocumentsResult>? =
         null
     private var checkListCallBack: DocumentUploadApiResponseCallback<CheckListResult>? =
+        null
+    private var applicationJourneyContentCallBack: DocumentUploadApiResponseCallback<ApplicationJourneyContentResult>? =
         null
 
     fun updateLead(
@@ -447,6 +452,23 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun fetchApplicationJourneyContent(
+        applicationJourneyContentCallBack: DocumentUploadApiResponseCallback<ApplicationJourneyContentResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.applicationJourneyContentCallBack = applicationJourneyContentCallBack
+
+        val request = ApplicationJourneyContentRequest().apply {
+
+        }
+        callApi(
+            serviceApi.fetchApplicationJourneyContent(BettrApiSdk.getOrganizationId(), request),
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -529,6 +551,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val checkListApiResponse = response as CheckListApiResponse
                 checkListCallBack?.onSuccess(checkListApiResponse.results!!)
             }
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "application journey content fetched successfully")
+                val applicationJourneyContentResponse = response as ApplicationJourneyContentApiResponse
+                applicationJourneyContentCallBack?.onSuccess(applicationJourneyContentResponse.results!!)
+            }
         }
     }
 
@@ -582,6 +609,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.CHECKLIST_API -> {
                 checkListCallBack?.onError(errorMessage)
+            }
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
+                applicationJourneyContentCallBack?.onError(errorMessage)
             }
         }
     }
@@ -637,6 +667,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.CHECKLIST_API -> {
                 checkListCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
+                applicationJourneyContentCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -691,6 +724,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.CHECKLIST_API -> {
                 checkListCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
+                applicationJourneyContentCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -744,6 +780,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.CHECKLIST_API -> {
                 checkListCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
+                applicationJourneyContentCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
