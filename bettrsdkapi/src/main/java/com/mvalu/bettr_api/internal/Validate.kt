@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
-internal object Validate {
+object Validate {
 
     private const val TAG = "Validation"
 
@@ -41,6 +41,45 @@ internal object Validate {
                 throw IllegalStateException("Read phone state permission required")
             } else {
                 BettrApiSdkLogger.printError(TAG, "Read phone state permission required")
+            }
+        }
+    }
+
+    fun hasStoragePermissions(context: Context, shouldThrow: Boolean) {
+        notNull(context, "Application context")
+        if (context.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            if (shouldThrow) {
+                throw IllegalStateException("Storage permission required")
+            } else {
+                BettrApiSdkLogger.printError(TAG, "Storage permission required")
+            }
+        }
+    }
+
+    fun hasLocationPermissions(context: Context, shouldThrow: Boolean) {
+        notNull(context, "Application context")
+        if (context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            if (shouldThrow) {
+                throw IllegalStateException("Fine Location permission required")
+            } else {
+                BettrApiSdkLogger.printError(TAG, "Fine Location permission required")
+            }
+        } else if (context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            if (shouldThrow) {
+                throw IllegalStateException("Coarse Location permission required")
+            } else {
+                BettrApiSdkLogger.printError(TAG, "Coarse Location permission required")
+            }
+        }
+    }
+
+    fun hasCameraPermissions(context: Context, shouldThrow: Boolean) {
+        notNull(context, "Application context")
+        if (context.checkCallingOrSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            if (shouldThrow) {
+                throw IllegalStateException("Camera permission required")
+            } else {
+                BettrApiSdkLogger.printError(TAG, "Camera permission required")
             }
         }
     }
