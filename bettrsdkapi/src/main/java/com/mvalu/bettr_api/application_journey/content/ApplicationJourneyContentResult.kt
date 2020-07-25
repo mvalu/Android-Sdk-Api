@@ -4,6 +4,9 @@ import com.squareup.moshi.Json
 
 class ApplicationJourneyContentResult {
 
+    @field:Json(name = "dropdownDetail")
+    var dropdownDetail: DropdownDetail? = null
+
     class DropdownDetail{
         @field:Json(name = "city")
         var cities: List<DropdownItem>? = null
