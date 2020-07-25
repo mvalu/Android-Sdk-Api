@@ -45,6 +45,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "addressLine2")
     var addressLine2: String? = null
 
+    @field:Json(name = "locality")
+    var locality: String? = null
+
     @field:Json(name = "gender")
     var gender: String? = null
 
@@ -182,6 +185,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "officeAddress2")
     var officeAddress2: String? = null
 
+    @field:Json(name = "officeAddressLocality")
+    var officeAddressLocality: String? = null
+
     @field:Json(name = "officeAddressLandMark")
     var officeAddressLandMark: String? = null
 
@@ -202,6 +208,9 @@ class UserDetail() : Parcelable {
 
     @field:Json(name = "permanentAddress2")
     var permanentAddress2: String? = null
+
+    @field:Json(name = "permanentAddressLocality")
+    var permanentAddressLocality: String? = null
 
     @field:Json(name = "permanentAddressLandMark")
     var permanentAddressLandMark: String? = null
@@ -302,6 +311,7 @@ class UserDetail() : Parcelable {
         pincode = parcel.readString()
         addressLine1 = parcel.readString()
         addressLine2 = parcel.readString()
+        locality = parcel.readString()
         gender = parcel.readString()
         dateOfBirth = parcel.readString()
         dateOfBirthInput = parcel.readString()
@@ -345,6 +355,7 @@ class UserDetail() : Parcelable {
         officeEmail = parcel.readString()
         officeAddress1 = parcel.readString()
         officeAddress2 = parcel.readString()
+        officeAddressLocality = parcel.readString()
         officeAddressCity = parcel.readString()
         officeAddressLandMark = parcel.readString()
         officeAddressPinCode = parcel.readString()
@@ -352,6 +363,7 @@ class UserDetail() : Parcelable {
         landMark = parcel.readString()
         permanentAddress1 = parcel.readString()
         permanentAddress2 = parcel.readString()
+        permanentAddressLocality = parcel.readString()
         permanentAddressCity = parcel.readString()
         permanentAddressLandMark = parcel.readString()
         permanentAddressPinCode = parcel.readString()
@@ -391,6 +403,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(pincode)
         parcel.writeString(addressLine1)
         parcel.writeString(addressLine2)
+        parcel.writeString(locality)
         parcel.writeString(gender)
         parcel.writeString(dateOfBirth)
         parcel.writeString(dateOfBirthInput)
@@ -434,6 +447,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(officeEmail)
         parcel.writeString(officeAddress1)
         parcel.writeString(officeAddress2)
+        parcel.writeString(officeAddressLocality)
         parcel.writeString(officeAddressCity)
         parcel.writeString(officeAddressLandMark)
         parcel.writeString(officeAddressPinCode)
@@ -441,6 +455,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(landMark)
         parcel.writeString(permanentAddress1)
         parcel.writeString(permanentAddress2)
+        parcel.writeString(permanentAddressLocality)
         parcel.writeString(permanentAddressCity)
         parcel.writeString(permanentAddressLandMark)
         parcel.writeString(permanentAddressPinCode)
