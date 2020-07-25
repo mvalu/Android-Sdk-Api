@@ -56,11 +56,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var uploadAadharBackCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
         null
-    private var verifyDocumentsCallBack: DocumentUploadApiResponseCallback<VerifyDocumentsResult>? =
+    private var verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>? =
         null
-    private var checkListCallBack: DocumentUploadApiResponseCallback<CheckListResult>? =
+    private var checkListCallBack: ApiResponseCallback<CheckListResult>? =
         null
-    private var applicationJourneyContentCallBack: DocumentUploadApiResponseCallback<ApplicationJourneyContentResult>? =
+    private var applicationJourneyContentCallBack: ApiResponseCallback<ApplicationJourneyContentResult>? =
         null
 
     fun updateLead(
@@ -408,7 +408,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         aadharBack: String?,
         userId: String,
         applicationId: String,
-        verifyDocumentsCallBack: DocumentUploadApiResponseCallback<VerifyDocumentsResult>
+        verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -435,7 +435,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     fun fetchCheckList(
         leadId: String,
-        checkListCallBack: DocumentUploadApiResponseCallback<CheckListResult>
+        checkListCallBack: ApiResponseCallback<CheckListResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -453,7 +453,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun fetchApplicationJourneyContent(
-        applicationJourneyContentCallBack: DocumentUploadApiResponseCallback<ApplicationJourneyContentResult>
+        applicationJourneyContentCallBack: ApiResponseCallback<ApplicationJourneyContentResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)

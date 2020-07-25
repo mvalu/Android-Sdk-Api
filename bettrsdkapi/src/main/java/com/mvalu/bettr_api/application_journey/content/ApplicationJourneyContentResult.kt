@@ -43,5 +43,8 @@ class ApplicationJourneyContentResult {
 
         @field:Json(name = "havingOfficeMail")
         var havingOfficeMailOptions: List<DropdownItem>? = null
+
+        @field:Json(name = "residenceType")
+        var residenceType: List<DropdownItem>? = null
     }
 }
