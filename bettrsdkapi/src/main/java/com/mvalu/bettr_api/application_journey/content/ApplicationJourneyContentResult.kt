@@ -7,7 +7,38 @@ class ApplicationJourneyContentResult {
     @field:Json(name = "dropdownDetail")
     var dropdownDetail: DropdownDetail? = null
 
-    class DropdownDetail{
+    @field:Json(name = "placehoderList")
+    var placeholderList: PlaceHolderList? = null
+
+    class PlaceHolderList {
+        @field:Json(name = "bureau_cc_consent")
+        var bureauCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "location_cc_consent")
+        var locationCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "job_detail_cc_consent")
+        var jobDetailCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "payment_cc_consent")
+        var paymentCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "account_info_cc_consent")
+        var accountInfoCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "document_submission_cc_consent")
+        var documentSubmissionInfoCCConsent: ConsentDetail? = null
+
+        @field:Json(name = "reject_message_cc")
+        var rejectMessageCCConsent: ConsentDetail? = null
+    }
+
+    class ConsentDetail {
+        @field:Json(name = "description")
+        var description: String? = null
+    }
+
+    class DropdownDetail {
         @field:Json(name = "city")
         var cities: List<DropdownItem>? = null
 
