@@ -12,28 +12,31 @@ class ApplicationJourneyContentResult {
 
     class PlaceHolderList {
         @field:Json(name = "bureau_cc_consent")
-        var bureauCCConsent: ConsentDetail? = null
+        var bureauCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "location_cc_consent")
-        var locationCCConsent: ConsentDetail? = null
+        var locationCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "job_detail_cc_consent")
-        var jobDetailCCConsent: ConsentDetail? = null
+        var jobDetailCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "payment_cc_consent")
-        var paymentCCConsent: ConsentDetail? = null
+        var paymentCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "account_info_cc_consent")
-        var accountInfoCCConsent: ConsentDetail? = null
+        var accountInfoCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "document_submission_cc_consent")
-        var documentSubmissionInfoCCConsent: ConsentDetail? = null
+        var documentSubmissionInfoCCConsent: List<ConsentDetail>? = null
 
         @field:Json(name = "reject_message_cc")
-        var rejectMessageCCConsent: ConsentDetail? = null
+        var rejectMessageCCConsent: List<ConsentDetail>? = null
     }
 
     class ConsentDetail {
+        @field:Json(name = "title")
+        var title: String? = null
+
         @field:Json(name = "description")
         var description: String? = null
     }
