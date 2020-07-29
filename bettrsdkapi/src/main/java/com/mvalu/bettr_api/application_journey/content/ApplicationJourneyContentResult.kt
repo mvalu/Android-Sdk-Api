@@ -11,6 +11,7 @@ class ApplicationJourneyContentResult {
     var placeholderList: PlaceHolderList? = null
 
     class PlaceHolderList {
+        /** These will be removed later as not in use */
         @field:Json(name = "bureau_cc_consent")
         var bureauCCConsent: List<ConsentDetail>? = null
 
@@ -31,6 +32,59 @@ class ApplicationJourneyContentResult {
 
         @field:Json(name = "reject_message_cc")
         var rejectMessageCCConsent: List<ConsentDetail>? = null
+
+        /** Following will be in use */
+
+        @field:Json(name = "pincode_section_end_cc")
+        var pincodeSectionEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "personal_details_start_cc")
+        var personalDetailsStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "personal_details_end_cc")
+        var personalDetailsEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "residential_details_start_cc")
+        var residentialDetailsStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "income_details_start_cc")
+        var incomeDetailsStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "income_details_end_cc")
+        var incomeDetailsEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "business_docs_submit_start_cc")
+        var businessDocsSubmitStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "business_docs_submit_end_cc")
+        var businessDocsSubmitEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "kyc_docs_start_cc")
+        var kycDocsStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "kyc_docs_end_cc")
+        var kycDocsEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "bank_details_start_cc")
+        var bankDetailsStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "bank_details_end_cc")
+        var bankDetailsEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "nach_end_cc")
+        var nachEndCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "aadhar_ekyc_start_cc")
+        var aadharEkycStartCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "application_submitted_cc")
+        var applicationSubmittedCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_success_cc")
+        var leadSuccessCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc")
+        var leadRejectCC: List<ConsentDetail>? = null
     }
 
     class ConsentDetail {

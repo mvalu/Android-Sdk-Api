@@ -8,5 +8,5 @@ class ApplicationJourneyContentRequest {
 
     @field:Json(name = "placeholder")
     var placeholder: String =
-        "bureau_cc_consent,location_cc_consent,job_detail_cc_consent,payment_cc_consent,account_info_cc_consent,document_submission_cc_consent,reject_message_cc"
+        "pincode_section_end_cc,personal_details_start_cc,personal_details_end_cc,residential_details_start_cc,income_details_start_cc,income_details_end_cc,business_docs_submit_start_cc,business_docs_submit_end_cc,kyc_docs_start_cc,kyc_docs_end_cc,bank_details_start_cc,bank_details_end_cc,nach_end_cc,aadhar_ekyc_start_cc,application_submitted_cc,lead_success_cc,lead_reject_cc"
 }
