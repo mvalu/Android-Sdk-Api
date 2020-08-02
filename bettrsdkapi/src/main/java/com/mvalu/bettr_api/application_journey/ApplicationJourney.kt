@@ -35,6 +35,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private var updateLeadCallBack: ApiResponseCallback<LeadDetail>? = null
+    private var getLeadCallBack: ApiResponseCallback<LeadDetail>? = null
     private var validatePANNumberCallBack: ApiResponseCallback<ValidatePANNumberResult>? = null
     private var validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>? = null
     private var bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>? = null
@@ -62,6 +63,20 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var applicationJourneyContentCallBack: ApiResponseCallback<ApplicationJourneyContentResult>? =
         null
+
+    fun getLead(
+        leadId: String,
+        getLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.getLeadCallBack = getLeadCallBack
+        callApi(
+            serviceApi.getLead(BettrApiSdk.getOrganizationId(), leadId),
+            ApiTag.GET_LEAD_API
+        )
+    }
 
     fun updateLead(
         leadId: String,
@@ -476,6 +491,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val updateLeadApiResponse = response as LeadDetailApiResponse
                 updateLeadCallBack?.onSuccess(updateLeadApiResponse.results!!)
             }
+            ApiTag.GET_LEAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Lead fetched successfully")
+                val getLeadApiResponse = response as LeadDetailApiResponse
+                getLeadCallBack?.onSuccess(getLeadApiResponse.results!!)
+            }
             ApiTag.VALIDATE_PAN_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "validate pan called successfully")
                 val validatePANApiResponse = response as ValidatePANNumberApiResponse
@@ -553,7 +573,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "application journey content fetched successfully")
-                val applicationJourneyContentResponse = response as ApplicationJourneyContentApiResponse
+                val applicationJourneyContentResponse =
+                    response as ApplicationJourneyContentApiResponse
                 applicationJourneyContentCallBack?.onSuccess(applicationJourneyContentResponse.results!!)
             }
         }
@@ -564,6 +585,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(errorMessage)
+            }
+            ApiTag.GET_LEAD_API -> {
+                getLeadCallBack?.onError(errorMessage)
             }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(errorMessage)
@@ -622,6 +646,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.GET_LEAD_API -> {
+                getLeadCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
@@ -679,6 +706,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.GET_LEAD_API -> {
+                getLeadCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
@@ -735,6 +765,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.GET_LEAD_API -> {
+                getLeadCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.VALIDATE_PAN_API -> {
                 validatePANNumberCallBack?.onError(ErrorMessage.AUTH_ERROR.value)

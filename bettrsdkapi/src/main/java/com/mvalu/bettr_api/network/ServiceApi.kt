@@ -76,6 +76,12 @@ interface ServiceApi {
         @Body lead: LeadDetail?
     ): Observable<Response<LeadDetailApiResponse>>
 
+    @PUT("v1/{organizationId}/leads/{leadId}")
+    fun getLead(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String
+    ): Observable<Response<LeadDetailApiResponse>>
+
     @POST("v1/{organizationId}/users/panValidate")
     fun validatePANNumber(
         @Path("organizationId") organizationId: String,
