@@ -138,7 +138,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun checkBureauStatus(
-        userId: String,
         leadId: String,
         bureauStatusCallBack: ApiResponseCallback<BureauStatusResult>
     ) {
@@ -147,7 +146,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.bureauStatusCallBack = bureauStatusCallBack
         val bureauStatusRequest = BureauStatusRequest().apply {
-            this.userId = userId
+            this.userId = BettrApiSdk.getUserId()
             this.leadId = leadId
         }
         callApi(
@@ -157,7 +156,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun getBureauQuestion(
-        userId: String,
         leadId: String,
         bureauApplicationId: String,
         bureauQuestionCallBack: ApiResponseCallback<BureauQuestionResult>
@@ -167,7 +165,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.bureauQuestionCallBack = bureauQuestionCallBack
         val bureauQuestionRequest = BureauQuestionRequest().apply {
-            this.userId = userId
+            this.userId = BettrApiSdk.getUserId()
             this.applicationId = bureauApplicationId
             this.leadId = leadId
         }
@@ -178,7 +176,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun bureauVerifyAnswer(
-        userId: String,
         bureauApplicationId: String,
         bureauChallengeConfigGUID: String,
         bureauAnswers: List<BureauAnswerRequest.Answer>,
@@ -189,7 +186,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.bureauAnswerCallBack = bureauAnswerCallBack
         val bureauAnswerRequest = BureauAnswerRequest().apply {
-            this.userId = userId
+            this.userId = BettrApiSdk.getUserId()
             this.applicationId = bureauApplicationId
             this.answer = bureauAnswers
             this.challengeConfigGUID = bureauChallengeConfigGUID
@@ -429,7 +426,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         profilePic: String?,
         aadharFront: String?,
         aadharBack: String?,
-        userId: String,
         applicationId: String,
         verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>
     ) {
@@ -438,7 +434,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.verifyDocumentsCallBack = verifyDocumentsCallBack
         val verifyDocumentsRequest = VerifyDocumentsRequest().apply {
-            this.userId = userId
+            this.userId = BettrApiSdk.getUserId()
             this.leadId = applicationId
             this.pan = panCard
             this.photo = profilePic
