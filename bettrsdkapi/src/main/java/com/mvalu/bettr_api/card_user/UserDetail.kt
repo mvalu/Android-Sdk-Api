@@ -290,6 +290,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "mapPinnedAddress")
     var mapPinnedAddress: String? = null
 
+    @field:Json(name = "areYouEmployedInCompany")
+    var employedInCompany: String? = null
+
     /**
      * Other method
      */
@@ -388,6 +391,7 @@ class UserDetail() : Parcelable {
         mapPinnedAddress = parcel.readString()
         mapPinnedLatitude = parcel.readValue(Double::class.java.classLoader) as? Double
         mapPinnedLongitude = parcel.readValue(Double::class.java.classLoader) as? Double
+        employedInCompany = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -480,6 +484,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(mapPinnedAddress)
         parcel.writeValue(mapPinnedLatitude)
         parcel.writeValue(mapPinnedLongitude)
+        parcel.writeString(employedInCompany)
     }
 
     override fun describeContents(): Int {
