@@ -17,6 +17,7 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeResult
 import com.mvalu.bettr_api.base.ApiSdkBase
+import com.mvalu.bettr_api.internal.CryptLib
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
@@ -88,6 +89,13 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.updateLeadCallBack = updateLeadCallBack
         leadDetail.productType = PRODUCT_TYPE
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+            leadDetail.userDetail?.panNumber =
+                CryptLib().encryptPlainTextWithRandomIV(
+                    leadDetail.userDetail?.panNumber,
+                    BettrApiSdk.getSecretKey()
+                )
+        }
         callApi(
             serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
             ApiTag.UPDATE_LEAD_API
@@ -489,11 +497,25 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.UPDATE_LEAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead updated successfully")
                 val updateLeadApiResponse = response as LeadDetailApiResponse
+                if (!updateLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
+                    updateLeadApiResponse.results?.userDetail?.panNumber =
+                        CryptLib().decryptCipherTextWithRandomIV(
+                            updateLeadApiResponse.results?.userDetail?.panNumber,
+                            BettrApiSdk.getSecretKey()
+                        )
+                }
                 updateLeadCallBack?.onSuccess(updateLeadApiResponse.results!!)
             }
             ApiTag.GET_LEAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead fetched successfully")
                 val getLeadApiResponse = response as LeadDetailApiResponse
+                if (!getLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
+                    getLeadApiResponse.results?.userDetail?.panNumber =
+                        CryptLib().decryptCipherTextWithRandomIV(
+                            getLeadApiResponse.results?.userDetail?.panNumber,
+                            BettrApiSdk.getSecretKey()
+                        )
+                }
                 getLeadCallBack?.onSuccess(getLeadApiResponse.results!!)
             }
             ApiTag.VALIDATE_PAN_API -> {
