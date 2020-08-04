@@ -81,8 +81,8 @@ class LeadDetail() : Parcelable {
     @field:Json(name = "personalDetailSubmission")
     var personalDetailSubmission: Boolean? = false
 
-    @field:Json(name = "residentialAddressCompleted")
-    var residentialAddressCompleted: Boolean? = false
+    @field:Json(name = "residentialAddressSubmission")
+    var residentialAddressSubmission: Boolean? = false
 
     @field:Json(name = "pincodeCheckSubmission")
     var pincodeCheckSubmission: Boolean? = false
@@ -140,7 +140,7 @@ class LeadDetail() : Parcelable {
 
         confirmLocationSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         personalDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        residentialAddressCompleted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        residentialAddressSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         pincodeCheckSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         incomeDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         kycDocumentSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -180,7 +180,7 @@ class LeadDetail() : Parcelable {
 
         parcel.writeValue(confirmLocationSubmission)
         parcel.writeValue(personalDetailSubmission)
-        parcel.writeValue(residentialAddressCompleted)
+        parcel.writeValue(residentialAddressSubmission)
         parcel.writeValue(pincodeCheckSubmission)
         parcel.writeValue(incomeDetailSubmission)
         parcel.writeValue(kycDocumentSubmission)
