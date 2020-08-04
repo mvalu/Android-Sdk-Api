@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.application_journey
 
 import android.net.Uri
+import android.util.Base64
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.PRODUCT_TYPE
 import com.mvalu.bettr_api.application_journey.bureau.*
@@ -90,11 +91,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         this.updateLeadCallBack = updateLeadCallBack
         leadDetail.productType = PRODUCT_TYPE
         if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
-            leadDetail.userDetail?.panNumber =
+            leadDetail.userDetail?.panNumber = Base64.encodeToString(
                 CryptLib().encryptPlainTextWithRandomIV(
                     leadDetail.userDetail?.panNumber,
                     BettrApiSdk.getSecretKey()
-                )
+                ).toByteArray(), Base64.NO_WRAP
+            )
         }
         callApi(
             serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
