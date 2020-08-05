@@ -1,7 +1,6 @@
 package com.mvalu.bettr_api.application_journey
 
 import android.net.Uri
-import android.util.Base64
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.PRODUCT_TYPE
 import com.mvalu.bettr_api.application_journey.bureau.*
@@ -91,12 +90,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         this.updateLeadCallBack = updateLeadCallBack
         leadDetail.productType = PRODUCT_TYPE
         if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
-            leadDetail.userDetail?.panNumber = Base64.encodeToString(
-                CryptLib().encryptPlainTextWithRandomIV(
-                    leadDetail.userDetail?.panNumber,
-                    BettrApiSdk.getSecretKey()
-                ).toByteArray(), Base64.NO_WRAP
-            )
+            leadDetail.userDetail?.panNumber =
+                getEncryptedPan(leadDetail.userDetail?.panNumber!!)
         }
         callApi(
             serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
@@ -490,6 +485,20 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    private fun getEncryptedPan(panNumber: String): String {
+        return CryptLib().encryptPlainTextWithRandomIV(
+            panNumber,
+            CryptLib.CRYPT_KEY
+        )
+    }
+
+    private fun getDecryptedPan(encryptedPanNumber: String): String {
+        return CryptLib().decryptCipherTextWithRandomIV(
+            encryptedPanNumber,
+            CryptLib.CRYPT_KEY
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
@@ -497,10 +506,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val updateLeadApiResponse = response as LeadDetailApiResponse
                 if (!updateLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
                     updateLeadApiResponse.results?.userDetail?.panNumber =
-                        CryptLib().decryptCipherTextWithRandomIV(
-                            updateLeadApiResponse.results?.userDetail?.panNumber,
-                            BettrApiSdk.getSecretKey()
-                        )
+                        getDecryptedPan(updateLeadApiResponse.results?.userDetail?.panNumber!!)
                 }
                 updateLeadCallBack?.onSuccess(updateLeadApiResponse.results!!)
             }
@@ -509,10 +515,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val getLeadApiResponse = response as LeadDetailApiResponse
                 if (!getLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
                     getLeadApiResponse.results?.userDetail?.panNumber =
-                        CryptLib().decryptCipherTextWithRandomIV(
-                            getLeadApiResponse.results?.userDetail?.panNumber,
-                            BettrApiSdk.getSecretKey()
-                        )
+                        getDecryptedPan(getLeadApiResponse.results?.userDetail?.panNumber!!)
                 }
                 getLeadCallBack?.onSuccess(getLeadApiResponse.results!!)
             }

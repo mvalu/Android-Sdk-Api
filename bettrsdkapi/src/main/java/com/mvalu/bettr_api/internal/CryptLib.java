@@ -18,6 +18,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public final class CryptLib {
 
+    public static String CRYPT_KEY = "ZTZgNqJgOW4GOPcyBErGwtcAfBVb7EPh";
+
     /**
      * Encryption mode enumeration
      */
