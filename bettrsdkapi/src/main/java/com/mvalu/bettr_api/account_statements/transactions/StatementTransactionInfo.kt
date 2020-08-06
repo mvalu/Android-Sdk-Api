@@ -8,23 +8,17 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "id")
     var id: String? = null
 
-    @field:Json(name = "type")
-    var type: String? = null
-
-    @field:Json(name = "LmsCCTransactionId")
-    var lmsCCTransactionId: String? = null
-
-    @field:Json(name = "LmsCCTransactionEmiId")
-    var lmsCCTransactionEmiId: String? = null
+    @field:Json(name = "transactionAmount")
+    var transactionAmount: Double? = null
 
     @field:Json(name = "transactionType")
     var transactionType: String? = null
 
-    @field:Json(name = "amount")
-    var amount: Float? = null
-
     @field:Json(name = "merchantName")
     var merchantName: String? = null
+
+    @field:Json(name = "merchantCategory")
+    var merchantCategory: String? = null
 
     @field:Json(name = "customerUserId")
     var customerUserId: String? = null
@@ -38,9 +32,6 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "LmsCCCardId")
     var lmsCCCardId: String? = null
 
-    @field:Json(name = "LmsCCStatementId")
-    var lmsCCStatementId: String? = null
-
     @field:Json(name = "createdAt")
     var createdAt: String? = null
 
@@ -50,40 +41,44 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "deletedAt")
     var deletedAt: String? = null
 
+    @field:Json(name = "transactionDate")
+    var transactionDate: String? = null
+
+    @field:Json(name = "status")
+    var status: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
-        type = parcel.readString()
-        lmsCCTransactionId = parcel.readString()
-        lmsCCTransactionEmiId = parcel.readString()
+        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         transactionType = parcel.readString()
-        amount = parcel.readValue(Float::class.java.classLoader) as? Float
         merchantName = parcel.readString()
+        merchantCategory = parcel.readString()
         customerUserId = parcel.readString()
         organizationId = parcel.readString()
         lmsCCAccountId = parcel.readString()
         lmsCCCardId = parcel.readString()
-        lmsCCStatementId = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         deletedAt = parcel.readString()
+        transactionDate = parcel.readString()
+        status = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(type)
-        parcel.writeString(lmsCCTransactionId)
-        parcel.writeString(lmsCCTransactionEmiId)
+        parcel.writeValue(transactionAmount)
         parcel.writeString(transactionType)
-        parcel.writeValue(amount)
         parcel.writeString(merchantName)
+        parcel.writeString(merchantCategory)
         parcel.writeString(customerUserId)
         parcel.writeString(organizationId)
         parcel.writeString(lmsCCAccountId)
         parcel.writeString(lmsCCCardId)
-        parcel.writeString(lmsCCStatementId)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeString(deletedAt)
+        parcel.writeString(transactionDate)
+        parcel.writeString(status)
     }
 
     override fun describeContents(): Int {
@@ -92,9 +87,7 @@ class StatementTransactionInfo() : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<StatementTransactionInfo> {
         override fun createFromParcel(parcel: Parcel): StatementTransactionInfo {
-            return StatementTransactionInfo(
-                parcel
-            )
+            return StatementTransactionInfo(parcel)
         }
 
         override fun newArray(size: Int): Array<StatementTransactionInfo?> {

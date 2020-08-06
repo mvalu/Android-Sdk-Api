@@ -17,20 +17,11 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "endDate")
     var endDate: String? = null
 
-    @field:Json(name = "spendCount")
-    var spendCount: Int? = null
-
-    @field:Json(name = "currentBalance")
-    var currentBalance: Float? = null
-
     @field:Json(name = "startingBalance")
-    var startingBalance: Float? = null
+    var startingBalance: Double? = null
 
     @field:Json(name = "endingBalance")
-    var endingBalance: Float? = null
-
-    @field:Json(name = "lateFees")
-    var lateFees: Float? = null
+    var endingBalance: Double? = null
 
     @field:Json(name = "customerUserId")
     var customerUserId: String? = null
@@ -50,22 +41,27 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "deletedAt")
     var deletedAt: String? = null
 
+    @field:Json(name = "transactionCount")
+    var transactionCount: Int = 0
+
+    @field:Json(name = "transactionAmount")
+    var transactionAmount: Double? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         paymentStatus = parcel.readString()
         startDate = parcel.readString()
         endDate = parcel.readString()
-        spendCount = parcel.readValue(Int::class.java.classLoader) as? Int
-        currentBalance = parcel.readValue(Float::class.java.classLoader) as? Float
-        startingBalance = parcel.readValue(Float::class.java.classLoader) as? Float
-        endingBalance = parcel.readValue(Float::class.java.classLoader) as? Float
-        lateFees = parcel.readValue(Float::class.java.classLoader) as? Float
+        startingBalance = parcel.readValue(Double::class.java.classLoader) as? Double
+        endingBalance = parcel.readValue(Double::class.java.classLoader) as? Double
         customerUserId = parcel.readString()
         organizationId = parcel.readString()
         lmsCCAccountId = parcel.readString()
         createdAt = parcel.readString()
         updatedAt = parcel.readString()
         deletedAt = parcel.readString()
+        transactionCount = parcel.readInt()
+        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -73,17 +69,16 @@ class StatementInfo() : Parcelable {
         parcel.writeString(paymentStatus)
         parcel.writeString(startDate)
         parcel.writeString(endDate)
-        parcel.writeValue(spendCount)
-        parcel.writeValue(currentBalance)
         parcel.writeValue(startingBalance)
         parcel.writeValue(endingBalance)
-        parcel.writeValue(lateFees)
         parcel.writeString(customerUserId)
         parcel.writeString(organizationId)
         parcel.writeString(lmsCCAccountId)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
         parcel.writeString(deletedAt)
+        parcel.writeInt(transactionCount)
+        parcel.writeValue(transactionAmount)
     }
 
     override fun describeContents(): Int {
