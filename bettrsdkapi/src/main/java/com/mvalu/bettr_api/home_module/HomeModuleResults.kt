@@ -16,4 +16,7 @@ class HomeModuleResults {
 
     @field:Json(name = "accountInfo")
     var accountInfo: AccountInfo? = null
+
+    @field:Json(name = "dueInfo")
+    var dueInfo: DueInfo? = null
 }
