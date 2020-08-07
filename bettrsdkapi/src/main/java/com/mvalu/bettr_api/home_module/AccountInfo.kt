@@ -47,7 +47,7 @@ class AccountInfo() : Parcelable {
     @field:Json(name = "deletedAt")
     var deletedAt: String? = null
 
-    @field:Json(name = "cardInfo")
+    @field:Json(name = "cardList")
     var cardInfo: CardInfo? = null
 
     constructor(parcel: Parcel) : this() {
