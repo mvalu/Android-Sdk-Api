@@ -96,7 +96,7 @@ object CardTransactions : ApiSdkBase() {
                 statementTransactionsCallback?.onError(errorMessage)
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                statementTransactionsCallback?.onError(errorMessage)
+                paymentsListCallback?.onError(errorMessage)
             }
         }
     }
@@ -111,7 +111,7 @@ object CardTransactions : ApiSdkBase() {
                 statementTransactionsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
     }
@@ -126,7 +126,7 @@ object CardTransactions : ApiSdkBase() {
                 statementTransactionsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
         }
     }
@@ -138,7 +138,7 @@ object CardTransactions : ApiSdkBase() {
                 statementTransactionsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
