@@ -20,6 +20,7 @@ import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
+import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +37,16 @@ interface ServiceApi {
 
     @GET("v1/{organizationId}/rm/cc_home_module")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
+
+    @GET("v1/{organizationId}/cc/account/{accountId}/payment")
+    fun getCardPayments(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Query("source") source: String,
+        @Query("startMonth") startMonth: String,
+        @Query("endMonth") endMonth: String,
+        @Query("status") status: String
+    ): Observable<Response<CardPaymentsApiResponse>>
 
     @GET("v1/{organizationId}/cc/account/{accountId}/statementTransaction")
     fun getStatementTransactions(
