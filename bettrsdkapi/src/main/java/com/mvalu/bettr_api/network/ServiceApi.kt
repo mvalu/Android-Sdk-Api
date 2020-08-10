@@ -38,7 +38,7 @@ interface ServiceApi {
     @GET("v1/{organizationId}/rm/cc_home_module")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
-    @GET("v1/{organizationId}/cc/account/{accountId}/payment")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment")
     fun getCardPayments(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
