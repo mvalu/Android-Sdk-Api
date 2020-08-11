@@ -35,7 +35,7 @@ interface ServiceApi {
         @Body generateTokenRequest: GenerateTokenRequest
     ): Observable<Response<GenerateTokenResponse>>
 
-    @GET("v1/{organizationId}/rm/cc_home_module")
+    @GET("v1/{organizationId}/lms/rm/cc_home_module")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment")
@@ -48,7 +48,7 @@ interface ServiceApi {
         @Query("status") status: String
     ): Observable<Response<CardPaymentsApiResponse>>
 
-    @GET("v1/{organizationId}/cc/account/{accountId}/statementTransaction")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statementTransaction")
     fun getStatementTransactions(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
@@ -61,20 +61,20 @@ interface ServiceApi {
         @Query("category") category: String?
     ): Observable<Response<CardTransactionsApiResponse>>
 
-    @GET("v1/{organizationId}/cc/account/{accountId}/statement")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement")
     fun getAccountStatements(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<AccountStatementsApiResponse>>
 
-    @GET("v1/{organizationId}/cc/account/{accountId}/statement/{statementId}")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}")
     fun getAccountStatementTransactions(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
         @Path("statementId") statementId: String
     ): Observable<Response<AccountStatementTransactionsApiResponse>>
 
-    @GET("v1/{organizationId}/cc/account/{accountId}/statementTransaction/{statementTransactionId}")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statementTransaction/{statementTransactionId}")
     fun getAccountStatementTransactionInfo(
         @Path("organizationId") organizationId: String,
         @Path("statementTransactionId") statementTransactionId: String
