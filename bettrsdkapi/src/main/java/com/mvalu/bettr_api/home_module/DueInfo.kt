@@ -11,19 +11,29 @@ class DueInfo() : Parcelable {
     @field:Json(name = "status")
     var status: String? = null
 
-    @field:Json(name = "amount")
-    var amount: Double? = null
+    @field:Json(name = "totalDue")
+    var totalDue: Double? = null
+
+    @field:Json(name = "totalSpend")
+    var totalSpend: Double? = null
+
+    @field:Json(name = "paymentButton")
+    var showPaymentButton: Boolean? = false
 
     constructor(parcel: Parcel) : this() {
         descriptionText = parcel.readString()
         status = parcel.readString()
-        amount = parcel.readValue(Double::class.java.classLoader) as? Double
+        totalDue = parcel.readValue(Double::class.java.classLoader) as? Double
+        totalSpend = parcel.readValue(Double::class.java.classLoader) as? Double
+        showPaymentButton = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(descriptionText)
         parcel.writeString(status)
-        parcel.writeValue(amount)
+        parcel.writeValue(totalDue)
+        parcel.writeValue(totalSpend)
+        parcel.writeValue(showPaymentButton)
     }
 
     override fun describeContents(): Int {
