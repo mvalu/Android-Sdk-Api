@@ -44,8 +44,14 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "transactionCount")
     var transactionCount: Int? = 0
 
+    @field:Json(name = "statementTransactionCount")
+    var statementTransactionCount: Int? = 0
+
     @field:Json(name = "transactionAmount")
     var transactionAmount: Double? = null
+
+    @field:Json(name = "amount")
+    var amount: Double? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -61,7 +67,9 @@ class StatementInfo() : Parcelable {
         updatedAt = parcel.readString()
         deletedAt = parcel.readString()
         transactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
+        statementTransactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
         transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
+        amount = parcel.readValue(Double::class.java.classLoader) as? Double
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -78,7 +86,9 @@ class StatementInfo() : Parcelable {
         parcel.writeString(updatedAt)
         parcel.writeString(deletedAt)
         parcel.writeValue(transactionCount)
+        parcel.writeValue(statementTransactionCount)
         parcel.writeValue(transactionAmount)
+        parcel.writeValue(amount)
     }
 
     override fun describeContents(): Int {

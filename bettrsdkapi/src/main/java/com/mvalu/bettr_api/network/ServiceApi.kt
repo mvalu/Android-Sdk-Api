@@ -35,7 +35,7 @@ interface ServiceApi {
         @Body generateTokenRequest: GenerateTokenRequest
     ): Observable<Response<GenerateTokenResponse>>
 
-    @GET("v1/{organizationId}/lms/rm/cc_home_module")
+    @GET("v1/{organizationId}/rm/cc_home_module")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment")

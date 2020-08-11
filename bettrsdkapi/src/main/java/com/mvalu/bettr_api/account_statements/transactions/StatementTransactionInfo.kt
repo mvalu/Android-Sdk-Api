@@ -20,6 +20,9 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "merchantCategory")
     var merchantCategory: String? = null
 
+    @field:Json(name = "merchantSubCategory")
+    var merchantSubCategory: String? = null
+
     @field:Json(name = "customerUserId")
     var customerUserId: String? = null
 
@@ -53,6 +56,7 @@ class StatementTransactionInfo() : Parcelable {
         transactionType = parcel.readString()
         merchantName = parcel.readString()
         merchantCategory = parcel.readString()
+        merchantSubCategory = parcel.readString()
         customerUserId = parcel.readString()
         organizationId = parcel.readString()
         lmsCCAccountId = parcel.readString()
@@ -70,6 +74,7 @@ class StatementTransactionInfo() : Parcelable {
         parcel.writeString(transactionType)
         parcel.writeString(merchantName)
         parcel.writeString(merchantCategory)
+        parcel.writeString(merchantSubCategory)
         parcel.writeString(customerUserId)
         parcel.writeString(organizationId)
         parcel.writeString(lmsCCAccountId)
