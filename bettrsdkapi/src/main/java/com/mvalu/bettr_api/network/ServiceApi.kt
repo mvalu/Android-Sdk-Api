@@ -45,7 +45,8 @@ interface ServiceApi {
         @Query("source") source: String,
         @Query("startMonth") startMonth: String,
         @Query("endMonth") endMonth: String,
-        @Query("status") status: String
+        @Query("status") status: String,
+        @Query("offset") offset: Int
     ): Observable<Response<CardPaymentsApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/statementTransaction")
