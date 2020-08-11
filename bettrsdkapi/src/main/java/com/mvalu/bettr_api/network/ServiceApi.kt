@@ -52,13 +52,13 @@ interface ServiceApi {
     fun getStatementTransactions(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
-        @Query("type") type: String,
-        @Query("startMonth") startMonth: String,
-        @Query("endMonth") endMonth: String,
-        @Query("status") status: String,
-        @Query("amountStart") amountStart: Int,
-        @Query("amountEnd") amountEnd: Int,
-        @Query("category") category: String
+        @Query("type") type: String?,
+        @Query("startMonth") startMonth: String?,
+        @Query("endMonth") endMonth: String?,
+        @Query("status") status: String?,
+        @Query("amountStart") amountStart: Int?,
+        @Query("amountEnd") amountEnd: Int?,
+        @Query("category") category: String?
     ): Observable<Response<CardTransactionsApiResponse>>
 
     @GET("v1/{organizationId}/cc/account/{accountId}/statement")

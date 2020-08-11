@@ -21,13 +21,13 @@ object CardTransactions : ApiSdkBase() {
     fun getStatementTransactions(
         statementTransactionsCallback: ApiResponseCallback<CardTransactionsResults>,
         accountId: String,
-        type: String,
-        startMonth: String,
-        endMonth: String,
-        status: String,
-        amountStart: Int,
-        amountEnd: Int,
-        category: String
+        type: String?,
+        startMonth: String?,
+        endMonth: String?,
+        status: String?,
+        amountStart: Int?,
+        amountEnd: Int?,
+        category: String?
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
