@@ -15,6 +15,8 @@ object CardTransactions : ApiSdkBase() {
     private var paymentsListCallback: ApiResponseCallback<CardPaymentsResult>? = null
     private var accountTransactionsListCallback: ApiResponseCallback<AccountTransactionsResults>? =
         null
+    private var transactionAnalysisCallback: ApiResponseCallback<TransactionAnalysisResult>? =
+        null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -114,6 +116,26 @@ object CardTransactions : ApiSdkBase() {
         )
     }
 
+    fun getTransactionsAnalysis(
+        transactionAnalysisCallback: ApiResponseCallback<TransactionAnalysisResult>,
+        accountId: String,
+        startDate: String,
+        endDate: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.transactionAnalysisCallback = transactionAnalysisCallback
+        callApi(
+            serviceApi.getTransactionsAnalysis(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                startDate,
+                endDate
+            ), ApiTag.TRANSACTIONS_ANALYSIS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
@@ -131,6 +153,11 @@ object CardTransactions : ApiSdkBase() {
                 val accountTransactionsApiResponse = response as AccountTransactionsApiResponse
                 accountTransactionsListCallback?.onSuccess(accountTransactionsApiResponse.results!!)
             }
+            ApiTag.TRANSACTIONS_ANALYSIS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Transactions analysis fetched")
+                val transactionsAnalysisApiResponse = response as TransactionAnalysisApiResponse
+                transactionAnalysisCallback?.onSuccess(transactionsAnalysisApiResponse.results!!)
+            }
         }
     }
 
@@ -145,6 +172,9 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
                 accountTransactionsListCallback?.onError(errorMessage)
+            }
+            ApiTag.TRANSACTIONS_ANALYSIS_API -> {
+                transactionAnalysisCallback?.onError(errorMessage)
             }
         }
     }
@@ -164,6 +194,9 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
                 accountTransactionsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.TRANSACTIONS_ANALYSIS_API -> {
+                transactionAnalysisCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -182,6 +215,9 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
                 accountTransactionsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.TRANSACTIONS_ANALYSIS_API -> {
+                transactionAnalysisCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -196,6 +232,9 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
                 accountTransactionsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.TRANSACTIONS_ANALYSIS_API -> {
+                transactionAnalysisCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

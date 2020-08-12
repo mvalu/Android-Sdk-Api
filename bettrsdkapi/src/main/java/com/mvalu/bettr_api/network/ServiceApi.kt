@@ -22,6 +22,7 @@ import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
+import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -58,6 +59,14 @@ interface ServiceApi {
         @Query("search") search: String?,
         @Query("offset") offset: Int
     ): Observable<Response<AccountTransactionsApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/spendAnalysis")
+    fun getTransactionsAnalysis(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Observable<Response<TransactionAnalysisApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment")
     fun getCardPayments(
