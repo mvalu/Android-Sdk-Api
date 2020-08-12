@@ -13,6 +13,8 @@ object CardTransactions : ApiSdkBase() {
     private const val TAG = "CardTransactions"
     private var statementTransactionsCallback: ApiResponseCallback<CardTransactionsResults>? = null
     private var paymentsListCallback: ApiResponseCallback<CardPaymentsResult>? = null
+    private var accountTransactionsListCallback: ApiResponseCallback<AccountTransactionsResults>? =
+        null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -76,6 +78,42 @@ object CardTransactions : ApiSdkBase() {
         )
     }
 
+    fun getAccountTransactions(
+        accountTransactionsListCallback: ApiResponseCallback<AccountTransactionsResults>,
+        accountId: String,
+        startMonth: String?,
+        endMonth: String?,
+        amountStart: String?,
+        amountEnd: String?,
+        merchantCategory: String?,
+        startDate: String?,
+        endDate: String?,
+        status: String?,
+        search: String?,
+        offset: Int
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.accountTransactionsListCallback = accountTransactionsListCallback
+        callApi(
+            serviceApi.getAccountTransactions(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                startMonth,
+                endMonth,
+                amountStart,
+                amountEnd,
+                merchantCategory,
+                startDate,
+                endDate,
+                status,
+                search,
+                offset
+            ), ApiTag.ACCOUNT_TRANSACTIONS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
@@ -88,6 +126,11 @@ object CardTransactions : ApiSdkBase() {
                 val cardPaymentsApiResponse = response as CardPaymentsApiResponse
                 paymentsListCallback?.onSuccess(cardPaymentsApiResponse.results!!)
             }
+            ApiTag.ACCOUNT_TRANSACTIONS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Account transactions fetched")
+                val accountTransactionsApiResponse = response as AccountTransactionsApiResponse
+                accountTransactionsListCallback?.onSuccess(accountTransactionsApiResponse.results!!)
+            }
         }
     }
 
@@ -99,6 +142,9 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.CARD_PAYMENTS_API -> {
                 paymentsListCallback?.onError(errorMessage)
+            }
+            ApiTag.ACCOUNT_TRANSACTIONS_API -> {
+                accountTransactionsListCallback?.onError(errorMessage)
             }
         }
     }
@@ -115,6 +161,9 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.CARD_PAYMENTS_API -> {
                 paymentsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.ACCOUNT_TRANSACTIONS_API -> {
+                accountTransactionsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -130,6 +179,9 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.CARD_PAYMENTS_API -> {
                 paymentsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.ACCOUNT_TRANSACTIONS_API -> {
+                accountTransactionsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -141,6 +193,9 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.CARD_PAYMENTS_API -> {
                 paymentsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.ACCOUNT_TRANSACTIONS_API -> {
+                accountTransactionsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

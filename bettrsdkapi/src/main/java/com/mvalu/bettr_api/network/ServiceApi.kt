@@ -20,6 +20,7 @@ import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
+import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
 import io.reactivex.Observable
@@ -42,14 +43,30 @@ interface ServiceApi {
     @GET("v1/{organizationId}/rm/cc_statement_module")
     fun getCardHomeModuleStatement(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleStatementApiResponse>>
 
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/transaction")
+    fun getAccountTransactions(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Query("startMonth") startMonth: String?,
+        @Query("endMonth") endMonth: String?,
+        @Query("amountStart") amountStart: String?,
+        @Query("amountEnd") amountEnd: String?,
+        @Query("merchantCategory") merchantCategory: String?,
+        @Query("startDate") startDate: String?,
+        @Query("endDate") endDate: String?,
+        @Query("status") status: String?,
+        @Query("search") search: String?,
+        @Query("offset") offset: Int
+    ): Observable<Response<AccountTransactionsApiResponse>>
+
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment")
     fun getCardPayments(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
-        @Query("source") source: String,
-        @Query("startMonth") startMonth: String,
-        @Query("endMonth") endMonth: String,
-        @Query("status") status: String,
+        @Query("source") source: String?,
+        @Query("startMonth") startMonth: String?,
+        @Query("endMonth") endMonth: String?,
+        @Query("status") status: String?,
         @Query("offset") offset: Int
     ): Observable<Response<CardPaymentsApiResponse>>
 
