@@ -19,5 +19,14 @@ class TransactionAnalysisResult {
     class MerchantCategoryDetail {
         @field:Json(name = "merchantCategory")
         var merchantCategory: String? = null
+
+        @field:Json(name = "sumCategory")
+        var sumCategory: Double? = null
+
+        @field:Json(name = "countCategory")
+        var countCategory: Int? = null
+
+        @field:Json(name = "maxAmount")
+        var maxAmount: Double? = null
     }
 }
