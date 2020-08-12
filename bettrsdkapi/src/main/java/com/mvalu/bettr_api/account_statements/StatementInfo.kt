@@ -47,8 +47,8 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "statementTransactionCount")
     var statementTransactionCount: Int? = 0
 
-    @field:Json(name = "transactionAmount")
-    var transactionAmount: Double? = null
+//    @field:Json(name = "transactionAmount")
+//    var transactionAmount: Double? = null
 
     @field:Json(name = "amount")
     var amount: Double? = null
@@ -68,7 +68,7 @@ class StatementInfo() : Parcelable {
         deletedAt = parcel.readString()
         transactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
         statementTransactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
-        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
+//        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         amount = parcel.readValue(Double::class.java.classLoader) as? Double
     }
 
@@ -87,7 +87,7 @@ class StatementInfo() : Parcelable {
         parcel.writeString(deletedAt)
         parcel.writeValue(transactionCount)
         parcel.writeValue(statementTransactionCount)
-        parcel.writeValue(transactionAmount)
+//        parcel.writeValue(transactionAmount)
         parcel.writeValue(amount)
     }
 
