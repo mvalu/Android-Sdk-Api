@@ -5,5 +5,8 @@ enum class CardStatus {
     BLOCKED,
     LOCKED,
     EXPIRED,
-    REJECTED
+    REJECTED,
+    PENDING_KYC,
+    TERMINATED,
+    PENDING_TERMINATION
 }
