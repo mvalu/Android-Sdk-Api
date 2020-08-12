@@ -13,6 +13,9 @@ class TransactionAnalysisResult {
     @field:Json(name = "highestSpendValue")
     var highestSpendValue: Double? = null
 
+    @field:Json(name = "categoryWise")
+    var categoryWise: List<MerchantCategoryDetail>? = null
+
     @field:Json(name = "accountInfo")
     var accountInfo: AccountInfo? = null
 
