@@ -13,6 +13,7 @@ object Rewards : ApiSdkBase() {
     private const val TAG = "Rewards"
     private var rewardPointsCallback: ApiResponseCallback<RewardPointsResult>? = null
     private var rewardCashbacksCallback: ApiResponseCallback<RewardCashbackResult>? = null
+    private var rewardPointsSummaryCallback: ApiResponseCallback<RewardPointsSummaryResult>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -66,6 +67,22 @@ object Rewards : ApiSdkBase() {
         )
     }
 
+    fun getRewardPointsSummary(
+        rewardPointsSummaryCallback: ApiResponseCallback<RewardPointsSummaryResult>,
+        accountId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.rewardPointsSummaryCallback = rewardPointsSummaryCallback
+        callApi(
+            serviceApi.getRewardPointsSummary(
+                BettrApiSdk.getOrganizationId(),
+                accountId
+            ), ApiTag.REWARD_POINTS_SUMMARY_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
@@ -78,6 +95,12 @@ object Rewards : ApiSdkBase() {
                 BettrApiSdkLogger.printInfo(TAG, "reward cashbacks fetched")
                 val rewardCashbacksApiResponse = response as RewardCashbackApiResponse
                 rewardCashbacksCallback?.onSuccess(rewardCashbacksApiResponse.results!!)
+            }
+
+            ApiTag.REWARD_POINTS_SUMMARY_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "reward points summary fetched")
+                val rewardPointsSummaryApiResponse = response as RewardPointsSummaryApiResponse
+                rewardPointsSummaryCallback?.onSuccess(rewardPointsSummaryApiResponse.results!!)
             }
         }
     }
@@ -92,6 +115,10 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_CASHBACKS_API -> {
                 rewardCashbacksCallback?.onError(errorMessage)
             }
+
+            ApiTag.REWARD_POINTS_SUMMARY_API -> {
+                rewardPointsSummaryCallback?.onError(errorMessage)
+            }
         }
     }
 
@@ -103,6 +130,9 @@ object Rewards : ApiSdkBase() {
             }
             ApiTag.REWARD_CASHBACKS_API -> {
                 rewardCashbacksCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.REWARD_POINTS_SUMMARY_API -> {
+                rewardPointsSummaryCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
     }
@@ -117,6 +147,10 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_CASHBACKS_API -> {
                 rewardCashbacksCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+
+            ApiTag.REWARD_POINTS_SUMMARY_API -> {
+                rewardPointsSummaryCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -128,6 +162,9 @@ object Rewards : ApiSdkBase() {
             }
             ApiTag.REWARD_CASHBACKS_API -> {
                 rewardCashbacksCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.REWARD_POINTS_SUMMARY_API -> {
+                rewardPointsSummaryCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
