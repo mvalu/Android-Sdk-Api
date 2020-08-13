@@ -16,6 +16,7 @@ import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
@@ -236,4 +237,11 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body request: ApplicationJourneyContentRequest
     ): Observable<Response<ApplicationJourneyContentApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}?isDownload=true")
+    fun getStatementDownloadLink(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("statementId") statementId: String
+    ): Observable<Response<DocumentDownloadApiResponse>>
 }

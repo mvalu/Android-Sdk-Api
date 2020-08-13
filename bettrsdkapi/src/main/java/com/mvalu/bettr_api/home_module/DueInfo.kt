@@ -14,6 +14,9 @@ class DueInfo() : Parcelable {
     @field:Json(name = "totalDue")
     var totalDue: Double? = null
 
+    @field:Json(name = "totalFine")
+    var totalFine: Double? = null
+
     @field:Json(name = "totalSpend")
     var totalSpend: Double? = null
 
@@ -24,6 +27,7 @@ class DueInfo() : Parcelable {
         descriptionText = parcel.readString()
         status = parcel.readString()
         totalDue = parcel.readValue(Double::class.java.classLoader) as? Double
+        totalFine = parcel.readValue(Double::class.java.classLoader) as? Double
         totalSpend = parcel.readValue(Double::class.java.classLoader) as? Double
         showPaymentButton = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
@@ -32,6 +36,7 @@ class DueInfo() : Parcelable {
         parcel.writeString(descriptionText)
         parcel.writeString(status)
         parcel.writeValue(totalDue)
+        parcel.writeValue(totalFine)
         parcel.writeValue(totalSpend)
         parcel.writeValue(showPaymentButton)
     }
