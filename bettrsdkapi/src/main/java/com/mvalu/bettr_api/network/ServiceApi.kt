@@ -244,4 +244,17 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementId") statementId: String
     ): Observable<Response<DocumentDownloadApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/reward_point")
+    fun getRewardPoints(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Query("startMonth") startMonth: String?,
+        @Query("endMonth") endMonth: String?,
+        @Query("pointStart") pointStart: String?,
+        @Query("pointEnd") pointEnd: String?,
+        @Query("startDate") startDate: Int?,
+        @Query("endDate") endDate: Int?,
+        @Query("search") search: String?
+    ): Observable<Response<CardTransactionsApiResponse>>
 }

@@ -8,6 +8,7 @@ import com.mvalu.bettr_api.downloads.DocumentDownload
 import com.mvalu.bettr_api.home_module.HomeModule
 import com.mvalu.bettr_api.injection.module.NetworkModule
 import com.mvalu.bettr_api.login.TokenGeneration
+import com.mvalu.bettr_api.rewards.Rewards
 import com.mvalu.bettr_api.transactions.CardTransactions
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -26,4 +27,5 @@ interface AppComponent {
     fun inject(accountStatements: AccountStatements)
     fun inject(applicationJourney: ApplicationJourney)
     fun inject(documentDownload: DocumentDownload)
+    fun inject(rewards: Rewards)
 }
