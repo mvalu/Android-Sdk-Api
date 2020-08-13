@@ -5,11 +5,14 @@ import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
+import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
+import com.mvalu.bettr_api.rewards.cashback.RewardCashbackResult
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object Rewards : ApiSdkBase() {
-    private const val TAG = "DownloadDoc"
+    private const val TAG = "Rewards"
     private var rewardPointsCallback: ApiResponseCallback<RewardPointsResult>? = null
+    private var rewardCashbacksCallback: ApiResponseCallback<RewardCashbackResult>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -39,12 +42,42 @@ object Rewards : ApiSdkBase() {
         )
     }
 
+    fun getRewardCashbacks(
+        rewardCashbacksCallback: ApiResponseCallback<RewardCashbackResult>,
+        accountId: String,
+        startMonth: String?,
+        endMonth: String?,
+        amountStart: String?,
+        amountEnd: String?,
+        startDate: Int?,
+        endDate: Int?,
+        search: String?
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.rewardCashbacksCallback = rewardCashbacksCallback
+        callApi(
+            serviceApi.getRewardCashbacks(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                startMonth, endMonth, amountStart, amountEnd, startDate, endDate, search
+            ), ApiTag.REWARD_CASHBACKS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "reward points fetched")
                 val rewardPointsApiResponse = response as RewardPointsApiResponse
                 rewardPointsCallback?.onSuccess(rewardPointsApiResponse.results!!)
+            }
+
+            ApiTag.REWARD_CASHBACKS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "reward cashbacks fetched")
+                val rewardCashbacksApiResponse = response as RewardCashbackApiResponse
+                rewardCashbacksCallback?.onSuccess(rewardCashbacksApiResponse.results!!)
             }
         }
     }
@@ -55,6 +88,10 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_POINTS_API -> {
                 rewardPointsCallback?.onError(errorMessage)
             }
+
+            ApiTag.REWARD_CASHBACKS_API -> {
+                rewardCashbacksCallback?.onError(errorMessage)
+            }
         }
     }
 
@@ -63,6 +100,9 @@ object Rewards : ApiSdkBase() {
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
                 rewardPointsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.REWARD_CASHBACKS_API -> {
+                rewardCashbacksCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
     }
@@ -73,6 +113,10 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_POINTS_API -> {
                 rewardPointsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+
+            ApiTag.REWARD_CASHBACKS_API -> {
+                rewardCashbacksCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -81,6 +125,9 @@ object Rewards : ApiSdkBase() {
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
                 rewardPointsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.REWARD_CASHBACKS_API -> {
+                rewardCashbacksCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
