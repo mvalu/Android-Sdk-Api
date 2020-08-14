@@ -8,7 +8,7 @@ class TransactionAnalysisResult {
     var totalAmountSpend: Double? = null
 
     @field:Json(name = "totalSpend")
-    var totalSpend: Int? = null
+    var totalSpend: Double? = null
 
     @field:Json(name = "highestSpendValue")
     var highestSpendValue: Double? = null
