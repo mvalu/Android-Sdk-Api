@@ -111,6 +111,7 @@ interface ServiceApi {
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/statementTransaction/{statementTransactionId}")
     fun getAccountStatementTransactionInfo(
         @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
 

@@ -61,6 +61,7 @@ object AccountStatements : ApiSdkBase() {
 
     fun getAccountStatementTransactionInfo(
         accountStatementTransactionInfoCallback: ApiResponseCallback<StatementTransactionInfo>,
+        accountId: String,
         statementTransactionId: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
@@ -70,6 +71,7 @@ object AccountStatements : ApiSdkBase() {
         callApi(
             serviceApi.getAccountStatementTransactionInfo(
                 BettrApiSdk.getOrganizationId(),
+                accountId,
                 statementTransactionId
             ),
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API
