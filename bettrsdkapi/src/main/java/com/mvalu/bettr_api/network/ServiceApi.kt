@@ -21,6 +21,7 @@ import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
+import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
@@ -303,4 +304,10 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("rewardCashbackId") rewardCashbackId: String
     ): Observable<Response<RewardCashbackInfoApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummary")
+    fun getPaymentSummary(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<PaymentSummaryApiResponse>>
 }
