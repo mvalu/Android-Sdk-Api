@@ -1,12 +1,16 @@
 package com.mvalu.bettr_api.transactions
 
 import com.mvalu.bettr_api.BettrApiSdk
+import com.mvalu.bettr_api.account_statements.AccountStatements
+import com.mvalu.bettr_api.account_statements.transactions.StatementTransactionInfo
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsResult
+import com.mvalu.bettr_api.transactions.payments.PaymentInfo
+import com.mvalu.bettr_api.transactions.payments.PaymentInfoApiResponse
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object CardTransactions : ApiSdkBase() {
@@ -17,6 +21,8 @@ object CardTransactions : ApiSdkBase() {
         null
     private var transactionAnalysisCallback: ApiResponseCallback<TransactionAnalysisResult>? =
         null
+    private var paymentInfoCallback: ApiResponseCallback<PaymentInfo>? = null
+    private var transactionInfoCallback: ApiResponseCallback<TransactionInfo>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -136,6 +142,44 @@ object CardTransactions : ApiSdkBase() {
         )
     }
 
+    fun getPaymentInfo(
+        paymentInfoCallback: ApiResponseCallback<PaymentInfo>,
+        accountId: String,
+        paymentId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.paymentInfoCallback = paymentInfoCallback
+        callApi(
+            serviceApi.getPaymentInfo(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                paymentId
+            ),
+            ApiTag.PAYMENT_INFO_API
+        )
+    }
+
+    fun getTransactionInfo(
+        transactionInfoCallback: ApiResponseCallback<TransactionInfo>,
+        accountId: String,
+        transactionId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.transactionInfoCallback = transactionInfoCallback
+        callApi(
+            serviceApi.getTransactionInfo(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                transactionId
+            ),
+            ApiTag.TRANSACTION_INFO_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
@@ -158,6 +202,16 @@ object CardTransactions : ApiSdkBase() {
                 val transactionsAnalysisApiResponse = response as TransactionAnalysisApiResponse
                 transactionAnalysisCallback?.onSuccess(transactionsAnalysisApiResponse.results!!)
             }
+            ApiTag.PAYMENT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Payment info fetched")
+                val paymentInfoApiResponse = response as PaymentInfoApiResponse
+                paymentInfoCallback?.onSuccess(paymentInfoApiResponse.results!!)
+            }
+            ApiTag.TRANSACTION_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Transaction info fetched")
+                val transactionInfoApiResponse = response as TransactionInfoApiResponse
+                transactionInfoCallback?.onSuccess(transactionInfoApiResponse.results!!)
+            }
         }
     }
 
@@ -175,6 +229,12 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
                 transactionAnalysisCallback?.onError(errorMessage)
+            }
+            ApiTag.PAYMENT_INFO_API -> {
+                paymentInfoCallback?.onError(errorMessage)
+            }
+            ApiTag.TRANSACTION_INFO_API -> {
+                transactionInfoCallback?.onError(errorMessage)
             }
         }
     }
@@ -197,6 +257,12 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
                 transactionAnalysisCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.PAYMENT_INFO_API -> {
+                paymentInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.TRANSACTION_INFO_API -> {
+                transactionInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -218,6 +284,12 @@ object CardTransactions : ApiSdkBase() {
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
                 transactionAnalysisCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.PAYMENT_INFO_API -> {
+                paymentInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.TRANSACTION_INFO_API -> {
+                transactionInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -235,6 +307,12 @@ object CardTransactions : ApiSdkBase() {
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
                 transactionAnalysisCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.PAYMENT_INFO_API -> {
+                paymentInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.TRANSACTION_INFO_API -> {
+                transactionInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

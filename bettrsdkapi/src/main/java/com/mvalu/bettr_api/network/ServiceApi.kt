@@ -23,10 +23,13 @@ import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
+import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
+import com.mvalu.bettr_api.transactions.TransactionInfoApiResponse
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
+import com.mvalu.bettr_api.transactions.payments.PaymentInfoApiResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -114,6 +117,20 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/{paymentId}")
+    fun getPaymentInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("paymentId") paymentId: String
+    ): Observable<Response<PaymentInfoApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/transaction/{transactionId}")
+    fun getTransactionInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("transactionId") transactionId: String
+    ): Observable<Response<TransactionInfoApiResponse>>
 
     @PUT("v1/{organizationId}/leads/{leadId}")
     fun updateLead(
@@ -279,4 +296,11 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<RewardPointsSummaryApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/reward_cashback/{rewardCashbackId}")
+    fun getRewardCashbackInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("rewardCashbackId") rewardCashbackId: String
+    ): Observable<Response<RewardCashbackInfoApiResponse>>
 }
