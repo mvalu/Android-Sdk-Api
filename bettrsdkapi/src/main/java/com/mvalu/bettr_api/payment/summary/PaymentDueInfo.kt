@@ -2,7 +2,7 @@ package com.mvalu.bettr_api.payment.summary
 
 import com.squareup.moshi.Json
 
-class DueInfo {
+class PaymentDueInfo {
     @field:Json(name = "status")
     var status: String? = null
 
@@ -20,4 +20,7 @@ class DueInfo {
 
     @field:Json(name = "title")
     var title: String? = null
+
+    @field:Json(name = "paymentButton")
+    var paymentButton: Boolean? = false
 }

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 class PaymentSummaryResult {
     @field:Json(name = "dueInfo")
-    var dueInfo: DueInfo? = null
+    var dueInfo: PaymentDueInfo? = null
 
     @field:Json(name = "newSpendsInfo")
     var newSpendsInfo: NewSpendsInfo? = null
