@@ -24,6 +24,7 @@ import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
+import com.mvalu.bettr_api.settings.SettingsInfoApiResponse
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
@@ -303,4 +304,11 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("rewardCashbackId") rewardCashbackId: String
     ): Observable<Response<RewardCashbackInfoApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}")
+    fun getSettingsInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<SettingsInfoApiResponse>>
 }
