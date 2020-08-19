@@ -10,6 +10,7 @@ import com.mvalu.bettr_api.injection.module.NetworkModule
 import com.mvalu.bettr_api.login.TokenGeneration
 import com.mvalu.bettr_api.payment.Payment
 import com.mvalu.bettr_api.rewards.Rewards
+import com.mvalu.bettr_api.settings.Settings
 import com.mvalu.bettr_api.transactions.CardTransactions
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -29,5 +30,6 @@ interface AppComponent {
     fun inject(applicationJourney: ApplicationJourney)
     fun inject(documentDownload: DocumentDownload)
     fun inject(rewards: Rewards)
+    fun inject(settings: Settings)
     fun inject(payment: Payment)
 }
