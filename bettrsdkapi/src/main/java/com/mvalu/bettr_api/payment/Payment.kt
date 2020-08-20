@@ -17,6 +17,8 @@ object Payment : ApiSdkBase() {
     }
 
     private var paymentSummaryCallback: ApiResponseCallback<PaymentSummaryResult>? = null
+    private var generateOrderCallback: ApiResponseCallback<GenerateOrderResult>? = null
+    private var paymentStatusCallback: ApiResponseCallback<PaymentStatusResult>? = null
 
     fun getPaymentSummary(
         paymentSummaryCallback: ApiResponseCallback<PaymentSummaryResult>,
@@ -34,12 +36,62 @@ object Payment : ApiSdkBase() {
         )
     }
 
+    fun generateOrderId(
+        generateOrderCallback: ApiResponseCallback<GenerateOrderResult>,
+        accountId: String,
+        amount: Double
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.generateOrderCallback = generateOrderCallback
+        val request = GenerateOrderApiRequest().apply {
+            this.amount = amount
+        }
+        callApi(
+            serviceApi.generateOrderId(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                request
+            ), ApiTag.GENERATE_ORDER_API
+        )
+    }
+
+    fun checkPaymentStatus(
+        paymentStatusCallback: ApiResponseCallback<PaymentStatusResult>,
+        paymentId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.paymentStatusCallback = paymentStatusCallback
+        val request = PaymentStatusRequest().apply {
+            this.paymentId = paymentId
+        }
+        callApi(
+            serviceApi.checkPaymentStatus(
+                BettrApiSdk.getOrganizationId(),
+                request
+            ), ApiTag.CHECK_PAYMENT_STATUS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Payment summary fetched")
                 val paymentSummaryApiResponse = response as PaymentSummaryApiResponse
                 paymentSummaryCallback?.onSuccess(paymentSummaryApiResponse.results!!)
+            }
+            ApiTag.GENERATE_ORDER_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "order id generated")
+                val generateOrderApiResponse = response as GenerateOrderApiResponse
+                generateOrderCallback?.onSuccess(generateOrderApiResponse.results!!)
+            }
+            ApiTag.CHECK_PAYMENT_STATUS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "payment status fetched")
+                val paymentStatusApiResponse = response as PaymentStatusApiResponse
+                paymentStatusCallback?.onSuccess(paymentStatusApiResponse.results!!)
             }
         }
     }
@@ -50,6 +102,12 @@ object Payment : ApiSdkBase() {
             ApiTag.PAYMENT_SUMMARY_API -> {
                 paymentSummaryCallback?.onError(errorMessage)
             }
+            ApiTag.PAYMENT_SUMMARY_API -> {
+                generateOrderCallback?.onError(errorMessage)
+            }
+            ApiTag.CHECK_PAYMENT_STATUS_API -> {
+                paymentStatusCallback?.onError(errorMessage)
+            }
         }
     }
 
@@ -58,6 +116,12 @@ object Payment : ApiSdkBase() {
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
                 paymentSummaryCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.PAYMENT_SUMMARY_API -> {
+                generateOrderCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.CHECK_PAYMENT_STATUS_API -> {
+                paymentStatusCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
     }
@@ -68,6 +132,12 @@ object Payment : ApiSdkBase() {
             ApiTag.PAYMENT_SUMMARY_API -> {
                 paymentSummaryCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.PAYMENT_SUMMARY_API -> {
+                generateOrderCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.CHECK_PAYMENT_STATUS_API -> {
+                paymentStatusCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -76,6 +146,12 @@ object Payment : ApiSdkBase() {
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
                 paymentSummaryCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.PAYMENT_SUMMARY_API -> {
+                generateOrderCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.CHECK_PAYMENT_STATUS_API -> {
+                paymentStatusCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
