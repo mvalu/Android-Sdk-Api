@@ -16,4 +16,7 @@ class SettingsInfo {
 
     @field:Json(name = "cardInfo")
     var cardInfo: CardInfo? = null
+
+    @field:Json(name = "activatePlasticCardOption")
+    var showActivatePlasticCard: Boolean? = false
 }

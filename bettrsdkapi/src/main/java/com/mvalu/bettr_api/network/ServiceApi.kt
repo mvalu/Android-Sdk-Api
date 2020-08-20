@@ -28,7 +28,7 @@ import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
-import com.mvalu.bettr_api.settings.SettingsInfoApiResponse
+import com.mvalu.bettr_api.settings.*
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
@@ -334,4 +334,33 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body checkPaymentStatusRequest: PaymentStatusRequest
     ): Observable<Response<PaymentSummaryApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/image")
+    fun getCardImage(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<CardImageApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/otpResend")
+    fun resendOtpForSettings(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinInitialized")
+    fun initializeCardPin(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<PinInitApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinSet")
+    fun setCardPin(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String,
+        @Body pinSetReq: PinSetRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
 }
