@@ -57,25 +57,6 @@ object Settings : ApiSdkBase() {
         )
     }
 
-    fun resendOtp(
-        settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
-        accountId: String,
-        cardId: String
-    ) {
-        if (!BettrApiSdk.isSdkInitialized()) {
-            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
-        }
-        this.settingsGenericResponseCallBack = settingsGenericResponseCallBack
-        callApi(
-            serviceApi.resendOtpForSettings(
-                BettrApiSdk.getOrganizationId(),
-                accountId,
-                cardId
-            ),
-            ApiTag.RESEND_OTP_API
-        )
-    }
-
     fun initializeCardPin(
         initPinResponseCallBack: ApiResponseCallback<PinInitResult>,
         accountId: String,
@@ -132,11 +113,6 @@ object Settings : ApiSdkBase() {
                 val cardImageApiResponse = response as CardImageApiResponse
                 cardImageResponseCallBack?.onSuccess(cardImageApiResponse.results!!)
             }
-            ApiTag.RESEND_OTP_API -> {
-                BettrApiSdkLogger.printInfo(TAG, "Resent OTP")
-                val settingsGenericApiResponse = response as SettingsGenericApiResponse
-                settingsGenericResponseCallBack?.onSuccess(settingsGenericApiResponse.results!!)
-            }
             ApiTag.PIN_INIT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Initialized pin")
                 val pinInitApiResponse = response as PinInitApiResponse
@@ -159,9 +135,6 @@ object Settings : ApiSdkBase() {
             ApiTag.CARD_IMAGE_API -> {
                 cardImageResponseCallBack?.onError(errorMessage)
             }
-            ApiTag.RESEND_OTP_API -> {
-                settingsGenericResponseCallBack?.onError(errorMessage)
-            }
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(errorMessage)
             }
@@ -182,9 +155,6 @@ object Settings : ApiSdkBase() {
             }
             ApiTag.CARD_IMAGE_API -> {
                 cardImageResponseCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
-            }
-            ApiTag.RESEND_OTP_API -> {
-                settingsGenericResponseCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
@@ -207,9 +177,6 @@ object Settings : ApiSdkBase() {
             ApiTag.CARD_IMAGE_API -> {
                 cardImageResponseCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
-            ApiTag.RESEND_OTP_API -> {
-                settingsGenericResponseCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
-            }
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
@@ -227,9 +194,6 @@ object Settings : ApiSdkBase() {
             }
             ApiTag.CARD_IMAGE_API -> {
                 cardImageResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
-            }
-            ApiTag.RESEND_OTP_API -> {
-                settingsGenericResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
