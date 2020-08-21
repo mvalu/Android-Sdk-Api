@@ -18,8 +18,7 @@ object OTP : ApiSdkBase() {
 
     fun sendOtp(
         otpResponseCallback: ApiResponseCallback<OtpResult>,
-        accountId: String,
-        userId: String
+        accountId: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -29,7 +28,7 @@ object OTP : ApiSdkBase() {
             serviceApi.sendOtp(
                 BettrApiSdk.getOrganizationId(),
                 accountId,
-                OtpSendRequest(userId)
+                OtpSendRequest(BettrApiSdk.getUserId())
             ),
             ApiTag.SEND_OTP_API
         )
