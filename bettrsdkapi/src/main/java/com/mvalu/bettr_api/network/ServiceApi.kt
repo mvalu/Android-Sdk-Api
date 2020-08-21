@@ -30,6 +30,10 @@ import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
 import com.mvalu.bettr_api.settings.*
+import com.mvalu.bettr_api.settings.otp.OtpApiResponse
+import com.mvalu.bettr_api.settings.otp.OtpReSendRequest
+import com.mvalu.bettr_api.settings.otp.OtpSendRequest
+import com.mvalu.bettr_api.settings.otp.OtpVerifyRequest
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
@@ -343,13 +347,6 @@ interface ServiceApi {
         @Path("cardId") cardId: String
     ): Observable<Response<CardImageApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/otpResend")
-    fun resendOtpForSettings(
-        @Path("organizationId") organizationId: String,
-        @Path("accountId") accountId: String,
-        @Path("cardId") cardId: String
-    ): Observable<Response<SettingsGenericApiResponse>>
-
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinInitialized")
     fun initializeCardPin(
         @Path("organizationId") organizationId: String,
@@ -357,11 +354,32 @@ interface ServiceApi {
         @Path("cardId") cardId: String
     ): Observable<Response<PinInitApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinSet")
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinSet")
     fun setCardPin(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
         @Path("cardId") cardId: String,
         @Body pinSetReq: PinSetRequest
     ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpRequest")
+    fun sendOtp(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body otpSendRequest: OtpSendRequest
+    ): Observable<Response<OtpApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpResend")
+    fun resendOtp(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body otpReSendRequest: OtpReSendRequest
+    ): Observable<Response<OtpApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpVerification")
+    fun verifyOtp(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body otpVerifyRequest: OtpVerifyRequest
+    ): Observable<Response<OtpApiResponse>>
 }

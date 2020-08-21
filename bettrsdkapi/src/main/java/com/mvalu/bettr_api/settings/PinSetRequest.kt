@@ -9,7 +9,4 @@ class PinSetRequest {
 
     @field:Json(name = "pin_set_token")
     var pinSetToken: String? = null
-
-    @field:Json(name = "otp")
-    var otp: String? = null
 }
