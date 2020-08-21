@@ -47,5 +47,6 @@ enum class ApiTag {
     RESEND_OTP_API,
     VERIFY_OTP_API,
     PIN_INIT_API,
-    PIN_SET_API
+    PIN_SET_API,
+    PAYMENT_DETAILS_API
 }

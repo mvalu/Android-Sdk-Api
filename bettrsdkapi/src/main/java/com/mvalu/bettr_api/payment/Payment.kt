@@ -5,6 +5,8 @@ import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
+import com.mvalu.bettr_api.payment.detail.PaymentDetailApiResponse
+import com.mvalu.bettr_api.payment.detail.PaymentDetailResult
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryResult
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
@@ -19,6 +21,7 @@ object Payment : ApiSdkBase() {
     private var paymentSummaryCallback: ApiResponseCallback<PaymentSummaryResult>? = null
     private var generateOrderCallback: ApiResponseCallback<GenerateOrderResult>? = null
     private var paymentStatusCallback: ApiResponseCallback<PaymentStatusResult>? = null
+    private var paymentDetailsCallback: ApiResponseCallback<PaymentDetailResult>? = null
 
     fun getPaymentSummary(
         paymentSummaryCallback: ApiResponseCallback<PaymentSummaryResult>,
@@ -78,6 +81,24 @@ object Payment : ApiSdkBase() {
         )
     }
 
+    fun getPaymentDetails(
+        paymentDetailsCallback: ApiResponseCallback<PaymentDetailResult>,
+        accountId: String,
+        paymentId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.paymentDetailsCallback = paymentDetailsCallback
+        callApi(
+            serviceApi.getPaymentDetails(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                paymentId
+            ), ApiTag.PAYMENT_DETAILS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
@@ -95,6 +116,11 @@ object Payment : ApiSdkBase() {
                 val paymentStatusApiResponse = response as PaymentStatusApiResponse
                 paymentStatusCallback?.onSuccess(paymentStatusApiResponse.results!!)
             }
+            ApiTag.PAYMENT_DETAILS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "payment details fetched")
+                val paymentDetailsApiResponse = response as PaymentDetailApiResponse
+                paymentDetailsCallback?.onSuccess(paymentDetailsApiResponse.results!!)
+            }
         }
     }
 
@@ -109,6 +135,9 @@ object Payment : ApiSdkBase() {
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
                 paymentStatusCallback?.onError(errorMessage)
+            }
+            ApiTag.PAYMENT_DETAILS_API -> {
+                paymentDetailsCallback?.onError(errorMessage)
             }
         }
     }
@@ -125,6 +154,9 @@ object Payment : ApiSdkBase() {
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
                 paymentStatusCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.PAYMENT_DETAILS_API -> {
+                paymentDetailsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -140,6 +172,9 @@ object Payment : ApiSdkBase() {
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
                 paymentStatusCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.PAYMENT_DETAILS_API -> {
+                paymentDetailsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -154,6 +189,9 @@ object Payment : ApiSdkBase() {
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
                 paymentStatusCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.PAYMENT_DETAILS_API -> {
+                paymentDetailsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

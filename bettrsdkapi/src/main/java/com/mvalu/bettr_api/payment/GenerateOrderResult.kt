@@ -8,4 +8,7 @@ class GenerateOrderResult {
 
     @field:Json(name = "razorpayOrderId")
     var razorpayOrderId: String? = null
+
+    @field:Json(name = "transactionId")
+    var transactionId: String? = null
 }

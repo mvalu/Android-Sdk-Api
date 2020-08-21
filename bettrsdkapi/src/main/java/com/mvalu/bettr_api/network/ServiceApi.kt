@@ -25,6 +25,7 @@ import com.mvalu.bettr_api.payment.GenerateOrderApiRequest
 import com.mvalu.bettr_api.payment.GenerateOrderApiResponse
 import com.mvalu.bettr_api.payment.PaymentStatusApiResponse
 import com.mvalu.bettr_api.payment.PaymentStatusRequest
+import com.mvalu.bettr_api.payment.detail.PaymentDetailApiResponse
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
@@ -382,4 +383,11 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Body otpVerifyRequest: OtpVerifyRequest
     ): Observable<Response<OtpApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/paymentWithCardDetail/{paymentId}/")
+    fun getPaymentDetails(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("paymentId") paymentId: String
+    ): Observable<Response<PaymentDetailApiResponse>>
 }
