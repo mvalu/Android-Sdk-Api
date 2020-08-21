@@ -59,7 +59,8 @@ object Payment : ApiSdkBase() {
 
     fun checkPaymentStatus(
         paymentStatusCallback: ApiResponseCallback<PaymentStatusResult>,
-        paymentId: String
+        paymentId: String?,
+        orderId: String?
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -67,6 +68,7 @@ object Payment : ApiSdkBase() {
         this.paymentStatusCallback = paymentStatusCallback
         val request = PaymentStatusRequest().apply {
             this.paymentId = paymentId
+            this.orderId = orderId
         }
         callApi(
             serviceApi.checkPaymentStatus(
