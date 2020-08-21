@@ -353,7 +353,7 @@ interface ServiceApi {
         @Path("cardId") cardId: String
     ): Observable<Response<PinInitApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinSet")
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/pinSet")
     fun setCardPin(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
@@ -361,21 +361,21 @@ interface ServiceApi {
         @Body pinSetReq: PinSetRequest
     ): Observable<Response<SettingsGenericApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/otpRequest")
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpRequest")
     fun sendOtp(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
         @Body otpSendRequest: OtpSendRequest
     ): Observable<Response<OtpApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/otpResend")
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpResend")
     fun resendOtp(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
         @Body otpReSendRequest: OtpReSendRequest
     ): Observable<Response<OtpApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/otpVerification")
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/otpVerification")
     fun verifyOtp(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
