@@ -57,7 +57,7 @@ object OTP : ApiSdkBase() {
         otpResponseCallback: ApiResponseCallback<OtpResult>,
         accountId: String,
         otpRequestId: String,
-        otp: String
+        otp: Int
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
