@@ -23,6 +23,7 @@ import com.mvalu.bettr_api.login.GenerateTokenRequest
 import com.mvalu.bettr_api.login.GenerateTokenResponse
 import com.mvalu.bettr_api.payment.GenerateOrderApiRequest
 import com.mvalu.bettr_api.payment.GenerateOrderApiResponse
+import com.mvalu.bettr_api.payment.PaymentStatusApiResponse
 import com.mvalu.bettr_api.payment.PaymentStatusRequest
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
@@ -333,7 +334,7 @@ interface ServiceApi {
     fun checkPaymentStatus(
         @Path("organizationId") organizationId: String,
         @Body checkPaymentStatusRequest: PaymentStatusRequest
-    ): Observable<Response<PaymentSummaryApiResponse>>
+    ): Observable<Response<PaymentStatusApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/image")
     fun getCardImage(
