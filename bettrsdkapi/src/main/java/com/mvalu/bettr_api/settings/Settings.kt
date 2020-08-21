@@ -100,8 +100,7 @@ object Settings : ApiSdkBase() {
         accountId: String,
         cardId: String,
         pin: String,
-        pinSetToken: String,
-        otp: String
+        pinSetToken: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -115,7 +114,6 @@ object Settings : ApiSdkBase() {
                 PinSetRequest().apply {
                     this.pin = pin
                     this.pinSetToken = pinSetToken
-                    this.otp = otp
                 }
             ),
             ApiTag.PIN_SET_API
