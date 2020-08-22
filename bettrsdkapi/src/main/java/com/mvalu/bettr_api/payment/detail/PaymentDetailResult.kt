@@ -3,6 +3,12 @@ package com.mvalu.bettr_api.payment.detail
 import com.squareup.moshi.Json
 
 class PaymentDetailResult {
+    @field:Json(name = "payment")
+    var payment: Payment? = null
+
+    @field:Json(name = "card")
+    var card: Card? = null
+
     class Payment {
         @field:Json(name = "id")
         var id: String? = null
