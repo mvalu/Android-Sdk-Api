@@ -12,6 +12,7 @@ import com.mvalu.bettr_api.payment.Payment
 import com.mvalu.bettr_api.rewards.Rewards
 import com.mvalu.bettr_api.settings.Settings
 import com.mvalu.bettr_api.settings.otp.OTP
+import com.mvalu.bettr_api.settings.plastic_card.PlasticCard
 import com.mvalu.bettr_api.transactions.CardTransactions
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -34,4 +35,5 @@ interface AppComponent {
     fun inject(settings: Settings)
     fun inject(payment: Payment)
     fun inject(otp: OTP)
+    fun inject(plasticCard: PlasticCard)
 }

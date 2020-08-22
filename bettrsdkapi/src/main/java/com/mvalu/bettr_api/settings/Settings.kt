@@ -101,6 +101,59 @@ object Settings : ApiSdkBase() {
         )
     }
 
+    fun blockCard(
+        settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
+        accountId: String,
+        cardId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.settingsGenericResponseCallBack = settingsGenericResponseCallBack
+        callApi(
+            serviceApi.blockCard(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                cardId
+            ),
+            ApiTag.CARD_BLOCK_API
+        )
+    }
+
+    fun activateDigitalCard(
+        settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
+        accountId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.settingsGenericResponseCallBack = settingsGenericResponseCallBack
+        callApi(
+            serviceApi.activateDigitalCard(
+                BettrApiSdk.getOrganizationId(),
+                accountId
+            ),
+            ApiTag.ACTIVATE_DIGITAL_CARD_API
+        )
+    }
+
+    fun activatePlasticCard(
+        settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
+        accountId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.settingsGenericResponseCallBack = settingsGenericResponseCallBack
+        callApi(
+            serviceApi.activatePlasticCard(
+                BettrApiSdk.getOrganizationId(),
+                accountId
+            ),
+            ApiTag.ACTIVATE_PLASTIC_CARD_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.SETTINGS_INFO_API -> {
@@ -123,6 +176,21 @@ object Settings : ApiSdkBase() {
                 val settingsGenericApiResponse = response as SettingsGenericApiResponse
                 settingsGenericResponseCallBack?.onSuccess(settingsGenericApiResponse.results!!)
             }
+            ApiTag.CARD_BLOCK_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Blocked card")
+                val settingsGenericApiResponse = response as SettingsGenericApiResponse
+                settingsGenericResponseCallBack?.onSuccess(settingsGenericApiResponse.results!!)
+            }
+            ApiTag.ACTIVATE_DIGITAL_CARD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Activated digital card")
+                val settingsGenericApiResponse = response as SettingsGenericApiResponse
+                settingsGenericResponseCallBack?.onSuccess(settingsGenericApiResponse.results!!)
+            }
+            ApiTag.ACTIVATE_PLASTIC_CARD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Activated plastic card")
+                val settingsGenericApiResponse = response as SettingsGenericApiResponse
+                settingsGenericResponseCallBack?.onSuccess(settingsGenericApiResponse.results!!)
+            }
         }
     }
 
@@ -138,7 +206,10 @@ object Settings : ApiSdkBase() {
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(errorMessage)
             }
-            ApiTag.PIN_SET_API -> {
+            ApiTag.PIN_SET_API,
+            ApiTag.CARD_BLOCK_API,
+            ApiTag.ACTIVATE_DIGITAL_CARD_API,
+            ApiTag.ACTIVATE_PLASTIC_CARD_API -> {
                 settingsGenericResponseCallBack?.onError(errorMessage)
             }
         }
@@ -159,7 +230,10 @@ object Settings : ApiSdkBase() {
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
-            ApiTag.PIN_SET_API -> {
+            ApiTag.PIN_SET_API,
+            ApiTag.CARD_BLOCK_API,
+            ApiTag.ACTIVATE_DIGITAL_CARD_API,
+            ApiTag.ACTIVATE_PLASTIC_CARD_API  -> {
                 settingsGenericResponseCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
@@ -180,7 +254,10 @@ object Settings : ApiSdkBase() {
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
-            ApiTag.PIN_SET_API -> {
+            ApiTag.PIN_SET_API,
+            ApiTag.CARD_BLOCK_API,
+            ApiTag.ACTIVATE_DIGITAL_CARD_API,
+            ApiTag.ACTIVATE_PLASTIC_CARD_API  -> {
                 settingsGenericResponseCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
         }
@@ -198,7 +275,10 @@ object Settings : ApiSdkBase() {
             ApiTag.PIN_INIT_API -> {
                 initPinResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
-            ApiTag.PIN_SET_API -> {
+            ApiTag.PIN_SET_API,
+            ApiTag.CARD_BLOCK_API,
+            ApiTag.ACTIVATE_DIGITAL_CARD_API,
+            ApiTag.ACTIVATE_PLASTIC_CARD_API  -> {
                 settingsGenericResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }

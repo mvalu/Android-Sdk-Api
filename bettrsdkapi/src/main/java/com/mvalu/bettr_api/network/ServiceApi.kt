@@ -35,6 +35,7 @@ import com.mvalu.bettr_api.settings.otp.OtpApiResponse
 import com.mvalu.bettr_api.settings.otp.OtpReSendRequest
 import com.mvalu.bettr_api.settings.otp.OtpSendRequest
 import com.mvalu.bettr_api.settings.otp.OtpVerifyRequest
+import com.mvalu.bettr_api.settings.plastic_card.CardNumberVerifyRequest
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
@@ -390,4 +391,31 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("paymentId") paymentId: String
     ): Observable<Response<PaymentDetailApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/block")
+    fun blockCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/activateDigitalCard")
+    fun activateDigitalCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/activatePlasticCard")
+    fun activatePlasticCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/verifyCardNumber")
+    fun verifyCardNumber(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String,
+        @Body cardNumberVerifyRequest: CardNumberVerifyRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
 }
