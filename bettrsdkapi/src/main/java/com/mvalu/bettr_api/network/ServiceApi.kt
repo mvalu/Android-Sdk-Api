@@ -397,7 +397,7 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
         @Path("cardId") cardId: String
-    ): Observable<Response<SettingsGenericApiResponse>>
+    ): Observable<Response<BlockCardApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/activateDigitalCard")
     fun activateDigitalCard(
@@ -418,4 +418,12 @@ interface ServiceApi {
         @Path("cardId") cardId: String,
         @Body cardNumberVerifyRequest: CardNumberVerifyRequest
     ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/actionSwitch")
+    fun cardOnOff(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String,
+        @Body cardOnOffRequest: CardOnOffRequest
+    ): Observable<Response<BlockCardApiResponse>>
 }
