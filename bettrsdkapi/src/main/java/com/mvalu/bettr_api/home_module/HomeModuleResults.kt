@@ -19,4 +19,10 @@ class HomeModuleResults {
 
     @field:Json(name = "dueInfo")
     var dueInfo: DueInfo? = null
+
+    @field:Json(name = "showActivatePlasticCardOption")
+    var showActivatePlasticCard: Boolean? = false
+
+    @field:Json(name = "showActivateDigitalCardOption")
+    var showOrderNewCard: Boolean? = false
 }

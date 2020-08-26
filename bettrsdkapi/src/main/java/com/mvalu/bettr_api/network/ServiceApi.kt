@@ -17,6 +17,7 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
 import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
+import com.mvalu.bettr_api.home_module.AccountInfoApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
@@ -426,4 +427,10 @@ interface ServiceApi {
         @Path("cardId") cardId: String,
         @Body cardOnOffRequest: CardOnOffRequest
     ): Observable<Response<BlockCardApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}")
+    fun getAccountInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<AccountInfoApiResponse>>
 }
