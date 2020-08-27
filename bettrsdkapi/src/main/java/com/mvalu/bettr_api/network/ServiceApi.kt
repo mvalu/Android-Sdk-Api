@@ -28,6 +28,7 @@ import com.mvalu.bettr_api.payment.PaymentStatusApiResponse
 import com.mvalu.bettr_api.payment.PaymentStatusRequest
 import com.mvalu.bettr_api.payment.detail.PaymentDetailApiResponse
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
+import com.mvalu.bettr_api.rewards.RewardPointsApiResponse
 import com.mvalu.bettr_api.rewards.RewardPointsRedeemRequest
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
@@ -291,7 +292,7 @@ interface ServiceApi {
         @Query("endDate") endDate: String?,
         @Query("search") search: String?,
         @Query("offset") offset: Int
-    ): Observable<Response<CardTransactionsApiResponse>>
+    ): Observable<Response<RewardPointsApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/reward_cashback")
     fun getRewardCashbacks(

@@ -38,7 +38,7 @@ object DocumentDownload : ApiSdkBase() {
             ApiTag.DOWNLOAD_LINK_STATEMENT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Statement download link fetched")
                 val downloadDocApiResponse = response as DocumentDownloadApiResponse
-                downloadDocCallback?.onSuccess(downloadDocApiResponse.results!!)
+                downloadDocCallback?.onSuccess(downloadDocApiResponse.results?.fileUrl ?: "")
             }
         }
     }

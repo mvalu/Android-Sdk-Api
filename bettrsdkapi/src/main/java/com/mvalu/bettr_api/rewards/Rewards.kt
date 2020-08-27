@@ -108,7 +108,7 @@ object Rewards : ApiSdkBase() {
         )
     }
 
-    fun redeenRewardPoints(
+    fun redeemRewardPoints(
         redeemPointsCallback: ApiResponseCallback<Boolean>,
         accountId: String,
         points: Int

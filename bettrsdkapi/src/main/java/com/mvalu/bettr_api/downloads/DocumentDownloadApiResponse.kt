@@ -5,5 +5,10 @@ import com.squareup.moshi.Json
 
 class DocumentDownloadApiResponse : ApiBaseResponse() {
     @field:Json(name = "results")
-    var results: String? = null
+    var results: Document? = null
+
+    inner class Document {
+        @field:Json(name = "fileUrl")
+        var fileUrl: String? = null
+    }
 }
