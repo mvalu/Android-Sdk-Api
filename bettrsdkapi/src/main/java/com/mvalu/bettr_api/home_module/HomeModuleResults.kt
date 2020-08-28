@@ -25,4 +25,7 @@ class HomeModuleResults {
 
     @field:Json(name = "activateDigitalCardOption")
     var showOrderNewCard: Boolean? = false
+
+    @field:Json(name = "requiredPinSet")
+    var requiredPinSet: Boolean? = false
 }

@@ -41,6 +41,12 @@ class CardInfo() : Parcelable {
     @field:Json(name = "closedDate")
     var closedDate: String? = null
 
+    @field:Json(name = "type")
+    var type: String? = null
+
+    @field:Json(name = "cardPin")
+    var cardPinSet: Boolean? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         customerUserId = parcel.readString()
@@ -54,6 +60,8 @@ class CardInfo() : Parcelable {
         expiryDate = parcel.readString()
         activationDate = parcel.readString()
         closedDate = parcel.readString()
+        type = parcel.readString()
+        cardPinSet = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -69,6 +77,8 @@ class CardInfo() : Parcelable {
         parcel.writeString(expiryDate)
         parcel.writeString(activationDate)
         parcel.writeString(closedDate)
+        parcel.writeString(type)
+        parcel.writeValue(cardPinSet)
     }
 
     override fun describeContents(): Int {
