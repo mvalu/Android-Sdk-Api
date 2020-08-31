@@ -3,9 +3,11 @@ package com.mvalu.bettr_api.settings
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.home_module.CardInfo
+import com.mvalu.bettr_api.internal.CryptLib
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
+import com.mvalu.bettr_api.settings.plastic_card.CardActivationRequest
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object Settings : ApiSdkBase() {
@@ -82,8 +84,7 @@ object Settings : ApiSdkBase() {
         settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
         accountId: String,
         cardId: String,
-        pin: String,
-        pinSetToken: String
+        pin: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -94,10 +95,7 @@ object Settings : ApiSdkBase() {
                 BettrApiSdk.getOrganizationId(),
                 accountId,
                 cardId,
-                PinSetRequest().apply {
-                    this.pin = pin
-                    this.pinSetToken = pinSetToken
-                }
+                PinSetRequest(getEncryptedPin(pin))
             ),
             ApiTag.PIN_SET_API
         )
@@ -124,7 +122,8 @@ object Settings : ApiSdkBase() {
 
     fun activateDigitalCard(
         settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
-        accountId: String
+        accountId: String,
+        pin: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -133,7 +132,8 @@ object Settings : ApiSdkBase() {
         callApi(
             serviceApi.activateDigitalCard(
                 BettrApiSdk.getOrganizationId(),
-                accountId
+                accountId,
+                CardActivationRequest(getEncryptedPin(pin))
             ),
             ApiTag.ACTIVATE_DIGITAL_CARD_API
         )
@@ -141,7 +141,8 @@ object Settings : ApiSdkBase() {
 
     fun activatePlasticCard(
         settingsGenericResponseCallBack: ApiResponseCallback<Boolean>,
-        accountId: String
+        accountId: String,
+        pin: String
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -150,7 +151,8 @@ object Settings : ApiSdkBase() {
         callApi(
             serviceApi.activatePlasticCard(
                 BettrApiSdk.getOrganizationId(),
-                accountId
+                accountId,
+                CardActivationRequest(getEncryptedPin(pin))
             ),
             ApiTag.ACTIVATE_PLASTIC_CARD_API
         )
@@ -318,5 +320,12 @@ object Settings : ApiSdkBase() {
                 settingsGenericResponseCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
+    }
+
+    private fun getEncryptedPin(pin: String): String {
+        return CryptLib().encryptPlainTextWithRandomIV(
+            pin,
+            CryptLib.CRYPT_KEY
+        )
     }
 }

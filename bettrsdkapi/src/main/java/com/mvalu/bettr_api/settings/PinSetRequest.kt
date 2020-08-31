@@ -2,11 +2,8 @@ package com.mvalu.bettr_api.settings
 
 import com.squareup.moshi.Json
 
-class PinSetRequest {
+class PinSetRequest(pin: String) {
 
     @field:Json(name = "pin")
-    var pin: String? = null
-
-    @field:Json(name = "pin_set_token")
-    var pinSetToken: String? = null
+    var pin: String? = pin
 }
