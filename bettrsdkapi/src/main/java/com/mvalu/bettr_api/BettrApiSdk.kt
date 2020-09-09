@@ -18,6 +18,7 @@ import com.mvalu.bettr_api.network.DeviceInfo
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 const val PRODUCT_TYPE = "CC"
+
 object BettrApiSdk : ApiSdkBase() {
 
     private var daggerComponent: AppComponent? = null
@@ -96,6 +97,7 @@ object BettrApiSdk : ApiSdkBase() {
         } else {
             Validate.notNull(applicationContext, "Application context")
             Validate.hasInternetPermissions(applicationContext, true)
+            Validate.hasReadPhoneStatePermissions(applicationContext, true)
 //            Validate.hasReadPhoneStatePermissions(applicationContext, true)
             Validate.notNullorEmpty(ACCESS_KEY, "ACCESS_KEY")
             Validate.notNullorEmpty(SECRET_KEY, "SECRET_KEY")
@@ -119,7 +121,7 @@ object BettrApiSdk : ApiSdkBase() {
             request.identifier = USER_ID
             request.deviceInfo = getDeviceInfo()
             request.marketCampaign = campaignInfo
-            request.imei = "4384834"//getImei(applicationContext)
+            request.imei = getImei(applicationContext)
             callApi(
                 serviceApi.generateToken(getOrganizationId(), request),
                 ApiTag.GENERATE_ACCESS_TOKEN_API
@@ -127,7 +129,23 @@ object BettrApiSdk : ApiSdkBase() {
         }
     }
 
-    fun generateSignedSecretKey(): String {
+    fun sdkLogOut(initCallback: BettrApiSdkCallback?) {
+        if (isSdkInitialized) {
+            this.campaignInfo = null
+            this.applicationContext = null
+            this.ACCESS_KEY = ""
+            this.SECRET_KEY = ""
+            this.ORGANIZATION_ID = ""
+            this.USER_ID = ""
+            ACCESS_TOKEN = ""
+            isSdkInitialized = false
+            initCallback?.onSuccess()
+        } else {
+            initCallback?.onError("Sdk not initialized yet")
+        }
+    }
+
+    internal fun generateSignedSecretKey(): String {
         val key =
             ORGANIZATION_ID + "##" + ACCESS_KEY + "##" + SECRET_KEY + "##" + System.currentTimeMillis()
         return CryptLib().encryptPlainTextWithRandomIV(key, SECRET_KEY)
