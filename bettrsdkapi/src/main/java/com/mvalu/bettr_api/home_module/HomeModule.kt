@@ -15,6 +15,8 @@ object HomeModule : ApiSdkBase() {
     private var homeModuleStatementDetailsCallback: ApiResponseCallback<List<HomeModuleStatementResults>>? =
         null
 
+    private var accountInfoCallBack: ApiResponseCallback<AccountInfo>? = null
+
     init {
         BettrApiSdk.getAppComponent().inject(this)
     }
@@ -41,6 +43,17 @@ object HomeModule : ApiSdkBase() {
         )
     }
 
+    fun getAccountInfo(accountInfoCallBack: ApiResponseCallback<AccountInfo>, accountId: String) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.accountInfoCallBack = accountInfoCallBack
+        callApi(
+            serviceApi.getAccountInfo(BettrApiSdk.getOrganizationId(), accountId),
+            ApiTag.ACCOUNT_INFO_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.HOME_MODULE_API -> {
@@ -52,6 +65,11 @@ object HomeModule : ApiSdkBase() {
                 BettrApiSdkLogger.printInfo(TAG, "Home Module statement details fetched")
                 val homeModuleStatementApiResponse = response as HomeModuleStatementApiResponse
                 homeModuleStatementDetailsCallback?.onSuccess(homeModuleStatementApiResponse.results!!)
+            }
+            ApiTag.ACCOUNT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Account info fetched")
+                val accountInfoApiResponse = response as AccountInfoApiResponse
+                accountInfoCallBack?.onSuccess(accountInfoApiResponse.results!!)
             }
         }
     }
@@ -65,6 +83,10 @@ object HomeModule : ApiSdkBase() {
             ApiTag.HOME_MODULE_STATEMENT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
                 homeModuleStatementDetailsCallback?.onError(errorMessage)
+            }
+            ApiTag.ACCOUNT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
+                accountInfoCallBack?.onError(errorMessage)
             }
         }
     }
@@ -85,7 +107,13 @@ object HomeModule : ApiSdkBase() {
                 )
                 homeModuleStatementDetailsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
-
+            ApiTag.ACCOUNT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(
+                    TAG,
+                    apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value
+                )
+                accountInfoCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -105,6 +133,13 @@ object HomeModule : ApiSdkBase() {
                 )
                 homeModuleStatementDetailsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.ACCOUNT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(
+                    TAG,
+                    apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value
+                )
+                accountInfoCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -123,6 +158,13 @@ object HomeModule : ApiSdkBase() {
                     apiTag.name + " " + ErrorMessage.AUTH_ERROR.value
                 )
                 homeModuleStatementDetailsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.ACCOUNT_INFO_API -> {
+                BettrApiSdkLogger.printInfo(
+                    TAG,
+                    apiTag.name + " " + ErrorMessage.AUTH_ERROR.value
+                )
+                accountInfoCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

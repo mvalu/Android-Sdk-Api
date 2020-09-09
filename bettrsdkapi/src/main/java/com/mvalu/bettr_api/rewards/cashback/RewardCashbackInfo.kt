@@ -10,7 +10,7 @@ class RewardCashbackInfo {
     var amount: Double? = null
 
     @field:Json(name = "conversionRatio")
-    var conversionRatio: Double? = null
+    var conversionRatio: Float? = null
 
     @field:Json(name = "description")
     var description: String? = null

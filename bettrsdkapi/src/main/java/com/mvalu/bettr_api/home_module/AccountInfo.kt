@@ -50,6 +50,9 @@ class AccountInfo() : Parcelable {
     @field:Json(name = "cardList")
     var cardInfo: CardInfo? = null
 
+    @field:Json(name = "activationCardList")
+    var activationCardInfo: CardInfo? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         organizationId = parcel.readString()
@@ -66,6 +69,7 @@ class AccountInfo() : Parcelable {
         updatedAt = parcel.readString()
         deletedAt = parcel.readString()
         cardInfo = parcel.readParcelable(CardInfo::class.java.classLoader)
+        activationCardInfo = parcel.readParcelable(CardInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -84,6 +88,7 @@ class AccountInfo() : Parcelable {
         parcel.writeString(updatedAt)
         parcel.writeString(deletedAt)
         parcel.writeParcelable(cardInfo, flags)
+        parcel.writeParcelable(activationCardInfo, flags)
     }
 
     override fun describeContents(): Int {

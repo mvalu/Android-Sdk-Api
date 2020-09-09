@@ -9,6 +9,7 @@ import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfo
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackResult
+import com.mvalu.bettr_api.settings.SettingsGenericApiResponse
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 object Rewards : ApiSdkBase() {
@@ -17,6 +18,7 @@ object Rewards : ApiSdkBase() {
     private var rewardCashbacksCallback: ApiResponseCallback<RewardCashbackResult>? = null
     private var rewardPointsSummaryCallback: ApiResponseCallback<RewardPointsSummaryResult>? = null
     private var rewardCashbackInfoCallback: ApiResponseCallback<RewardCashbackInfo>? = null
+    private var redeemPointsCallback: ApiResponseCallback<Boolean>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -29,9 +31,10 @@ object Rewards : ApiSdkBase() {
         endMonth: String?,
         pointStart: String?,
         pointEnd: String?,
-        startDate: Int?,
-        endDate: Int?,
-        search: String?
+        startDate: String?,
+        endDate: String?,
+        search: String?,
+        offset: Int
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -41,7 +44,7 @@ object Rewards : ApiSdkBase() {
             serviceApi.getRewardPoints(
                 BettrApiSdk.getOrganizationId(),
                 accountId,
-                startMonth, endMonth, pointStart, pointEnd, startDate, endDate, search
+                startMonth, endMonth, pointStart, pointEnd, startDate, endDate, search, offset
             ), ApiTag.REWARD_POINTS_API
         )
     }
@@ -53,9 +56,10 @@ object Rewards : ApiSdkBase() {
         endMonth: String?,
         amountStart: String?,
         amountEnd: String?,
-        startDate: Int?,
-        endDate: Int?,
-        search: String?
+        startDate: String?,
+        endDate: String?,
+        search: String?,
+        offset: Int
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
@@ -65,7 +69,7 @@ object Rewards : ApiSdkBase() {
             serviceApi.getRewardCashbacks(
                 BettrApiSdk.getOrganizationId(),
                 accountId,
-                startMonth, endMonth, amountStart, amountEnd, startDate, endDate, search
+                startMonth, endMonth, amountStart, amountEnd, startDate, endDate, search, offset
             ), ApiTag.REWARD_CASHBACKS_API
         )
     }
@@ -104,6 +108,24 @@ object Rewards : ApiSdkBase() {
         )
     }
 
+    fun redeemRewardPoints(
+        redeemPointsCallback: ApiResponseCallback<Boolean>,
+        accountId: String,
+        points: Int
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.redeemPointsCallback = redeemPointsCallback
+        callApi(
+            serviceApi.redeemRewardPoints(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                RewardPointsRedeemRequest(points)
+            ), ApiTag.REWARD_POINTS_REDEEM_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
@@ -129,6 +151,11 @@ object Rewards : ApiSdkBase() {
                 val rewardCashbackInfoApiResponse = response as RewardCashbackInfoApiResponse
                 rewardCashbackInfoCallback?.onSuccess(rewardCashbackInfoApiResponse.results!!)
             }
+            ApiTag.REWARD_POINTS_REDEEM_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "reward points redeemed")
+                val settingsGenericApiResponse = response as SettingsGenericApiResponse
+                redeemPointsCallback?.onSuccess(settingsGenericApiResponse.results!!)
+            }
         }
     }
 
@@ -150,6 +177,10 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_CASHBACK_INFO_API -> {
                 rewardCashbackInfoCallback?.onError(errorMessage)
             }
+
+            ApiTag.REWARD_POINTS_REDEEM_API -> {
+                redeemPointsCallback?.onError(errorMessage)
+            }
         }
     }
 
@@ -167,6 +198,9 @@ object Rewards : ApiSdkBase() {
             }
             ApiTag.REWARD_CASHBACK_INFO_API -> {
                 rewardCashbackInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.REWARD_POINTS_REDEEM_API -> {
+                redeemPointsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
         }
     }
@@ -188,6 +222,9 @@ object Rewards : ApiSdkBase() {
             ApiTag.REWARD_CASHBACK_INFO_API -> {
                 rewardCashbackInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.REWARD_POINTS_REDEEM_API -> {
+                redeemPointsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -205,6 +242,9 @@ object Rewards : ApiSdkBase() {
             }
             ApiTag.REWARD_CASHBACK_INFO_API -> {
                 rewardCashbackInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.REWARD_POINTS_REDEEM_API -> {
+                redeemPointsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

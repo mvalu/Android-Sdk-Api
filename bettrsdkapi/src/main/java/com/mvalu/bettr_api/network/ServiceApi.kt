@@ -17,6 +17,7 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
 import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
+import com.mvalu.bettr_api.home_module.AccountInfoApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
 import com.mvalu.bettr_api.login.GenerateTokenRequest
@@ -27,6 +28,8 @@ import com.mvalu.bettr_api.payment.PaymentStatusApiResponse
 import com.mvalu.bettr_api.payment.PaymentStatusRequest
 import com.mvalu.bettr_api.payment.detail.PaymentDetailApiResponse
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
+import com.mvalu.bettr_api.rewards.RewardPointsApiResponse
+import com.mvalu.bettr_api.rewards.RewardPointsRedeemRequest
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
@@ -35,6 +38,8 @@ import com.mvalu.bettr_api.settings.otp.OtpApiResponse
 import com.mvalu.bettr_api.settings.otp.OtpReSendRequest
 import com.mvalu.bettr_api.settings.otp.OtpSendRequest
 import com.mvalu.bettr_api.settings.otp.OtpVerifyRequest
+import com.mvalu.bettr_api.settings.plastic_card.CardActivationRequest
+import com.mvalu.bettr_api.settings.plastic_card.CardNumberVerifyRequest
 import com.mvalu.bettr_api.transactions.AccountTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.CardTransactionsApiResponse
 import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
@@ -284,10 +289,11 @@ interface ServiceApi {
         @Query("endMonth") endMonth: String?,
         @Query("pointStart") pointStart: String?,
         @Query("pointEnd") pointEnd: String?,
-        @Query("startDate") startDate: Int?,
-        @Query("endDate") endDate: Int?,
-        @Query("search") search: String?
-    ): Observable<Response<CardTransactionsApiResponse>>
+        @Query("startDate") startDate: String?,
+        @Query("endDate") endDate: String?,
+        @Query("search") search: String?,
+        @Query("offset") offset: Int
+    ): Observable<Response<RewardPointsApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/reward_cashback")
     fun getRewardCashbacks(
@@ -297,9 +303,10 @@ interface ServiceApi {
         @Query("endMonth") endMonth: String?,
         @Query("amountStart") pointStart: String?,
         @Query("amountEnd") pointEnd: String?,
-        @Query("startDate") startDate: Int?,
-        @Query("endDate") endDate: Int?,
-        @Query("search") search: String?
+        @Query("startDate") startDate: String?,
+        @Query("endDate") endDate: String?,
+        @Query("search") search: String?,
+        @Query("offset") offset: Int
     ): Observable<Response<RewardCashbackApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/reward_point/rewardPointSummary")
@@ -314,6 +321,13 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("rewardCashbackId") rewardCashbackId: String
     ): Observable<Response<RewardCashbackInfoApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/reward_point/rewardPointRedeemed")
+    fun redeemRewardPoints(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body rewardPointsRedeemRequest: RewardPointsRedeemRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummary")
     fun getPaymentSummary(
@@ -390,4 +404,47 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("paymentId") paymentId: String
     ): Observable<Response<PaymentDetailApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/block")
+    fun blockCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String
+    ): Observable<Response<BlockCardApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/activateDigitalCard")
+    fun activateDigitalCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body cardActivationRequest: CardActivationRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/activatePlasticCard")
+    fun activatePlasticCard(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body cardActivationRequest: CardActivationRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/verifyCardNumber")
+    fun verifyCardNumber(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String,
+        @Body cardNumberVerifyRequest: CardNumberVerifyRequest
+    ): Observable<Response<SettingsGenericApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/actionSwitch")
+    fun cardOnOff(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("cardId") cardId: String,
+        @Body cardOnOffRequest: CardOnOffRequest
+    ): Observable<Response<BlockCardApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}")
+    fun getAccountInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String
+    ): Observable<Response<AccountInfoApiResponse>>
 }

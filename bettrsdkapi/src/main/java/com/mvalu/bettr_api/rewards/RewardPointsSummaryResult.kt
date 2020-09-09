@@ -8,16 +8,19 @@ class RewardPointsSummaryResult {
     var totalPointReceived: Int? = null
 
     @field:Json(name = "totalBalanceRedeemed")
-    var totalBalanceRedeemed: Double? = null
+    var totalBalanceRedeemed: Int? = null
 
     @field:Json(name = "totalBalancePoint")
     var totalBalancePoint: Int? = null
 
     @field:Json(name = "conversionRatio")
-    var conversionRatio: Double? = null
+    var conversionRatio: Float? = null
 
     @field:Json(name = "conversionRatioText")
     var conversionRatioText: String? = null
+
+    @field:Json(name = "totalCashbackAmount")
+    var totalCashbackAmount: Double? = null
 
     @field:Json(name = "accountInfo")
     var accountInfo: AccountInfo? = null
