@@ -59,6 +59,9 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "paymentAmount")
     var paymentAmount: Double? = null
 
+    @field:Json(name = "pdfUrl")
+    var pdfUrl: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         paymentStatus = parcel.readString()
@@ -78,6 +81,7 @@ class StatementInfo() : Parcelable {
         amount = parcel.readValue(Double::class.java.classLoader) as? Double
         minimumAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         paymentAmount = parcel.readValue(Double::class.java.classLoader) as? Double
+        pdfUrl = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -99,6 +103,7 @@ class StatementInfo() : Parcelable {
         parcel.writeValue(amount)
         parcel.writeValue(minimumAmount)
         parcel.writeValue(paymentAmount)
+        parcel.writeString(pdfUrl)
     }
 
     override fun describeContents(): Int {
