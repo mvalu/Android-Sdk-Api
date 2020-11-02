@@ -10,6 +10,8 @@ import com.mvalu.bettr_api.payment.detail.PaymentDetailResult
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryApiResponse
 import com.mvalu.bettr_api.payment.summary.PaymentSummaryResult
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object Payment : ApiSdkBase() {
     private const val TAG = "Payments"
@@ -124,20 +126,20 @@ object Payment : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
-                paymentSummaryCallback?.onError(errorMessage)
+                paymentSummaryCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.PAYMENT_SUMMARY_API -> {
-                generateOrderCallback?.onError(errorMessage)
+                generateOrderCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
-                paymentStatusCallback?.onError(errorMessage)
+                paymentStatusCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.PAYMENT_DETAILS_API -> {
-                paymentDetailsCallback?.onError(errorMessage)
+                paymentDetailsCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -146,16 +148,28 @@ object Payment : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
-                paymentSummaryCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentSummaryCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.PAYMENT_SUMMARY_API -> {
-                generateOrderCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                generateOrderCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
-                paymentStatusCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentStatusCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.PAYMENT_DETAILS_API -> {
-                paymentDetailsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentDetailsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -164,16 +178,28 @@ object Payment : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
-                paymentSummaryCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentSummaryCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.PAYMENT_SUMMARY_API -> {
-                generateOrderCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                generateOrderCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
-                paymentStatusCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentStatusCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.PAYMENT_DETAILS_API -> {
-                paymentDetailsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentDetailsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -182,16 +208,28 @@ object Payment : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.PAYMENT_SUMMARY_API -> {
-                paymentSummaryCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentSummaryCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.PAYMENT_SUMMARY_API -> {
-                generateOrderCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                generateOrderCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.CHECK_PAYMENT_STATUS_API -> {
-                paymentStatusCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentStatusCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.PAYMENT_DETAILS_API -> {
-                paymentDetailsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentDetailsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

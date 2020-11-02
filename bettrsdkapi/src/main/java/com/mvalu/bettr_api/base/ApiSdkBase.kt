@@ -3,6 +3,7 @@ package com.mvalu.bettr_api.base
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.network.ServiceApi
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,15 +35,15 @@ abstract class ApiSdkBase {
                         onApiSuccess(apiTag, httpResponse.body()!!)
                     } else {
                         var errorResponse = httpResponse.errorBody()
-                        when (httpResponse.code()) {
+                        when (val errorCode = httpResponse.code()) {
                             401 -> {
                                 onAuthError(apiTag)
                             }
                             500 -> {
-                                onApiError(apiTag, getErrorMessage(errorResponse!!))
+                                onApiError(errorCode, apiTag, getErrorMessage(errorResponse!!))
                             }
                             else -> {
-                                onApiError(apiTag, getErrorMessage(errorResponse!!))
+                                onApiError(errorCode, apiTag, getErrorMessage(errorResponse!!))
                             }
                         }
                     }
@@ -51,7 +52,11 @@ abstract class ApiSdkBase {
                 { error: Throwable? ->
                     when (error) {
                         is HttpException -> {
-                            onApiError(apiTag, getErrorMessage(error.response()?.errorBody()!!))
+                            onApiError(
+                                NOT_SPECIFIED_ERROR_CODE,
+                                apiTag,
+                                getErrorMessage(error.response()?.errorBody()!!)
+                            )
                         }
                         is SocketTimeoutException -> {
                             onTimeout(apiTag)
@@ -60,7 +65,7 @@ abstract class ApiSdkBase {
                             onNetworkError(apiTag)
                         }
                         else -> {
-                            onApiError(apiTag, error?.message!!)
+                            onApiError(NOT_SPECIFIED_ERROR_CODE, apiTag, error?.message!!)
                         }
                     }
                 }
@@ -82,7 +87,7 @@ abstract class ApiSdkBase {
     //Api callback methods
     abstract fun onApiSuccess(apiTag: ApiTag, response: Any)
 
-    abstract fun onApiError(apiTag: ApiTag, errorMessage: String)
+    abstract fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String)
     abstract fun onTimeout(apiTag: ApiTag)
     abstract fun onNetworkError(apiTag: ApiTag)
     abstract fun onAuthError(apiTag: ApiTag)

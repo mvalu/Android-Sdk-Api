@@ -10,6 +10,8 @@ import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object AccountStatements : ApiSdkBase() {
     private const val TAG = "AccountStatements"
@@ -107,19 +109,19 @@ object AccountStatements : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.ACCOUNT_STATEMENTS_API -> {
-                accountStatementsCallback?.onError(errorMessage)
+                accountStatementsCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
-                accountStatementTransactionsCallback?.onError(errorMessage)
+                accountStatementTransactionsCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
-                accountStatementTransactionInfoCallback?.onError(errorMessage)
+                accountStatementTransactionInfoCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -131,15 +133,24 @@ object AccountStatements : ApiSdkBase() {
         )
         when (apiTag) {
             ApiTag.ACCOUNT_STATEMENTS_API -> {
-                accountStatementsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                accountStatementsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
-                accountStatementTransactionsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                accountStatementTransactionsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
-                accountStatementTransactionInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                accountStatementTransactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -151,15 +162,24 @@ object AccountStatements : ApiSdkBase() {
         )
         when (apiTag) {
             ApiTag.ACCOUNT_STATEMENTS_API -> {
-                accountStatementsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                accountStatementsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
-                accountStatementTransactionsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                accountStatementTransactionsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
-                accountStatementTransactionInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                accountStatementTransactionInfoCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -171,15 +191,24 @@ object AccountStatements : ApiSdkBase() {
         )
         when (apiTag) {
             ApiTag.ACCOUNT_STATEMENTS_API -> {
-                accountStatementsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                accountStatementsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_API -> {
-                accountStatementTransactionsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                accountStatementTransactionsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
-                accountStatementTransactionInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                accountStatementTransactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

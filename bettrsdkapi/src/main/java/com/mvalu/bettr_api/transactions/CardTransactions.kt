@@ -1,8 +1,6 @@
 package com.mvalu.bettr_api.transactions
 
 import com.mvalu.bettr_api.BettrApiSdk
-import com.mvalu.bettr_api.account_statements.AccountStatements
-import com.mvalu.bettr_api.account_statements.transactions.StatementTransactionInfo
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
@@ -12,6 +10,8 @@ import com.mvalu.bettr_api.transactions.payments.CardPaymentsResult
 import com.mvalu.bettr_api.transactions.payments.PaymentInfo
 import com.mvalu.bettr_api.transactions.payments.PaymentInfoApiResponse
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object CardTransactions : ApiSdkBase() {
     private const val TAG = "CardTransactions"
@@ -215,26 +215,26 @@ object CardTransactions : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
-                statementTransactionsCallback?.onError(errorMessage)
+                statementTransactionsCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                paymentsListCallback?.onError(errorMessage)
+                paymentsListCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
-                accountTransactionsListCallback?.onError(errorMessage)
+                accountTransactionsListCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
-                transactionAnalysisCallback?.onError(errorMessage)
+                transactionAnalysisCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.PAYMENT_INFO_API -> {
-                paymentInfoCallback?.onError(errorMessage)
+                paymentInfoCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.TRANSACTION_INFO_API -> {
-                transactionInfoCallback?.onError(errorMessage)
+                transactionInfoCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -246,22 +246,40 @@ object CardTransactions : ApiSdkBase() {
         )
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                statementTransactionsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                paymentsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentsListCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
-                accountTransactionsListCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                accountTransactionsListCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
-                transactionAnalysisCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                transactionAnalysisCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.PAYMENT_INFO_API -> {
-                paymentInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                paymentInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.TRANSACTION_INFO_API -> {
-                transactionInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                transactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -273,22 +291,40 @@ object CardTransactions : ApiSdkBase() {
         )
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                statementTransactionsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                paymentsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentsListCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
-                accountTransactionsListCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                accountTransactionsListCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
-                transactionAnalysisCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                transactionAnalysisCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.PAYMENT_INFO_API -> {
-                paymentInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                paymentInfoCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.TRANSACTION_INFO_API -> {
-                transactionInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                transactionInfoCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -297,22 +333,40 @@ object CardTransactions : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.STATEMENT_TRANSACTIONS_API -> {
-                statementTransactionsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                statementTransactionsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.CARD_PAYMENTS_API -> {
-                paymentsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentsListCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.ACCOUNT_TRANSACTIONS_API -> {
-                accountTransactionsListCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                accountTransactionsListCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.TRANSACTIONS_ANALYSIS_API -> {
-                transactionAnalysisCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                transactionAnalysisCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.PAYMENT_INFO_API -> {
-                paymentInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                paymentInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.TRANSACTION_INFO_API -> {
-                transactionInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                transactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

@@ -6,6 +6,8 @@ import com.mvalu.bettr_api.internal.ErrorMessage
 import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object CardUser : ApiSdkBase() {
     private const val TAG = "CardUser"
@@ -15,7 +17,10 @@ object CardUser : ApiSdkBase() {
         BettrApiSdk.getAppComponent().inject(this)
     }
 
-    fun getUserDetails(cardUserRequest: CardUserRequest, cardUserCallback: ApiResponseCallback<CardUserResponse>) {
+    fun getUserDetails(
+        cardUserRequest: CardUserRequest,
+        cardUserCallback: ApiResponseCallback<CardUserResponse>
+    ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
@@ -32,11 +37,11 @@ object CardUser : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         when (apiTag) {
             ApiTag.GET_USER_API, ApiTag.UPDATE_USER_API -> {
                 BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
-                cardUserCallback?.onError(errorMessage)
+                cardUserCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -48,7 +53,10 @@ object CardUser : ApiSdkBase() {
                     TAG,
                     apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value
                 )
-                cardUserCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                cardUserCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -60,7 +68,7 @@ object CardUser : ApiSdkBase() {
                     TAG,
                     apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value
                 )
-                cardUserCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                cardUserCallback?.onError(NO_NETWORK_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
             }
         }
     }
@@ -72,7 +80,7 @@ object CardUser : ApiSdkBase() {
                     TAG,
                     apiTag.name + " " + ErrorMessage.AUTH_ERROR.value
                 )
-                cardUserCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                cardUserCallback?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

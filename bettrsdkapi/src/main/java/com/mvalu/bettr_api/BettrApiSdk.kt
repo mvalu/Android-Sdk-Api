@@ -202,7 +202,7 @@ object BettrApiSdk : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         when (apiTag) {
             ApiTag.GENERATE_ACCESS_TOKEN_API -> {
                 BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)

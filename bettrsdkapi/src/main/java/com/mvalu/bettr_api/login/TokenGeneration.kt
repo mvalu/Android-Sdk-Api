@@ -39,7 +39,7 @@ class TokenGeneration private constructor(
 
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
 
     }
 

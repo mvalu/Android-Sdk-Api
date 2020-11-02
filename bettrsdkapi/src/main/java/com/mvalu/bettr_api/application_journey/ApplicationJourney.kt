@@ -24,6 +24,8 @@ import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
 import com.mvalu.bettr_api.network.ProgressRequestBody
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -603,29 +605,29 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
-                updateLeadCallBack?.onError(errorMessage)
+                updateLeadCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.GET_LEAD_API -> {
-                getLeadCallBack?.onError(errorMessage)
+                getLeadCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.VALIDATE_PAN_API -> {
-                validatePANNumberCallBack?.onError(errorMessage)
+                validatePANNumberCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.VALIDATE_PINCODE_API -> {
-                validatePincodeCallBack?.onError(errorMessage)
+                validatePincodeCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.BUREAU_STATUS_API -> {
-                bureauStatusCallBack?.onError(errorMessage)
+                bureauStatusCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.BUREAU_QUESTION_API -> {
-                bureauQuestionCallBack?.onError(errorMessage)
+                bureauQuestionCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.BUREAU_ANSWER_API -> {
-                bureauAnswerCallBack?.onError(errorMessage)
+                bureauAnswerCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.ID_PROOF_UPLOAD_API -> {
                 uploadIdProofCallBack?.onError(errorMessage)
@@ -652,13 +654,13 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAadharBackCallBack?.onError(errorMessage)
             }
             ApiTag.VERIFY_DOCUMENTS_API -> {
-                verifyDocumentsCallBack?.onError(errorMessage)
+                verifyDocumentsCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.CHECKLIST_API -> {
-                checkListCallBack?.onError(errorMessage)
+                checkListCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
-                applicationJourneyContentCallBack?.onError(errorMessage)
+                applicationJourneyContentCallBack?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -667,25 +669,46 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
-                updateLeadCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                updateLeadCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.GET_LEAD_API -> {
-                getLeadCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                getLeadCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.VALIDATE_PAN_API -> {
-                validatePANNumberCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                validatePANNumberCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.VALIDATE_PINCODE_API -> {
-                validatePincodeCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                validatePincodeCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.BUREAU_STATUS_API -> {
-                bureauStatusCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                bureauStatusCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.BUREAU_QUESTION_API -> {
-                bureauQuestionCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                bureauQuestionCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.BUREAU_ANSWER_API -> {
-                bureauAnswerCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                bureauAnswerCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.ID_PROOF_UPLOAD_API -> {
                 uploadIdProofCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
@@ -712,13 +735,22 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAadharBackCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
             ApiTag.VERIFY_DOCUMENTS_API -> {
-                verifyDocumentsCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                verifyDocumentsCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.CHECKLIST_API -> {
-                checkListCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                checkListCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
-                applicationJourneyContentCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                applicationJourneyContentCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -727,25 +759,40 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
-                updateLeadCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                updateLeadCallBack?.onError(NO_NETWORK_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
             }
             ApiTag.GET_LEAD_API -> {
-                getLeadCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                getLeadCallBack?.onError(NO_NETWORK_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
             }
             ApiTag.VALIDATE_PAN_API -> {
-                validatePANNumberCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                validatePANNumberCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.VALIDATE_PINCODE_API -> {
-                validatePincodeCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                validatePincodeCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.BUREAU_STATUS_API -> {
-                bureauStatusCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                bureauStatusCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.BUREAU_QUESTION_API -> {
-                bureauQuestionCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                bureauQuestionCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.BUREAU_ANSWER_API -> {
-                bureauAnswerCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                bureauAnswerCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.ID_PROOF_UPLOAD_API -> {
                 uploadIdProofCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
@@ -772,13 +819,19 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAadharBackCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
             ApiTag.VERIFY_DOCUMENTS_API -> {
-                verifyDocumentsCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                verifyDocumentsCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.CHECKLIST_API -> {
-                checkListCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                checkListCallBack?.onError(NO_NETWORK_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
-                applicationJourneyContentCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+                applicationJourneyContentCallBack?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -787,25 +840,40 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.UPDATE_LEAD_API -> {
-                updateLeadCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                updateLeadCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.GET_LEAD_API -> {
-                getLeadCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                getLeadCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.VALIDATE_PAN_API -> {
-                validatePANNumberCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                validatePANNumberCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.VALIDATE_PINCODE_API -> {
-                validatePincodeCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                validatePincodeCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.BUREAU_STATUS_API -> {
-                bureauStatusCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                bureauStatusCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.BUREAU_QUESTION_API -> {
-                bureauQuestionCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                bureauQuestionCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.BUREAU_ANSWER_API -> {
-                bureauAnswerCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                bureauAnswerCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.ID_PROOF_UPLOAD_API -> {
                 uploadIdProofCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
@@ -832,13 +900,19 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAadharBackCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.VERIFY_DOCUMENTS_API -> {
-                verifyDocumentsCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                verifyDocumentsCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.CHECKLIST_API -> {
-                checkListCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                checkListCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
-                applicationJourneyContentCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+                applicationJourneyContentCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

@@ -11,6 +11,8 @@ import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackResult
 import com.mvalu.bettr_api.settings.SettingsGenericApiResponse
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object Rewards : ApiSdkBase() {
     private const val TAG = "Rewards"
@@ -159,27 +161,27 @@ object Rewards : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
-                rewardPointsCallback?.onError(errorMessage)
+                rewardPointsCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.REWARD_CASHBACKS_API -> {
-                rewardCashbacksCallback?.onError(errorMessage)
+                rewardCashbacksCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.REWARD_POINTS_SUMMARY_API -> {
-                rewardPointsSummaryCallback?.onError(errorMessage)
+                rewardPointsSummaryCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.REWARD_CASHBACK_INFO_API -> {
-                rewardCashbackInfoCallback?.onError(errorMessage)
+                rewardCashbackInfoCallback?.onError(errorCode, errorMessage)
             }
 
             ApiTag.REWARD_POINTS_REDEEM_API -> {
-                redeemPointsCallback?.onError(errorMessage)
+                redeemPointsCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -188,19 +190,34 @@ object Rewards : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
-                rewardPointsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                rewardPointsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.REWARD_CASHBACKS_API -> {
-                rewardCashbacksCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                rewardCashbacksCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.REWARD_POINTS_SUMMARY_API -> {
-                rewardPointsSummaryCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                rewardPointsSummaryCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.REWARD_CASHBACK_INFO_API -> {
-                rewardCashbackInfoCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                rewardCashbackInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
             ApiTag.REWARD_POINTS_REDEEM_API -> {
-                redeemPointsCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                redeemPointsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -209,21 +226,36 @@ object Rewards : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
-                rewardPointsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                rewardPointsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
 
             ApiTag.REWARD_CASHBACKS_API -> {
-                rewardCashbacksCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                rewardCashbacksCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
 
             ApiTag.REWARD_POINTS_SUMMARY_API -> {
-                rewardPointsSummaryCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                rewardPointsSummaryCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.REWARD_CASHBACK_INFO_API -> {
-                rewardCashbackInfoCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                rewardCashbackInfoCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
             ApiTag.REWARD_POINTS_REDEEM_API -> {
-                redeemPointsCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                redeemPointsCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -232,19 +264,34 @@ object Rewards : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.REWARD_POINTS_API -> {
-                rewardPointsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                rewardPointsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.REWARD_CASHBACKS_API -> {
-                rewardCashbacksCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                rewardCashbacksCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.REWARD_POINTS_SUMMARY_API -> {
-                rewardPointsSummaryCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                rewardPointsSummaryCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.REWARD_CASHBACK_INFO_API -> {
-                rewardCashbackInfoCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                rewardCashbackInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
             ApiTag.REWARD_POINTS_REDEEM_API -> {
-                redeemPointsCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                redeemPointsCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

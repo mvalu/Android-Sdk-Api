@@ -7,6 +7,8 @@ import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.settings.SettingsGenericApiResponse
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
+import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
+import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object PlasticCard : ApiSdkBase() {
 
@@ -48,11 +50,11 @@ object PlasticCard : ApiSdkBase() {
         }
     }
 
-    override fun onApiError(apiTag: ApiTag, errorMessage: String) {
+    override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.VERIFY_CARD_NUMBER_API -> {
-                genericResponseCallback?.onError(errorMessage)
+                genericResponseCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -61,7 +63,10 @@ object PlasticCard : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
             ApiTag.VERIFY_CARD_NUMBER_API -> {
-                genericResponseCallback?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+                genericResponseCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
             }
         }
     }
@@ -70,7 +75,10 @@ object PlasticCard : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
             ApiTag.VERIFY_CARD_NUMBER_API -> {
-                genericResponseCallback?.onError(ErrorMessage.NETWORK_ERROR.value)
+                genericResponseCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
             }
         }
     }
@@ -79,7 +87,10 @@ object PlasticCard : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.VERIFY_CARD_NUMBER_API -> {
-                genericResponseCallback?.onError(ErrorMessage.AUTH_ERROR.value)
+                genericResponseCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
             }
         }
     }

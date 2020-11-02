@@ -8,3 +8,8 @@ const val BASE_URL = "https://development-api.docker.mvalu.ml/api/"
 
 //prod
 //const val BASE_URL = "https://api.mvalu.ml/api/"
+
+
+//Network error codes
+const val NOT_SPECIFIED_ERROR_CODE = 0
+const val NO_NETWORK_ERROR_CODE = 456
