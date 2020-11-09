@@ -91,14 +91,22 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.updateLeadCallBack = updateLeadCallBack
         leadDetail.productType = PRODUCT_TYPE
-        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
-            leadDetail.userDetail?.panNumber =
-                getEncryptedPan(leadDetail.userDetail?.panNumber!!)
-        }
+        encryptLeadData(leadDetail)
         callApi(
             serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
             ApiTag.UPDATE_LEAD_API
         )
+    }
+
+    private fun encryptLeadData(leadDetail: LeadDetail) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+            leadDetail.userDetail?.panNumber =
+                getEncryptedData(leadDetail.userDetail?.panNumber!!)
+        }
+        if (!leadDetail.userDetail?.bankAccountNumber.isNullOrEmpty()) {
+            leadDetail.userDetail?.bankAccountNumber =
+                getEncryptedData(leadDetail.userDetail?.bankAccountNumber!!)
+        }
     }
 
     fun validatePANNumber(
@@ -487,18 +495,30 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
-    private fun getEncryptedPan(panNumber: String): String {
+    private fun getEncryptedData(value: String): String {
         return CryptLib().encryptPlainTextWithRandomIV(
-            panNumber,
+            value,
             CryptLib.CRYPT_KEY
         )
     }
 
-    private fun getDecryptedPan(encryptedPanNumber: String): String {
+    private fun getDecryptedData(value: String): String {
         return CryptLib().decryptCipherTextWithRandomIV(
-            encryptedPanNumber,
+            value,
             CryptLib.CRYPT_KEY
         )
+    }
+
+    private fun decryptLeadData(leadDetail: LeadDetail) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+            leadDetail.userDetail?.panNumber =
+                getDecryptedData(leadDetail.userDetail?.panNumber!!)
+        }
+
+        if (!leadDetail.userDetail?.bankAccountNumber.isNullOrEmpty()) {
+            leadDetail.userDetail?.bankAccountNumber =
+                getDecryptedData(leadDetail.userDetail?.bankAccountNumber!!)
+        }
     }
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
@@ -506,19 +526,13 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.UPDATE_LEAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead updated successfully")
                 val updateLeadApiResponse = response as LeadDetailApiResponse
-                if (!updateLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
-                    updateLeadApiResponse.results?.userDetail?.panNumber =
-                        getDecryptedPan(updateLeadApiResponse.results?.userDetail?.panNumber!!)
-                }
+                decryptLeadData(updateLeadApiResponse.results!!)
                 updateLeadCallBack?.onSuccess(updateLeadApiResponse.results!!)
             }
             ApiTag.GET_LEAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead fetched successfully")
                 val getLeadApiResponse = response as LeadDetailApiResponse
-                if (!getLeadApiResponse.results?.userDetail?.panNumber.isNullOrEmpty()) {
-                    getLeadApiResponse.results?.userDetail?.panNumber =
-                        getDecryptedPan(getLeadApiResponse.results?.userDetail?.panNumber!!)
-                }
+                decryptLeadData(getLeadApiResponse.results!!)
                 getLeadCallBack?.onSuccess(getLeadApiResponse.results!!)
             }
             ApiTag.VALIDATE_PAN_API -> {
