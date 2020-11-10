@@ -33,6 +33,7 @@ import com.mvalu.bettr_api.rewards.RewardPointsRedeemRequest
 import com.mvalu.bettr_api.rewards.RewardPointsSummaryApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackApiResponse
 import com.mvalu.bettr_api.rewards.cashback.RewardCashbackInfoApiResponse
+import com.mvalu.bettr_api.search.SearchFieldDataApiResponse
 import com.mvalu.bettr_api.settings.*
 import com.mvalu.bettr_api.settings.otp.OtpApiResponse
 import com.mvalu.bettr_api.settings.otp.OtpReSendRequest
@@ -447,4 +448,11 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<AccountInfoApiResponse>>
+
+    @GET("v1/{organizationId}/config/search/{configKey}")
+    fun getSearchFieldDataResponse(
+        @Path("organizationId") organizationId: String,
+        @Path("configKey") configKey: String,
+        @QueryMap options: Map<String, String>
+    ): Observable<Response<SearchFieldDataApiResponse>>
 }

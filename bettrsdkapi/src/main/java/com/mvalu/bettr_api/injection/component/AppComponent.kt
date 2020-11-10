@@ -10,6 +10,7 @@ import com.mvalu.bettr_api.injection.module.NetworkModule
 import com.mvalu.bettr_api.login.TokenGeneration
 import com.mvalu.bettr_api.payment.Payment
 import com.mvalu.bettr_api.rewards.Rewards
+import com.mvalu.bettr_api.search.SearchFieldData
 import com.mvalu.bettr_api.settings.Settings
 import com.mvalu.bettr_api.settings.otp.OTP
 import com.mvalu.bettr_api.settings.plastic_card.PlasticCard
@@ -36,4 +37,5 @@ interface AppComponent {
     fun inject(payment: Payment)
     fun inject(otp: OTP)
     fun inject(plasticCard: PlasticCard)
+    fun inject(searchFieldData: SearchFieldData)
 }
