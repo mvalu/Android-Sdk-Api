@@ -23,6 +23,7 @@ import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
 import com.mvalu.bettr_api.network.ProgressRequestBody
+import com.mvalu.bettr_api.utils.ApiSdkFileUtils
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
 import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
@@ -353,9 +354,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadPanCardCallBack = uploadPanCardCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadPanCardCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.PAN_UPLOAD_API,
             this
