@@ -53,6 +53,12 @@ class AccountInfo() : Parcelable {
     @field:Json(name = "activationCardList")
     var activationCardInfo: CardInfo? = null
 
+    @field:Json(name = "status")
+    var status: String? = null // Use CardStatus values here.
+
+    @field:Json(name = "userVpa")
+    var userVpa: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         organizationId = parcel.readString()
@@ -70,6 +76,8 @@ class AccountInfo() : Parcelable {
         deletedAt = parcel.readString()
         cardInfo = parcel.readParcelable(CardInfo::class.java.classLoader)
         activationCardInfo = parcel.readParcelable(CardInfo::class.java.classLoader)
+        status = parcel.readString()
+        userVpa = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -89,6 +97,8 @@ class AccountInfo() : Parcelable {
         parcel.writeString(deletedAt)
         parcel.writeParcelable(cardInfo, flags)
         parcel.writeParcelable(activationCardInfo, flags)
+        parcel.writeString(status)
+        parcel.writeString(userVpa)
     }
 
     override fun describeContents(): Int {

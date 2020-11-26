@@ -8,5 +8,6 @@ enum class CardStatus {
     REJECTED,
     PENDING_KYC,
     TERMINATED,
-    PENDING_TERMINATION
+    PENDING_TERMINATION,
+    COMPLETE_KYC
 }
