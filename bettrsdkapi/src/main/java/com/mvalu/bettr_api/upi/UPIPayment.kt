@@ -18,6 +18,7 @@ object UPIPayment : ApiSdkBase() {
 
     private var verifyMerchantCallback: ApiResponseCallback<VerifyMerchantResult>? = null
     private var generateTokenCallback: ApiResponseCallback<UPIGenerateTokenResult>? = null
+    private var upiSetUpCallback: ApiResponseCallback<UPISetUpResult>? = null
 
     fun verifyMerchant(
         verifyMerchantCallback: ApiResponseCallback<VerifyMerchantResult>,
@@ -63,6 +64,37 @@ object UPIPayment : ApiSdkBase() {
         )
     }
 
+    fun upiSetUp(
+        upiSetUpCallback: ApiResponseCallback<UPISetUpResult>,
+        accountId: String,
+        tokenId: String,
+        appVersion: String,
+        deviceApp: String,
+        deviceModel: String,
+        deviceOs: String,
+        deviceType: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.upiSetUpCallback = upiSetUpCallback
+        val request = UPISetUpRequest().apply {
+            this.tokenId = tokenId
+            this.appVersion = appVersion
+            this.deviceApp = deviceApp
+            this.deviceModel = deviceModel
+            this.deviceOs = deviceOs
+            this.deviceType = deviceType
+        }
+        callApi(
+            serviceApi.upiSetUp(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                request
+            ), ApiTag.UPI_SETUP_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.VERIFY_MERCHANT_API -> {
@@ -76,6 +108,12 @@ object UPIPayment : ApiSdkBase() {
                 val upiGenerateTokenApiResponse = response as UPIGenerateTokenApiResponse
                 generateTokenCallback?.onSuccess(upiGenerateTokenApiResponse.results!!)
             }
+
+            ApiTag.UPI_SETUP_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "upi setup success")
+                val upiSetUpApiResponse = response as UPISetUpApiResponse
+                upiSetUpCallback?.onSuccess(upiSetUpApiResponse.results!!)
+            }
         }
     }
 
@@ -87,6 +125,9 @@ object UPIPayment : ApiSdkBase() {
             }
             ApiTag.UPI_GENERATE_TOKEN_API -> {
                 generateTokenCallback?.onError(errorCode, errorMessage)
+            }
+            ApiTag.UPI_SETUP_API -> {
+                upiSetUpCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -102,6 +143,12 @@ object UPIPayment : ApiSdkBase() {
             }
             ApiTag.UPI_GENERATE_TOKEN_API -> {
                 generateTokenCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
+            }
+            ApiTag.UPI_SETUP_API -> {
+                upiSetUpCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.API_TIMEOUT_ERROR.value
                 )
@@ -124,6 +171,12 @@ object UPIPayment : ApiSdkBase() {
                     ErrorMessage.NETWORK_ERROR.value
                 )
             }
+            ApiTag.UPI_SETUP_API -> {
+                upiSetUpCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
+            }
         }
     }
 
@@ -138,6 +191,12 @@ object UPIPayment : ApiSdkBase() {
             }
             ApiTag.UPI_GENERATE_TOKEN_API -> {
                 generateTokenCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
+            }
+            ApiTag.UPI_SETUP_API -> {
+                upiSetUpCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value
                 )
