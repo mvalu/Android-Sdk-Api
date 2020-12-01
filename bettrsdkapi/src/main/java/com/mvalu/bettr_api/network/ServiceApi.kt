@@ -47,6 +47,10 @@ import com.mvalu.bettr_api.transactions.TransactionAnalysisApiResponse
 import com.mvalu.bettr_api.transactions.TransactionInfoApiResponse
 import com.mvalu.bettr_api.transactions.payments.CardPaymentsApiResponse
 import com.mvalu.bettr_api.transactions.payments.PaymentInfoApiResponse
+import com.mvalu.bettr_api.upi.UPIGenerateTokenApiResponse
+import com.mvalu.bettr_api.upi.UPIGenerateTokenRequest
+import com.mvalu.bettr_api.upi.VerifyMerchantApiResponse
+import com.mvalu.bettr_api.upi.VerifyMerchantRequest
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -455,4 +459,18 @@ interface ServiceApi {
         @Path("configKey") configKey: String,
         @QueryMap options: Map<String, String>
     ): Observable<Response<SearchFieldDataApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/transaction/upi/verifyMerchant")
+    fun verifyMerchant(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body verifyMerchantRequest: VerifyMerchantRequest
+    ): Observable<Response<VerifyMerchantApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/transaction/upi/generateToken")
+    fun upiGenerateToken(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body upiGenerateTokenRequest: UPIGenerateTokenRequest
+    ): Observable<Response<UPIGenerateTokenApiResponse>>
 }

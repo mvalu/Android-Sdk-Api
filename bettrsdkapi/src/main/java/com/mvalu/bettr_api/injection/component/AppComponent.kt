@@ -15,6 +15,7 @@ import com.mvalu.bettr_api.settings.Settings
 import com.mvalu.bettr_api.settings.otp.OTP
 import com.mvalu.bettr_api.settings.plastic_card.PlasticCard
 import com.mvalu.bettr_api.transactions.CardTransactions
+import com.mvalu.bettr_api.upi.UPIPayment
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
@@ -38,4 +39,5 @@ interface AppComponent {
     fun inject(otp: OTP)
     fun inject(plasticCard: PlasticCard)
     fun inject(searchFieldData: SearchFieldData)
+    fun inject(upiPayment: UPIPayment)
 }
