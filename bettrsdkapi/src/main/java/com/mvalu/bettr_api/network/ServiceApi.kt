@@ -477,4 +477,11 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Body upiSetUpRequest: UPISetUpRequest
     ): Observable<Response<UPISetUpApiResponse>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/transaction/upi/payment")
+    fun makeUPIPayment(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Body upiPaymentRequest: UPIPaymentRequest
+    ): Observable<Response<UPIPaymentApiResponse>>
 }
