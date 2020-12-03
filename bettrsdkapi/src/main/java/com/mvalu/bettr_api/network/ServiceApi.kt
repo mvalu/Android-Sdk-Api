@@ -485,7 +485,7 @@ interface ServiceApi {
         @Body upiPaymentRequest: UPIPaymentRequest
     ): Observable<Response<UPIPaymentApiResponse>>
 
-    @POST("v1/{organizationId}/lms/cc/account/{accountId}/transaction/upi/recentMerchant")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/transaction/upi/recentMerchant")
     fun getRecentMerchants(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
