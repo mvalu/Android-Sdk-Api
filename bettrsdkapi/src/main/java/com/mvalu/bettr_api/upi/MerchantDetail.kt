@@ -11,4 +11,7 @@ class MerchantDetail {
 
     @field:Json(name = "upiMerchantId")
     var upiMerchantId: String? = null
+
+    @field:Json(name = "category")
+    var category: String? = null
 }

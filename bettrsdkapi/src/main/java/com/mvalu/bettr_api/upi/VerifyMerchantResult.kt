@@ -15,6 +15,12 @@ class VerifyMerchantResult() : Parcelable {
     @field:Json(name = "merchantVpa")
     var merchantVpa: String? = null
 
+    @field:Json(name = "category")
+    var category: String? = null
+
+    @field:Json(name = "createdAt")
+    var createdAt: String? = null
+
     @field:Json(name = "LmsCcAccount")
     var lmsCcAccount: AccountInfo? = null
 
@@ -22,6 +28,8 @@ class VerifyMerchantResult() : Parcelable {
         upiMerchantId = parcel.readString()
         merchantName = parcel.readString()
         merchantVpa = parcel.readString()
+        category = parcel.readString()
+        createdAt = parcel.readString()
         lmsCcAccount = parcel.readParcelable(AccountInfo::class.java.classLoader)
     }
 
@@ -29,6 +37,8 @@ class VerifyMerchantResult() : Parcelable {
         parcel.writeString(upiMerchantId)
         parcel.writeString(merchantName)
         parcel.writeString(merchantVpa)
+        parcel.writeString(category)
+        parcel.writeString(createdAt)
         parcel.writeParcelable(lmsCcAccount, flags)
     }
 
