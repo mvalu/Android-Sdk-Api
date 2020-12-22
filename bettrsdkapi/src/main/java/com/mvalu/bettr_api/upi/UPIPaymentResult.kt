@@ -9,6 +9,6 @@ class UPIPaymentResult {
     @field:Json(name = "transactionId")
     var transactionId: String? = null
 
-    @field:Json(name = "errorMessage")
-    var errorMessage: String? = null
+    @field:Json(name = "rejectedReason")
+    var rejectedReason: String? = null
 }
