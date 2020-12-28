@@ -13,5 +13,7 @@ enum class MerchantCategory(val value: String) {
     RESTAURANTS("RESTAURANTS"),
     BEVERAGES("BEVERAGES"),
     GROOMING("GROOMING"),
-    EDUCATION("EDUCATION")
+    EDUCATION("EDUCATION"),
+    INTEREST("INTEREST"),
+    LATE_FEES("LATE_FEES")
 }
