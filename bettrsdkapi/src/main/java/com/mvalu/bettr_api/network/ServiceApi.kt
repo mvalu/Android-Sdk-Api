@@ -357,7 +357,7 @@ interface ServiceApi {
         @Body checkPaymentStatusRequest: PaymentStatusRequest
     ): Observable<Response<PaymentStatusApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/image")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/imagev2")
     fun getCardImage(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
