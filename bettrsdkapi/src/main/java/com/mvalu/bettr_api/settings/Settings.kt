@@ -16,7 +16,7 @@ object Settings : ApiSdkBase() {
 
     private const val TAG = "Settings"
     private var settingsResponseCallback: ApiResponseCallback<SettingsInfo>? = null
-    private var cardImageResponseCallBack: ApiResponseCallback<String>? = null
+    private var cardImageResponseCallBack: ApiResponseCallback<CardImageResult>? = null
     private var settingsGenericResponseCallBack: ApiResponseCallback<Boolean>? = null
     private var initPinResponseCallBack: ApiResponseCallback<PinInitResult>? = null
     private var blockCardResponseCallBack: ApiResponseCallback<CardInfo>? = null
@@ -45,7 +45,7 @@ object Settings : ApiSdkBase() {
     }
 
     fun getCardImage(
-        cardImageResponseCallBack: ApiResponseCallback<String>,
+        cardImageResponseCallBack: ApiResponseCallback<CardImageResult>,
         accountId: String,
         cardId: String
     ) {
