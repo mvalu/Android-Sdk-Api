@@ -326,9 +326,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadProfilePicCallBack = uploadProfilePicCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadProfilePicCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.PROFILE_PIC_UPLOAD_API,
             this
@@ -388,9 +394,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadAadharFrontCallBack = uploadAadharFrontCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadAadharFrontCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.AADHAR_FRONT_UPLOAD_API,
             this
@@ -416,9 +428,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadAadharBackCallBack = uploadAadharBackCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadAadharBackCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.AADHAR_BACK_UPLOAD_API,
             this
