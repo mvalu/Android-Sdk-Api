@@ -242,9 +242,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadAddressProofCallBack = uploadAddressProofCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadAddressProofCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.ADDRESS_PROOF_UPLOAD_API,
             this
