@@ -85,6 +85,58 @@ class ApplicationJourneyContentResult {
 
         @field:Json(name = "lead_reject_cc")
         var leadRejectCC: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_DEDUPE_REJECTED")
+        var leadRejectCCDedupe: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_MARKET_LIST_REJECTED")
+        var leadRejectCCMarketList: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_PINCODE_REJECTED")
+        var leadRejectCCPincode: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_SERVICE_AREA_REJECTED")
+        var leadRejectCCServiceArea: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_AGE_REJECTED")
+        var leadRejectCCAge: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_SERVICE_AREA_AND_AGE_REJECTED")
+        var leadRejectCCServiceAreaAndAge: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_CIBIL_REJECTED")
+        var leadRejectCCCibil: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_CIBIL_FAILED")
+        var leadRejectCCCibilFailed: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_BUREAU_REJECTED")
+        var leadRejectCCBureau: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_QDE_REJECTED")
+        var leadRejectCCQde: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_LOCATION_REJECTED")
+        var leadRejectCCLocation: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_ACCOUNT_VERIFICATION_FAILED")
+        var leadRejectCCAccountVerification: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_RAZORPAY_ENACH_FAILED")
+        var leadRejectCCEnachFailed: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_PAN_VERIFICATION_FAILED")
+        var leadRejectCCPanVarificationFailed: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_REASON_UNKNOWN")
+        var leadRejectCCReasonUnknown: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_EMAIL_STATEMENT_FETCH_FAILED")
+        var leadRejectCCEmailStmtFetchFailed: List<ConsentDetail>? = null
+
+        @field:Json(name = "lead_reject_cc_RISK_POLICY_EXPIRED")
+        var leadRejectCCRiskPolicyExpired: List<ConsentDetail>? = null
+
     }
 
     class ConsentDetail {
