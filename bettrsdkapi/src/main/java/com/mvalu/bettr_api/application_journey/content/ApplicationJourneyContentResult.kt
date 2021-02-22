@@ -10,6 +10,9 @@ class ApplicationJourneyContentResult {
     @field:Json(name = "placehoderList")
     var placeholderList: PlaceHolderList? = null
 
+    @field:Json(name = "rangeDetail")
+    var rangeDetail: RangeDetail? = null
+
     class PlaceHolderList {
         /** These will be removed later as not in use */
         @field:Json(name = "bureau_cc_consent")
@@ -154,14 +157,23 @@ class ApplicationJourneyContentResult {
         @field:Json(name = "maritalStatus")
         var maritalStatuses: List<DropdownItem>? = null
 
+        @field:Json(name = "areYouEmployedInCompany")
+        var areYouEmployedInCompany: List<DropdownItem>? = null
+
+        @field:Json(name = "areYouEmployed")
+        var areYouEmployed: List<DropdownItem>? = null
+
+        @field:Json(name = "roleInCompany")
+        var rolesInCompany: List<DropdownItem>? = null
+
         @field:Json(name = "companyType")
         var companyTypes: List<DropdownItem>? = null
 
         @field:Json(name = "noOfEmployeeInCompany")
         var noOfEmployeesInCompany: List<DropdownItem>? = null
 
-        @field:Json(name = "roleInCompany")
-        var rolesInCompany: List<DropdownItem>? = null
+        @field:Json(name = "isOwnABusiness")
+        var doYouOwnBusinessOptions: List<DropdownItem>? = null
 
         @field:Json(name = "companyAreaOfBusiness")
         var companyAreasOfBusiness: List<DropdownItem>? = null
@@ -176,18 +188,31 @@ class ApplicationJourneyContentResult {
         var noOfEmployeesInBusiness: List<DropdownItem>? = null
 
         @field:Json(name = "ownBusiness")
-        var ownBusinesses: List<DropdownItem>? = null
+        var yourBusinessOptions: List<DropdownItem>? = null
 
         @field:Json(name = "gender")
         var genders: List<DropdownItem>? = null
-
-        @field:Json(name = "areYouEmployed")
-        var areYouEmployedOptions: List<DropdownItem>? = null
 
         @field:Json(name = "havingOfficeMail")
         var havingOfficeMailOptions: List<DropdownItem>? = null
 
         @field:Json(name = "residenceType")
         var residenceType: List<DropdownItem>? = null
+    }
+
+    class RangeDetail {
+        @field:Json(name = "takeHomeSalary")
+        var takeHomeSalary: Range? = null
+
+        @field:Json(name = "dateOfBirth")
+        var dateOfBirth: Range? = null
+    }
+
+    class Range {
+        @field:Json(name = "min")
+        var min: Int? = null
+
+        @field:Json(name = "max")
+        var max: Int? = null
     }
 }

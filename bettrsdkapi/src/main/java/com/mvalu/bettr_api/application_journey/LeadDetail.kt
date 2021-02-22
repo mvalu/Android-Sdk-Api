@@ -75,7 +75,7 @@ class LeadDetail() : Parcelable {
     @field:Json(name = "leadRejected")
     var leadRejected: Boolean? = false
 
-    @field:Json(name = "confirmLocationSubmission")
+    /*@field:Json(name = "confirmLocationSubmission")
     var confirmLocationSubmission: Boolean? = false
 
     @field:Json(name = "personalDetailSubmission")
@@ -100,7 +100,7 @@ class LeadDetail() : Parcelable {
     var pennyDropBankAccountSubmission: Boolean? = false
 
     @field:Json(name = "bankAccountVerificationCompleted")
-    var bankAccountVerificationCompleted: Boolean? = false
+    var bankAccountVerificationCompleted: Boolean? = false*/
 
     @field:Json(name = "bureauAnswer")
     var bureauAnswer: Boolean? = false
@@ -141,16 +141,6 @@ class LeadDetail() : Parcelable {
         bureauKnowledge = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         bureauVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
 
-        confirmLocationSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        personalDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        bureauConsentTaken = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        residentialAddressSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        pincodeCheckSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        incomeDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        kycDocumentSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        pennyDropBankAccountSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        bankAccountVerificationCompleted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-
         leadRejectedReason = parcel.readString()
     }
 
@@ -181,16 +171,6 @@ class LeadDetail() : Parcelable {
         parcel.writeValue(bureauKnowledge)
         parcel.writeValue(bureauVerified)
         parcel.writeString(leadRejectedReason)
-
-        parcel.writeValue(confirmLocationSubmission)
-        parcel.writeValue(personalDetailSubmission)
-        parcel.writeValue(bureauConsentTaken)
-        parcel.writeValue(residentialAddressSubmission)
-        parcel.writeValue(pincodeCheckSubmission)
-        parcel.writeValue(incomeDetailSubmission)
-        parcel.writeValue(kycDocumentSubmission)
-        parcel.writeValue(pennyDropBankAccountSubmission)
-        parcel.writeValue(bankAccountVerificationCompleted)
 
     }
 

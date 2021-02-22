@@ -106,6 +106,24 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "showErrorAndroidMessage")
     var showErrorAndroidMessage: ErrorMessage? = null
 
+    @field:Json(name = "personalDetailSubmission")
+    var personalDetailSubmission: String? = null
+
+    @field:Json(name = "residentialAddressSubmission")
+    var residentialAddressSubmission: String? = null
+
+    @field:Json(name = "incomeDetailSubmission")
+    var incomeDetailSubmission: String? = null
+
+    @field:Json(name = "incomeDocumentSubmission")
+    var incomeDocumentSubmission: String? = null
+
+    @field:Json(name = "kycDocumentSubmission")
+    var kycDocumentSubmission: String? = null
+
+    @field:Json(name = "pennyDropBankAccountSubmission")
+    var pennyDropBankAccountSubmission: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         vendorApplicationId = parcel.readString()
@@ -141,6 +159,12 @@ class ApplicationDetail() : Parcelable {
         showErrorAndroid = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         showErrorAndroidMessage = parcel.readParcelable(ErrorMessage::class.java.classLoader)
+        personalDetailSubmission = parcel.readString()
+        residentialAddressSubmission = parcel.readString()
+        incomeDetailSubmission = parcel.readString()
+        incomeDocumentSubmission = parcel.readString()
+        kycDocumentSubmission = parcel.readString()
+        pennyDropBankAccountSubmission = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -178,6 +202,12 @@ class ApplicationDetail() : Parcelable {
         parcel.writeValue(showErrorAndroid)
         parcel.writeValue(isEnachSkip)
         parcel.writeParcelable(showErrorAndroidMessage, flags)
+        parcel.writeString(personalDetailSubmission)
+        parcel.writeString(residentialAddressSubmission)
+        parcel.writeString(incomeDetailSubmission)
+        parcel.writeString(incomeDocumentSubmission)
+        parcel.writeString(kycDocumentSubmission)
+        parcel.writeString(pennyDropBankAccountSubmission)
     }
 
     override fun describeContents(): Int {

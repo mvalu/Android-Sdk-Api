@@ -293,6 +293,76 @@ class UserDetail() : Parcelable {
     @field:Json(name = "areYouEmployedInCompany")
     var employedInCompany: String? = null
 
+    @field:Json(name = "employment")
+    var employment: String? = null //WORKING_PROFESSIONAL
+
+    @field:Json(name = "companyType")
+    var companyType: String? = null //PRIVATE
+
+    @field:Json(name = "noOfEmployeeInCompany")
+    var noOfEmployeeInCompany: String? = null //0_100
+
+    @field:Json(name = "noOfEmployeeInBusiness")
+    var noOfEmployeeInBusiness: String? = null //0_100
+
+    @field:Json(name = "ownBusiness")
+    var ownBusiness: String? = null //shop_owner
+
+    @field:Json(name = "roleInCompany")
+    var roleInCompany: String? = null //SALES
+
+    @field:Json(name = "companyAreaOfBusiness")
+    var companyAreaOfBusiness: String? = null //HOSPITALITY
+
+    @field:Json(name = "typeOfBusiness")
+    var typeOfBusiness: String? = null //typeOfBusiness
+
+    @field:Json(name = "dateOfSalary")
+    var dateOfSalary: String? = null //"31"
+
+    @field:Json(name = "areYouEmployed")
+    var areYouEmployed: String? = null
+
+    @field:Json(name = "havingOfficeMail")
+    var havingOfficeMail: String? = null
+
+    @field:Json(name = "isOwnABusiness")
+    var isOwnABusiness: String? = null
+
+    @field:Json(name = "shopName")
+    var shopName: String? = null
+
+    @field:Json(name = "gstInvoice")
+    var gstInvoice: String? = null
+
+    @field:Json(name = "gstIssueCertificate")
+    var gstIssueCertificate: String? = null
+
+    @field:Json(name = "shopPhoto")
+    var shopPhoto: List<String>? = mutableListOf()
+
+    @field:Json(name = "establishmentRegistration")
+    var establishmentRegistration: String? = null
+
+    @field:Json(name = "companyIdCard")
+    var companyIdCard: String? = null
+
+    @field:Json(name = "companyBusinessCard")
+    var companyBusinessCard: String? = null
+
+    @field:Json(name = "nachRazorpayTokenId")
+    var nachRazorpayTokenId: String? = null
+
+    @field:Json(name = "isRazorpayFailed")
+    var isRazorpayFailed: Boolean? = false
+
+    @field:Json(name = "isEnachSkip")
+    var isEnachSkip: Boolean? = false
+
+    @field:Json(name = "secctionDetail")
+    var sectionDetail: SectionDetail? = null
+
+
     /**
      * Other method
      */
@@ -392,6 +462,30 @@ class UserDetail() : Parcelable {
         mapPinnedLatitude = parcel.readValue(Double::class.java.classLoader) as? Double
         mapPinnedLongitude = parcel.readValue(Double::class.java.classLoader) as? Double
         employedInCompany = parcel.readString()
+        employment = parcel.readString()
+        companyType = parcel.readString()
+        noOfEmployeeInCompany = parcel.readString()
+        noOfEmployeeInBusiness = parcel.readString()
+        ownBusiness = parcel.readString()
+        roleInCompany = parcel.readString()
+        companyAreaOfBusiness = parcel.readString()
+        typeOfBusiness = parcel.readString()
+        dateOfSalary = parcel.readString()
+        areYouEmployed = parcel.readString()
+        havingOfficeMail = parcel.readString()
+        isOwnABusiness = parcel.readString()
+        shopName = parcel.readString()
+        gstInvoice = parcel.readString()
+        gstIssueCertificate = parcel.readString()
+        parcel.readStringList(shopPhoto)
+        establishmentRegistration = parcel.readString()
+        companyIdCard = parcel.readString()
+        companyBusinessCard = parcel.readString()
+        nachRazorpayTokenId = parcel.readString()
+        isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        sectionDetail = parcel.readParcelable(SectionDetail::class.java.classLoader)
+
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -485,6 +579,29 @@ class UserDetail() : Parcelable {
         parcel.writeValue(mapPinnedLatitude)
         parcel.writeValue(mapPinnedLongitude)
         parcel.writeString(employedInCompany)
+        parcel.writeString(employment)
+        parcel.writeString(companyType)
+        parcel.writeString(noOfEmployeeInCompany)
+        parcel.writeString(noOfEmployeeInBusiness)
+        parcel.writeString(ownBusiness)
+        parcel.writeString(roleInCompany)
+        parcel.writeString(companyAreaOfBusiness)
+        parcel.writeString(typeOfBusiness)
+        parcel.writeString(dateOfSalary)
+        parcel.writeString(areYouEmployed)
+        parcel.writeString(havingOfficeMail)
+        parcel.writeString(isOwnABusiness)
+        parcel.writeString(shopName)
+        parcel.writeString(gstInvoice)
+        parcel.writeString(gstIssueCertificate)
+        parcel.writeString(establishmentRegistration)
+        parcel.writeString(companyIdCard)
+        parcel.writeString(companyBusinessCard)
+        parcel.writeString(nachRazorpayTokenId)
+        parcel.writeList(shopPhoto)
+        parcel.writeValue(isRazorpayFailed)
+        parcel.writeValue(isEnachSkip)
+        parcel.writeParcelable(sectionDetail, flags)
     }
 
     override fun describeContents(): Int {
@@ -524,6 +641,34 @@ class UserDetail() : Parcelable {
             }
 
             override fun newArray(size: Int): Array<Location?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+
+    class SectionDetail() : Parcelable {
+
+        @field:Json(name = "nextSection")
+        var nextSection: String? = null //Section.PERSONAL_DETAILS
+
+        constructor(parcel: Parcel) : this() {
+            nextSection = parcel.readString()
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(nextSection)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<SectionDetail> {
+            override fun createFromParcel(parcel: Parcel): SectionDetail {
+                return SectionDetail(parcel)
+            }
+
+            override fun newArray(size: Int): Array<SectionDetail?> {
                 return arrayOfNulls(size)
             }
         }
