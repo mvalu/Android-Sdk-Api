@@ -250,6 +250,22 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
+    @POST("v1/{organizationId}/upload/single/companyIdCard")
+    fun uploadCompanyIDCard(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/companyBusinessCard")
+    fun uploadCompanyBusinessCard(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
     @POST("v1/{organizationId}/upload/single/aadharCardBack")
     fun uploadAadharBack(
         @Path("organizationId") organizationId: String,
