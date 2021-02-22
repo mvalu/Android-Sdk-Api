@@ -61,6 +61,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var uploadAadharBackCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
         null
+    private var uploadCompanyIDCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadCompanyBusinessCardCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
     private var verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>? =
         null
     private var checkListCallBack: ApiResponseCallback<CheckListResult>? =
@@ -564,8 +568,86 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
     }
 
+    fun uploadCompanyIDCard(
+        fileUri: Uri, file: File,
+        uploadCompanyIDCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadCompanyIDCallBack = uploadCompanyIDCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadCompanyIDCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadCompanyIDCard(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API
+        )
+    }
+
+    fun uploadCompanyBusinessCard(
+        fileUri: Uri, file: File,
+        uploadCompanyBusinessCardCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadCompanyBusinessCardCallBack = uploadCompanyBusinessCardCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadCompanyBusinessCardCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadCompanyBusinessCard(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "company id uploaded successfully")
+                val companyIdUploadApiResponse = response as DocumentUploadApiResponse
+                uploadCompanyIDCallBack?.onSuccess(companyIdUploadApiResponse.results!!)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "company business card uploaded successfully")
+                val companyBusinessCardUploadApiResponse = response as DocumentUploadApiResponse
+                uploadCompanyBusinessCardCallBack?.onSuccess(companyBusinessCardUploadApiResponse.results!!)
+            }
             ApiTag.UPDATE_LEAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead updated successfully")
                 val updateLeadApiResponse = response as LeadDetailApiResponse
@@ -665,6 +747,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                uploadCompanyIDCallBack?.onError(errorMessage)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                uploadCompanyBusinessCardCallBack?.onError(errorMessage)
+            }
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(errorCode, errorMessage)
             }
@@ -725,6 +813,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onTimeout(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                uploadCompanyIDCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                uploadCompanyBusinessCardCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
@@ -815,6 +909,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onNetworkError(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                uploadCompanyIDCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                uploadCompanyBusinessCardCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(NO_NETWORK_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
             }
@@ -896,6 +996,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onAuthError(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                uploadCompanyIDCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                uploadCompanyBusinessCardCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
             ApiTag.UPDATE_LEAD_API -> {
                 updateLeadCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
@@ -976,6 +1082,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     override fun onProgressUpdate(percentage: Int, apiTag: ApiTag) {
         when (apiTag) {
+            ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
+                uploadCompanyIDCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
+                uploadCompanyBusinessCardCallBack?.progressUpdate(percentage)
+            }
             ApiTag.ID_PROOF_UPLOAD_API -> {
                 uploadIdProofCallBack?.progressUpdate(percentage)
             }
