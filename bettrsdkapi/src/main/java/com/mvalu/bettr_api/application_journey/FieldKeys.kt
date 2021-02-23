@@ -42,14 +42,15 @@ enum class FieldKeys(val value: String) {
     COMPANY_BUSINESS_CARD("companyBusinessCard"),
     GST_INVOICE("gstInvoice"),
     GST_ISSUE_CERTIFICATE("gstIssueCertificate"),
-    SHOP_HPOTO("shopPhoto"),
+    SHOP_PHOTO_INSIDE("shopPhotoInside"),
+    SHOP_PHOTO_OUTSIDE("shopPhotoOutside"),
     ESTABLISHMENT_REGISTRATION("establishmentRegistration"),
 
     /*** kyc documents section */
     PAN("pan"),
     AADHAR_CARD("aadharCard"),
     AADHAR_CARD_BACK("aadharCardBack"),
-    ADDRESS_PROOF("currentAddressProof"),
+    ADDRESS_PROOF("addressProof"),
     SELFIE("photo"),
 
     /*** kyc documents section */

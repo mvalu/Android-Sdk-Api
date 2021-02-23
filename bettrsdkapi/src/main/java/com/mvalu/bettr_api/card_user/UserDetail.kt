@@ -113,9 +113,6 @@ class UserDetail() : Parcelable {
     @field:Json(name = "residenceSince")
     var residenceSince: String? = null
 
-//    @field:Json(name = "pincode")
-//    var pinCode: String? = null//We won't use this
-
     @field:Json(name = "professionType")
     var professionType: String? = null
 
@@ -338,8 +335,11 @@ class UserDetail() : Parcelable {
     @field:Json(name = "gstIssueCertificate")
     var gstIssueCertificate: String? = null
 
-    @field:Json(name = "shopPhoto")
-    var shopPhoto: List<String>? = mutableListOf()
+    @field:Json(name = "shopPhotoInside")
+    var shopPhotoInside: List<String>? = mutableListOf()
+
+    @field:Json(name = "shopPhotoOutside")
+    var shopPhotoOutside: List<String>? = mutableListOf()
 
     @field:Json(name = "establishmentRegistration")
     var establishmentRegistration: String? = null
@@ -391,6 +391,7 @@ class UserDetail() : Parcelable {
         email = parcel.readString()
         location = parcel.readParcelable(Location::class.java.classLoader)
         panNumber = parcel.readString()
+        panImage = parcel.readString()
         aadharNumber = parcel.readString()
         aadharCard = parcel.readString()
         photo = parcel.readString()
@@ -420,6 +421,7 @@ class UserDetail() : Parcelable {
         modeOfSalary = parcel.readString()
         bankName = parcel.readString()
         employerName = parcel.readString()
+        designation = parcel.readString()
         timeSpentInCurrentJob = parcel.readString()
         workExperience = parcel.readString()
         fatherName = parcel.readString()
@@ -477,7 +479,8 @@ class UserDetail() : Parcelable {
         shopName = parcel.readString()
         gstInvoice = parcel.readString()
         gstIssueCertificate = parcel.readString()
-        parcel.readStringList(shopPhoto)
+        parcel.readStringList(shopPhotoInside)
+        parcel.readStringList(shopPhotoOutside)
         establishmentRegistration = parcel.readString()
         companyIdCard = parcel.readString()
         companyBusinessCard = parcel.readString()
@@ -508,6 +511,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(email)
         parcel.writeParcelable(location, flags)
         parcel.writeString(panNumber)
+        parcel.writeString(panImage)
         parcel.writeString(aadharNumber)
         parcel.writeString(aadharCard)
         parcel.writeString(photo)
@@ -537,6 +541,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(modeOfSalary)
         parcel.writeString(bankName)
         parcel.writeString(employerName)
+        parcel.writeString(designation)
         parcel.writeString(timeSpentInCurrentJob)
         parcel.writeString(workExperience)
         parcel.writeString(fatherName)
@@ -594,11 +599,12 @@ class UserDetail() : Parcelable {
         parcel.writeString(shopName)
         parcel.writeString(gstInvoice)
         parcel.writeString(gstIssueCertificate)
+        parcel.writeList(shopPhotoInside)
+        parcel.writeList(shopPhotoOutside)
         parcel.writeString(establishmentRegistration)
         parcel.writeString(companyIdCard)
         parcel.writeString(companyBusinessCard)
         parcel.writeString(nachRazorpayTokenId)
-        parcel.writeList(shopPhoto)
         parcel.writeValue(isRazorpayFailed)
         parcel.writeValue(isEnachSkip)
         parcel.writeParcelable(sectionDetail, flags)
