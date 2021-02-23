@@ -6,6 +6,8 @@ import com.squareup.moshi.Json
 
 class ApplicationDetail() : Parcelable {
 
+    val SECTION_COMPLETED = "COMPLETED" //Value to be sent for section complete flags
+
     @field:Json(name = "id")
     var id: String? = null
 

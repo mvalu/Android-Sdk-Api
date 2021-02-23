@@ -619,16 +619,26 @@ class UserDetail() : Parcelable {
     }
 
     class Location() : Parcelable {
-        @JvmSuppressWildcards
-        @field:Json(name = "coordinates")
-        var coordinates: List<Any>? = null
+
+        @field:Json(name = "latitude")
+        var latitude: Double? = null
+
+        @field:Json(name = "longitude")
+        var longitude: Double? = null
+
+        @field:Json(name = "address")
+        var address: String? = null
 
         constructor(parcel: Parcel) : this() {
-            coordinates = parcel.readArrayList(Location::class.java.classLoader)
+            latitude = parcel.readValue(Double::class.java.classLoader) as? Double
+            longitude = parcel.readValue(Double::class.java.classLoader) as? Double
+            address = parcel.readString()
         }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeList(coordinates)
+            parcel.writeValue(latitude)
+            parcel.writeValue(longitude)
+            parcel.writeString(address)
         }
 
         override fun describeContents(): Int {
@@ -644,6 +654,7 @@ class UserDetail() : Parcelable {
                 return arrayOfNulls(size)
             }
         }
+
     }
 
     class SectionDetail() : Parcelable {
