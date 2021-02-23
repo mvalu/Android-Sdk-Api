@@ -1,6 +1,6 @@
 package com.mvalu.bettr_api.application_journey
 
-enum class FieldKeys(val value: String) {
+enum class FieldKey(val value: String) {
     /*** Personal details section */
     GENDER("gender"),
     FIRST_NAME("firstName"),
