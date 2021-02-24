@@ -266,6 +266,46 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
+    @POST("v1/{organizationId}/upload/single/gstInvoice")
+    fun uploadGSTInvoice(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/gstIssueCertificate")
+    fun uploadGSTIssueCertificate(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/shopPhotoInside")
+    fun uploadShopInside(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/shopPhotoOutside")
+    fun uploadShopOutside(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/establishmentRegistration")
+    fun uploadShopRegistration(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
     @POST("v1/{organizationId}/upload/single/aadharCardBack")
     fun uploadAadharBack(
         @Path("organizationId") organizationId: String,
