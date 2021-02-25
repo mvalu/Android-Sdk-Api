@@ -65,6 +65,16 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var uploadCompanyBusinessCardCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
         null
+    private var uploadGSTInvoiceCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadGSTIssueCertificateCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadShopInsideCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadShopOutsideCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
+    private var uploadShopRegistrationCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>? =
+        null
     private var verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>? =
         null
     private var checkListCallBack: ApiResponseCallback<CheckListResult>? =
@@ -631,13 +641,216 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             MultipartBody.FORM, "file"
         )
         callApi(
-            serviceApi.uploadCompanyBusinessCard(BettrApiSdk.getOrganizationId(), description, body),
+            serviceApi.uploadCompanyBusinessCard(
+                BettrApiSdk.getOrganizationId(),
+                description,
+                body
+            ),
             ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API
+        )
+    }
+
+    fun uploadGSTInvoice(
+        fileUri: Uri, file: File,
+        uploadGSTInvoiceCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadGSTInvoiceCallBack = uploadGSTInvoiceCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadGSTInvoiceCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.GST_INVOICE_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadGSTInvoice(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.GST_INVOICE_UPLOAD_API
+        )
+    }
+
+    fun uploadGSTIssueCertificate(
+        fileUri: Uri, file: File,
+        uploadGSTIssueCertificateCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadGSTIssueCertificateCallBack = uploadGSTIssueCertificateCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadGSTIssueCertificateCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadGSTIssueCertificate(
+                BettrApiSdk.getOrganizationId(),
+                description,
+                body
+            ),
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API
+        )
+    }
+
+    fun uploadShopInsidePhoto(
+        fileUri: Uri, file: File,
+        uploadShopInsideCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadShopInsideCallBack = uploadShopInsideCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadShopInsideCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadShopInside(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API
+        )
+    }
+
+    fun uploadShopOutsidePhoto(
+        fileUri: Uri, file: File,
+        uploadShopOutsideCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadShopOutsideCallBack = uploadShopOutsideCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadShopOutsideCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadShopOutside(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API
+        )
+    }
+
+    fun uploadShopRegistrationPhoto(
+        fileUri: Uri, file: File,
+        uploadShopRegistrationCallBack: DocumentUploadApiResponseCallback<DocumentUploadResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadShopRegistrationCallBack = uploadShopRegistrationCallBack
+
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadShopRegistrationCallBack.onError("No MimeType found")
+            return
+        }
+
+        // create RequestBody instance from file
+        val requestFile = ProgressRequestBody(
+            mimeType,
+            file,
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API,
+            this
+        )
+        // MultipartBody.Part is used to send also the actual file name
+        val body = MultipartBody.Part.createFormData("fileData", file.name, requestFile)
+
+        val description = RequestBody.create(
+            MultipartBody.FORM, "file"
+        )
+        callApi(
+            serviceApi.uploadShopRegistration(BettrApiSdk.getOrganizationId(), description, body),
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API
         )
     }
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "gst invoice uploaded successfully")
+                val gstInvoiceUploadApiResponse = response as DocumentUploadApiResponse
+                uploadGSTInvoiceCallBack?.onSuccess(gstInvoiceUploadApiResponse.results!!)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "gst issue certificate uploaded successfully")
+                val gstIssueCertificateUploadApiResponse = response as DocumentUploadApiResponse
+                uploadGSTIssueCertificateCallBack?.onSuccess(gstIssueCertificateUploadApiResponse.results!!)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "shop inside photo uploaded successfully")
+                val shopInsideUploadApiResponse = response as DocumentUploadApiResponse
+                uploadShopInsideCallBack?.onSuccess(shopInsideUploadApiResponse.results!!)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "shop outside photo uploaded successfully")
+                val shopOutsideUploadApiResponse = response as DocumentUploadApiResponse
+                uploadShopOutsideCallBack?.onSuccess(shopOutsideUploadApiResponse.results!!)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "shop registration photo uploaded successfully")
+                val shopRegistrationUploadApiResponse = response as DocumentUploadApiResponse
+                uploadShopRegistrationCallBack?.onSuccess(shopRegistrationUploadApiResponse.results!!)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "company id uploaded successfully")
                 val companyIdUploadApiResponse = response as DocumentUploadApiResponse
@@ -747,6 +960,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                uploadGSTInvoiceCallBack?.onError(errorMessage)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                uploadGSTIssueCertificateCallBack?.onError(errorMessage)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopInsideCallBack?.onError(errorMessage)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopOutsideCallBack?.onError(errorMessage)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                uploadShopRegistrationCallBack?.onError(errorMessage)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 uploadCompanyIDCallBack?.onError(errorMessage)
             }
@@ -813,6 +1041,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onTimeout(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                uploadGSTInvoiceCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                uploadGSTIssueCertificateCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopInsideCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopOutsideCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                uploadShopRegistrationCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 uploadCompanyIDCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }
@@ -909,6 +1152,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onNetworkError(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                uploadGSTInvoiceCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                uploadGSTIssueCertificateCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopInsideCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopOutsideCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                uploadShopRegistrationCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 uploadCompanyIDCallBack?.onError(ErrorMessage.NETWORK_ERROR.value)
             }
@@ -996,6 +1254,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onAuthError(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                uploadGSTInvoiceCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                uploadGSTIssueCertificateCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopInsideCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopOutsideCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                uploadShopRegistrationCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 uploadCompanyIDCallBack?.onError(ErrorMessage.AUTH_ERROR.value)
             }
@@ -1082,6 +1355,21 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     override fun onProgressUpdate(percentage: Int, apiTag: ApiTag) {
         when (apiTag) {
+            ApiTag.GST_INVOICE_UPLOAD_API -> {
+                uploadGSTInvoiceCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.GST_ISSUE_CERTIFICATE_UPLOAD_API -> {
+                uploadGSTIssueCertificateCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.SHOP_INSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopInsideCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.SHOP_OUTSIDE_PHOTO_UPLOAD_API -> {
+                uploadShopOutsideCallBack?.progressUpdate(percentage)
+            }
+            ApiTag.SHOP_REGISTRATION_PHOTO_UPLOAD_API -> {
+                uploadShopRegistrationCallBack?.progressUpdate(percentage)
+            }
             ApiTag.COMPANY_ID_CARD_UPLOAD_API -> {
                 uploadCompanyIDCallBack?.progressUpdate(percentage)
             }
