@@ -321,7 +321,7 @@ class UserDetail() : Parcelable {
     var areYouEmployed: String? = null
 
     @field:Json(name = "havingOfficeMail")
-    var havingOfficeMail: String? = null
+    var havingOfficeMail: Boolean? = null
 
     @field:Json(name = "isOwnABusiness")
     var isOwnABusiness: String? = null
@@ -474,7 +474,7 @@ class UserDetail() : Parcelable {
         typeOfBusiness = parcel.readString()
         dateOfSalary = parcel.readString()
         areYouEmployed = parcel.readString()
-        havingOfficeMail = parcel.readString()
+        havingOfficeMail = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isOwnABusiness = parcel.readString()
         shopName = parcel.readString()
         gstInvoice = parcel.readString()
@@ -594,7 +594,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(typeOfBusiness)
         parcel.writeString(dateOfSalary)
         parcel.writeString(areYouEmployed)
-        parcel.writeString(havingOfficeMail)
+        parcel.writeValue(havingOfficeMail)
         parcel.writeString(isOwnABusiness)
         parcel.writeString(shopName)
         parcel.writeString(gstInvoice)
