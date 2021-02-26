@@ -23,7 +23,7 @@ class CheckListResult {
         var kycDocument: CheckListCompletedItemDetail? = null
 
         @field:Json(name = "pennyDropBankAccount")
-        var pennyDropBankAccount: CheckListCompletedItemDetail? = null
+        var bankVerification: CheckListCompletedItemDetail? = null
     }
 
     class CheckListCompletedItemDetail {
