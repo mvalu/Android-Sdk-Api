@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.application_journey
 
 import android.net.Uri
+import com.mvalu.bettr_api.BankAccountIFSCResponseModel
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.PRODUCT_TYPE
 import com.mvalu.bettr_api.application_journey.bureau.*
@@ -82,6 +83,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     private var applicationJourneyContentCallBack: ApiResponseCallback<ApplicationJourneyContentResult>? =
         null
     private var branchDetailsCallBack: ApiResponseCallback<List<BranchDetail>>? =
+        null
+    private var ifscDetailsCallBack: ApiResponseCallback<List<BankAccountIFSCResponseModel.IFSC>>? =
         null
 
     fun getLead(
@@ -849,6 +852,24 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun getIFSC(
+        bankName: String,
+        branchName: String,
+        cityName: String,
+        ifscDetailsCallBack: ApiResponseCallback<List<BankAccountIFSCResponseModel.IFSC>>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.ifscDetailsCallBack = ifscDetailsCallBack
+        callApi(
+            serviceApi.getIFSCFromBankDetails(BettrApiSdk.getOrganizationId(),
+                "$bankName $branchName $cityName"
+            ),
+            ApiTag.IFSC_DETAILS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.GST_INVOICE_UPLOAD_API -> {
@@ -984,6 +1005,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val branchDetailsApiResponse = response as IFSCCityAndBranchApiResponse
                 branchDetailsCallBack?.onSuccess(branchDetailsApiResponse.results!!)
             }
+            ApiTag.IFSC_DETAILS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "ifsc details fetched successfully")
+                val ifscDetailsApiResponse = response as BankAccountIFSCResponseModel
+                ifscDetailsCallBack?.onSuccess(ifscDetailsApiResponse.results!!)
+            }
         }
     }
 
@@ -1067,6 +1093,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.BRANCH_DETAILS_API -> {
                 branchDetailsCallBack?.onError(errorCode, errorMessage)
+            }
+            ApiTag.IFSC_DETAILS_API -> {
+                ifscDetailsCallBack?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -1185,6 +1214,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     ErrorMessage.API_TIMEOUT_ERROR.value
                 )
             }
+            ApiTag.IFSC_DETAILS_API -> {
+                ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -1293,6 +1326,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     ErrorMessage.NETWORK_ERROR.value
                 )
             }
+            ApiTag.IFSC_DETAILS_API -> {
+                ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -1400,6 +1437,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value
                 )
+            }
+            ApiTag.IFSC_DETAILS_API -> {
+                ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value)
             }
         }
     }

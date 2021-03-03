@@ -1,8 +1,10 @@
 package com.mvalu.bettr_api.network
 
+import com.mvalu.bettr_api.BankAccountIFSCResponseModel
 import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
+import com.mvalu.bettr_api.application_journey.IFSCCityAndBranchApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.*
@@ -550,6 +552,12 @@ interface ServiceApi {
     @GET("v1/{organizationId}/config/search/ifsc-ifsc.config")
     fun getBranchDetailsFromIFSC(
         @Path("organizationId") organizationId: String,
-        @Path("q") ifscCode: String
-    ): Observable<Response<RecentMerchantsApiResponse>>
+        @Query("q") ifscCode: String
+    ): Observable<Response<IFSCCityAndBranchApiResponse>>
+
+    @GET("v1/{organizationId}/config/search/ifsc.config")
+    fun getIFSCFromBankDetails(
+        @Path("organizationId") organizationId: String,
+        @Query("q") q: String
+    ): Observable<Response<BankAccountIFSCResponseModel>>
 }
