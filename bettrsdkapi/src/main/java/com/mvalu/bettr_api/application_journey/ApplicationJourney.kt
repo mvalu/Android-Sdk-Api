@@ -124,6 +124,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             leadDetail.userDetail?.bankAccountNumber =
                 getEncryptedData(leadDetail.userDetail?.bankAccountNumber!!)
         }
+        if (!leadDetail.userDetail?.bankIfsc.isNullOrEmpty()) {
+            leadDetail.userDetail?.bankIfsc =
+                getEncryptedData(leadDetail.userDetail?.bankIfsc!!)
+        }
     }
 
     fun validatePANNumber(
@@ -577,6 +581,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         if (!leadDetail.userDetail?.bankAccountNumber.isNullOrEmpty()) {
             leadDetail.userDetail?.bankAccountNumber =
                 getDecryptedData(leadDetail.userDetail?.bankAccountNumber!!)
+        }
+
+        if (!leadDetail.userDetail?.bankIfsc.isNullOrEmpty()) {
+            leadDetail.userDetail?.bankIfsc =
+                getDecryptedData(leadDetail.userDetail?.bankIfsc!!)
         }
     }
 
