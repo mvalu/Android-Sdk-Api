@@ -546,4 +546,10 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<RecentMerchantsApiResponse>>
+
+    @GET("v1/{organizationId}/config/search/ifsc-ifsc.config")
+    fun getBranchDetailsFromIFSC(
+        @Path("organizationId") organizationId: String,
+        @Path("q") ifscCode: String
+    ): Observable<Response<RecentMerchantsApiResponse>>
 }

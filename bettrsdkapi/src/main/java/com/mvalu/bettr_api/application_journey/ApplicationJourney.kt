@@ -81,6 +81,8 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var applicationJourneyContentCallBack: ApiResponseCallback<ApplicationJourneyContentResult>? =
         null
+    private var branchDetailsCallBack: ApiResponseCallback<List<BranchDetail>>? =
+        null
 
     fun getLead(
         leadId: String,
@@ -824,6 +826,20 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun getBranchDetailsFromIFSC(
+        ifscCode: String,
+        branchDetailsCallback: ApiResponseCallback<List<BranchDetail>>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.branchDetailsCallBack = branchDetailsCallback
+        callApi(
+            serviceApi.getBranchDetailsFromIFSC(BettrApiSdk.getOrganizationId(), ifscCode),
+            ApiTag.BRANCH_DETAILS_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.GST_INVOICE_UPLOAD_API -> {
@@ -954,6 +970,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     response as ApplicationJourneyContentApiResponse
                 applicationJourneyContentCallBack?.onSuccess(applicationJourneyContentResponse.results!!)
             }
+            ApiTag.BRANCH_DETAILS_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "branch details fetched successfully")
+                val branchDetailsApiResponse = response as IFSCCityAndBranchApiResponse
+                branchDetailsCallBack?.onSuccess(branchDetailsApiResponse.results!!)
+            }
         }
     }
 
@@ -1034,6 +1055,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
                 applicationJourneyContentCallBack?.onError(errorCode, errorMessage)
+            }
+            ApiTag.BRANCH_DETAILS_API -> {
+                branchDetailsCallBack?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -1146,6 +1170,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     ErrorMessage.API_TIMEOUT_ERROR.value
                 )
             }
+            ApiTag.BRANCH_DETAILS_API -> {
+                branchDetailsCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
+            }
         }
     }
 
@@ -1248,6 +1278,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                     ErrorMessage.NETWORK_ERROR.value
                 )
             }
+            ApiTag.BRANCH_DETAILS_API -> {
+                branchDetailsCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
+            }
         }
     }
 
@@ -1346,6 +1382,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.APPLICATION_JOURNEY_CONTENT_API -> {
                 applicationJourneyContentCallBack?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
+            }
+            ApiTag.BRANCH_DETAILS_API -> {
+                branchDetailsCallBack?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value
                 )
