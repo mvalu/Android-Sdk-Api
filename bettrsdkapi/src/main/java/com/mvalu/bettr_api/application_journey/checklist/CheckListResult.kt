@@ -10,7 +10,7 @@ class CheckListResult {
         @field:Json(name = "personalDetail")
         var personalDetail: CheckListCompletedItemDetail? = null
 
-        @field:Json(name = "residentialDetail")
+        @field:Json(name = "residentialAddress")
         var residentialDetail: CheckListCompletedItemDetail? = null
 
         @field:Json(name = "incomeDetail")
@@ -22,7 +22,7 @@ class CheckListResult {
         @field:Json(name = "kycDocument")
         var kycDocument: CheckListCompletedItemDetail? = null
 
-        @field:Json(name = "bankVerification")
+        @field:Json(name = "pennyDropBankAccount")
         var bankVerification: CheckListCompletedItemDetail? = null
     }
 
