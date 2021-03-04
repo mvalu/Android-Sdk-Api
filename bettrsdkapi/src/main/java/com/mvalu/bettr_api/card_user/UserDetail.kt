@@ -144,7 +144,7 @@ class UserDetail() : Parcelable {
     var panImage: String? = null
 
     @field:Json(name = "takeHomeSalary")
-    var takeHomeSalary: String? = null
+    var takeHomeSalary: Int? = null
 
     @field:Json(name = "modeOfSalary")
     var modeOfSalary: String? = null
@@ -417,7 +417,7 @@ class UserDetail() : Parcelable {
         professionType = parcel.readString()
         profession = parcel.readString()
         isExistingLoan = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        takeHomeSalary = parcel.readString()
+        takeHomeSalary = parcel.readValue(Boolean::class.java.classLoader) as? Int
         modeOfSalary = parcel.readString()
         bankName = parcel.readString()
         employerName = parcel.readString()
@@ -537,7 +537,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(professionType)
         parcel.writeString(profession)
         parcel.writeValue(isExistingLoan)
-        parcel.writeString(takeHomeSalary)
+        parcel.writeValue(takeHomeSalary)
         parcel.writeString(modeOfSalary)
         parcel.writeString(bankName)
         parcel.writeString(employerName)
