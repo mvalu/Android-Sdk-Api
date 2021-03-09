@@ -18,6 +18,7 @@ enum class FieldKey(val value: String) {
     CITY("city"),
     RESIDENCE_TYPE("residenceType"),
     LOCATION("location"),
+    BUREAU_VERIFIED("bureauVerified"),
 
     /*** Income details section */
     ARE_YOU_EMPLOYED_IN_A_COMPANY("areYouEmployedInCompany"),
