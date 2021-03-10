@@ -242,9 +242,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadAddressProofCallBack = uploadAddressProofCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadAddressProofCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.ADDRESS_PROOF_UPLOAD_API,
             this
@@ -270,9 +276,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadBankStatementCallBack = uploadBankStatementCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadBankStatementCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.BANK_STATEMENT_UPLOAD_API,
             this
@@ -298,9 +310,15 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.uploadSalarySlipCallBack = uploadSalarySlipCallBack
 
+        val mimeType = ApiSdkFileUtils.getMimeType(fileUri, BettrApiSdk.getApplicationContext())
+        if (mimeType == null) {
+            uploadSalarySlipCallBack.onError("No MimeType found")
+            return
+        }
+
         // create RequestBody instance from file
         val requestFile = ProgressRequestBody(
-            BettrApiSdk.getApplicationContext().contentResolver?.getType(fileUri)!!,
+            mimeType,
             file,
             ApiTag.SALARY_SLIP_UPLOAD_API,
             this
