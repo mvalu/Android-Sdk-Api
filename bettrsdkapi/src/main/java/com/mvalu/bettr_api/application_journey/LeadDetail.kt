@@ -133,8 +133,8 @@ class LeadDetail() : Parcelable {
 //        earnings = parcel.createTypedArrayList(EarningsItem)
         application = parcel.readParcelable(ApplicationDetail::class.java.classLoader)
         userDetail = parcel.readParcelable(UserDetail::class.java.classLoader)
-//        timeLines = readMapFromBundle(parcel.readBundle())
-        parcel.readMap(timeLines, String.javaClass.classLoader)
+        timeLines = parcel.readValue(Map::class.java.classLoader) as? Map<String, String?>
+//        parcel.readMap(timeLines, String.javaClass.classLoader)
 //        isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         leadRejected = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         bureauAnswer = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -164,7 +164,8 @@ class LeadDetail() : Parcelable {
         parcel.writeParcelable(application, flags)
         parcel.writeParcelable(userDetail, flags)
 //        parcel.writeBundle(writeMapToBundle(timeLines))
-        parcel.writeMap(timeLines)
+        parcel.writeValue(timeLines)
+//        parcel.writeMap(timeLines)
 //        parcel.writeValue(isActive)
         parcel.writeValue(leadRejected)
         parcel.writeValue(bureauAnswer)
