@@ -66,7 +66,6 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "officeMailIdVerified")
     var officeMailIdVerified: Boolean? = false
 
-
     @field:Json(name = "bankAccountNumber")
     var bankAccountNumber: String? = null
 
@@ -126,6 +125,7 @@ class ApplicationDetail() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
+        otpNumber = parcel.readString()
         vendorApplicationId = parcel.readString()
         productId = parcel.readString()
         status = parcel.readString()
@@ -135,7 +135,6 @@ class ApplicationDetail() : Parcelable {
         tenure = parcel.readString()
         brandLogo = parcel.readString()
         brandColor = parcel.readString()
-        otpNumber = parcel.readString()
         vendorDisplayName = parcel.readString()
         leadId = parcel.readString()
         isQDEFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -145,14 +144,11 @@ class ApplicationDetail() : Parcelable {
         userApplicationSubmitted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         leadRejected = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         officeMailIdVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        isBankAccountVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-
-        bankName = parcel.readString()
         bankAccountNumber = parcel.readString()
-        bankAccountNumberEditable = parcel.readString()
         bankIfsc = parcel.readString()
-        bankIfscEditable = parcel.readString()
         accountHolderName = parcel.readString()
+        isBankAccountVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        bankName = parcel.readString()
         nachRazorpayTokenId = parcel.readString()
         leadRejectedReason = parcel.readString()
         isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -188,15 +184,12 @@ class ApplicationDetail() : Parcelable {
         parcel.writeValue(userApplicationSubmitted)
         parcel.writeValue(leadRejected)
         parcel.writeValue(officeMailIdVerified)
-
-        parcel.writeValue(bankName)
-        parcel.writeValue(bankAccountNumber)
-        parcel.writeValue(bankAccountNumberEditable)
-        parcel.writeValue(bankIfsc)
-        parcel.writeValue(bankIfscEditable)
-        parcel.writeValue(accountHolderName)
+        parcel.writeString(bankAccountNumber)
+        parcel.writeString(bankIfsc)
+        parcel.writeString(accountHolderName)
         parcel.writeValue(isBankAccountVerified)
-        parcel.writeValue(nachRazorpayTokenId)
+        parcel.writeString(bankName)
+        parcel.writeString(nachRazorpayTokenId)
         parcel.writeString(leadRejectedReason)
         parcel.writeValue(isRazorpayFailed)
         parcel.writeValue(showErrorAndroid)
