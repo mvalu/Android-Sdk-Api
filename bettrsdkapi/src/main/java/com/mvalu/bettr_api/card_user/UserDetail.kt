@@ -446,10 +446,14 @@ class UserDetail() : Parcelable {
         isPermanentAddressSame = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         education = parcel.readString()
         lastEducationalInstitute = parcel.readString()
-        parcel.readStringList(bankStatement)
-        parcel.readStringList(salarySlip)
-        parcel.readStringList(idProof)
-        parcel.readStringList(addressProof)
+        bankStatement = parcel.readValue(List::class.java.classLoader) as? List<String>
+        salarySlip = parcel.readValue(List::class.java.classLoader) as? List<String>
+        idProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+        addressProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+//        parcel.readStringList(bankStatement)
+//        parcel.readStringList(salarySlip)
+//        parcel.readStringList(idProof)
+//        parcel.readStringList(addressProof)
         emailAuthToken = parcel.readString()
         isEmailTokenValid = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         panValidateId = parcel.readString()
@@ -479,8 +483,10 @@ class UserDetail() : Parcelable {
         shopName = parcel.readString()
         gstInvoice = parcel.readString()
         gstIssueCertificate = parcel.readString()
-        parcel.readStringList(shopPhotoInside)
-        parcel.readStringList(shopPhotoOutside)
+        shopPhotoInside = parcel.readValue(List::class.java.classLoader) as? List<String>
+        shopPhotoOutside = parcel.readValue(List::class.java.classLoader) as? List<String>
+//        parcel.readStringList(shopPhotoInside)
+//        parcel.readStringList(shopPhotoOutside)
         establishmentRegistration = parcel.readString()
         companyIdCard = parcel.readString()
         companyBusinessCard = parcel.readString()
@@ -566,10 +572,14 @@ class UserDetail() : Parcelable {
         parcel.writeValue(isPermanentAddressSame)
         parcel.writeString(education)
         parcel.writeString(lastEducationalInstitute)
-        parcel.writeList(bankStatement)
-        parcel.writeList(salarySlip)
-        parcel.writeList(idProof)
-        parcel.writeList(addressProof)
+        parcel.writeValue(bankStatement)
+        parcel.writeValue(salarySlip)
+        parcel.writeValue(idProof)
+        parcel.writeValue(addressProof)
+//        parcel.writeList(bankStatement)
+//        parcel.writeList(salarySlip)
+//        parcel.writeList(idProof)
+//        parcel.writeList(addressProof)
         parcel.writeString(emailAuthToken)
         parcel.writeValue(isEmailTokenValid)
         parcel.writeString(panValidateId)
@@ -599,8 +609,10 @@ class UserDetail() : Parcelable {
         parcel.writeString(shopName)
         parcel.writeString(gstInvoice)
         parcel.writeString(gstIssueCertificate)
-        parcel.writeList(shopPhotoInside)
-        parcel.writeList(shopPhotoOutside)
+        parcel.writeValue(shopPhotoInside)
+        parcel.writeValue(shopPhotoOutside)
+//        parcel.writeList(shopPhotoInside)
+//        parcel.writeList(shopPhotoOutside)
         parcel.writeString(establishmentRegistration)
         parcel.writeString(companyIdCard)
         parcel.writeString(companyBusinessCard)
