@@ -114,7 +114,7 @@ class LeadDetail() : Parcelable {
     @field:Json(name = "leadRejectedReason")
     var leadRejectedReason: String? = null
 
-    @field:Json(name = "secctionDetail")
+    @field:Json(name = "sectionDetail")
     var sectionDetail: SectionDetail? = null
 
     constructor(parcel: Parcel) : this() {
