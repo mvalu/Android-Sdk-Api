@@ -341,9 +341,6 @@ class UserDetail() : Parcelable {
     @field:Json(name = "isEnachSkip")
     var isEnachSkip: Boolean? = false
 
-    @field:Json(name = "secctionDetail")
-    var sectionDetail: SectionDetail? = null
-
 
     /**
      * Other method
@@ -468,8 +465,6 @@ class UserDetail() : Parcelable {
         nachRazorpayTokenId = parcel.readString()
         isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        sectionDetail = parcel.readParcelable(SectionDetail::class.java.classLoader)
-
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -587,7 +582,6 @@ class UserDetail() : Parcelable {
         parcel.writeString(nachRazorpayTokenId)
         parcel.writeValue(isRazorpayFailed)
         parcel.writeValue(isEnachSkip)
-        parcel.writeParcelable(sectionDetail, flags)
     }
 
     override fun describeContents(): Int {
@@ -641,33 +635,5 @@ class UserDetail() : Parcelable {
             }
         }
 
-    }
-
-    class SectionDetail() : Parcelable {
-
-        @field:Json(name = "nextSection")
-        var nextSection: String? = null //Section.PERSONAL_DETAILS
-
-        constructor(parcel: Parcel) : this() {
-            nextSection = parcel.readString()
-        }
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeString(nextSection)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<SectionDetail> {
-            override fun createFromParcel(parcel: Parcel): SectionDetail {
-                return SectionDetail(parcel)
-            }
-
-            override fun newArray(size: Int): Array<SectionDetail?> {
-                return arrayOfNulls(size)
-            }
-        }
     }
 }

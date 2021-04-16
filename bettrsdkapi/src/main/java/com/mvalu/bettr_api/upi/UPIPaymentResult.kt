@@ -11,4 +11,7 @@ class UPIPaymentResult {
 
     @field:Json(name = "rejectedReason")
     var rejectedReason: String? = null
+
+    @field:Json(name = "createdAt")
+    var createdAt: String? = null
 }

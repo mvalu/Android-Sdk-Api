@@ -9,6 +9,11 @@ const val BASE_URL = "https://development-api.docker.mvalu.ml/api/"
 //prod
 //const val BASE_URL = "https://api.mvalu.ml/api/"
 
+//testing
+//const val BASE_URL = "https://test-api.docker.mvalu.ml/api/"
+
+//testing - dynamic app journey
+//const val BASE_URL = "https://testdaj-api.docker.mvalu.ml/api/"
 
 //Network error codes
 const val NOT_SPECIFIED_ERROR_CODE = 0
