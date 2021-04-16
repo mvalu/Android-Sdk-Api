@@ -123,13 +123,13 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             leadDetail.userDetail?.panNumber =
                 getEncryptedData(leadDetail.userDetail?.panNumber!!)
         }
-        if (!leadDetail.userDetail?.bankAccountNumber.isNullOrEmpty()) {
-            leadDetail.userDetail?.bankAccountNumber =
-                getEncryptedData(leadDetail.userDetail?.bankAccountNumber!!)
+        if (!leadDetail.application?.bankAccountNumber.isNullOrEmpty()) {
+            leadDetail.application?.bankAccountNumber =
+                getEncryptedData(leadDetail.application?.bankAccountNumber!!)
         }
-        if (!leadDetail.userDetail?.bankIfsc.isNullOrEmpty()) {
-            leadDetail.userDetail?.bankIfsc =
-                getEncryptedData(leadDetail.userDetail?.bankIfsc!!)
+        if (!leadDetail.application?.bankIfsc.isNullOrEmpty()) {
+            leadDetail.application?.bankIfsc =
+                getEncryptedData(leadDetail.application?.bankIfsc!!)
         }
     }
 
@@ -581,14 +581,14 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 getDecryptedData(leadDetail.userDetail?.panNumber!!)
         }
 
-        if (!leadDetail.userDetail?.bankAccountNumber.isNullOrEmpty()) {
-            leadDetail.userDetail?.bankAccountNumber =
-                getDecryptedData(leadDetail.userDetail?.bankAccountNumber!!)
+        if (!leadDetail.application?.bankAccountNumber.isNullOrEmpty()) {
+            leadDetail.application?.bankAccountNumber =
+                getDecryptedData(leadDetail.application?.bankAccountNumber!!)
         }
 
-        if (!leadDetail.userDetail?.bankIfsc.isNullOrEmpty()) {
-            leadDetail.userDetail?.bankIfsc =
-                getDecryptedData(leadDetail.userDetail?.bankIfsc!!)
+        if (!leadDetail.application?.bankIfsc.isNullOrEmpty()) {
+            leadDetail.application?.bankIfsc =
+                getDecryptedData(leadDetail.application?.bankIfsc!!)
         }
     }
 
