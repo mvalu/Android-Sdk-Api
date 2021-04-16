@@ -73,21 +73,6 @@ class UserDetail() : Parcelable {
     @field:Json(name = "photo")
     var photo: String? = null
 
-    @field:Json(name = "bankAccountNumber")
-    var bankAccountNumber: String? = null
-
-    var bankAccountNumberEditable: String? = null
-
-    @field:Json(name = "confirmBankAccountNumber")
-    var confirmBankAccountNumber: String? = null
-
-    var confirmBankAccountNumberEditable: String? = null
-
-    @field:Json(name = "bankIfsc")
-    var bankIfsc: String? = null
-
-    var bankIfscEditable: String? = null
-
     @field:Json(name = "cancelledCheque")
     var cancelledCheque: String? = null
 
@@ -148,9 +133,6 @@ class UserDetail() : Parcelable {
 
     @field:Json(name = "modeOfSalary")
     var modeOfSalary: String? = null
-
-    @field:Json(name = "bankName")
-    var bankName: String? = null
 
     @field:Json(name = "employerName")
     var employerName: String? = null
@@ -397,10 +379,7 @@ class UserDetail() : Parcelable {
         photo = parcel.readString()
         aadharCardBack = parcel.readString()
         accountHolderName = parcel.readString()
-        bankAccountNumber = parcel.readString()
         cancelledCheque = parcel.readString()
-        bankIfsc = parcel.readString()
-        confirmBankAccountNumber = parcel.readString()
         status = parcel.readString()
         isAadharVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isPanVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -409,9 +388,6 @@ class UserDetail() : Parcelable {
         panNumberEditable = parcel.readString()
         aadharNumberEditable = parcel.readString()
         accountHolderNameEditable = parcel.readString()
-        bankAccountNumberEditable = parcel.readString()
-        confirmBankAccountNumberEditable = parcel.readString()
-        bankIfscEditable = parcel.readString()
         residenceSince = parcel.readString()
         residenceType = parcel.readString()
         professionType = parcel.readString()
@@ -419,7 +395,6 @@ class UserDetail() : Parcelable {
         isExistingLoan = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         takeHomeSalary = parcel.readValue(Boolean::class.java.classLoader) as? Int
         modeOfSalary = parcel.readString()
-        bankName = parcel.readString()
         employerName = parcel.readString()
         designation = parcel.readString()
         timeSpentInCurrentJob = parcel.readString()
@@ -523,10 +498,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(photo)
         parcel.writeString(aadharCardBack)
         parcel.writeString(accountHolderName)
-        parcel.writeString(bankAccountNumber)
         parcel.writeString(cancelledCheque)
-        parcel.writeString(bankIfsc)
-        parcel.writeString(confirmBankAccountNumber)
         parcel.writeString(status)
         parcel.writeValue(isAadharVerified)
         parcel.writeValue(isPanVerified)
@@ -535,9 +507,6 @@ class UserDetail() : Parcelable {
         parcel.writeString(panNumberEditable)
         parcel.writeString(aadharNumberEditable)
         parcel.writeString(accountHolderNameEditable)
-        parcel.writeString(bankAccountNumberEditable)
-        parcel.writeString(confirmBankAccountNumberEditable)
-        parcel.writeString(bankIfscEditable)
         parcel.writeString(residenceSince)
         parcel.writeString(residenceType)
         parcel.writeString(professionType)
@@ -545,7 +514,6 @@ class UserDetail() : Parcelable {
         parcel.writeValue(isExistingLoan)
         parcel.writeValue(takeHomeSalary)
         parcel.writeString(modeOfSalary)
-        parcel.writeString(bankName)
         parcel.writeString(employerName)
         parcel.writeString(designation)
         parcel.writeString(timeSpentInCurrentJob)
