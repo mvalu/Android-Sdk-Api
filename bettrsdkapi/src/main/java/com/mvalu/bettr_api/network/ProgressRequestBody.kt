@@ -25,7 +25,7 @@ class ProgressRequestBody(
     }
 
     override fun contentType(): MediaType? {
-        return MediaType.parse("$contentType/*");
+        return MediaType.parse(contentType);
     }
 
     override fun contentLength(): Long {

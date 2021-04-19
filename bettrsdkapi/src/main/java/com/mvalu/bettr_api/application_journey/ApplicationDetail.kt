@@ -66,7 +66,6 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "officeMailIdVerified")
     var officeMailIdVerified: Boolean? = false
 
-
     @field:Json(name = "bankAccountNumber")
     var bankAccountNumber: String? = null
 
@@ -106,8 +105,27 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "showErrorAndroidMessage")
     var showErrorAndroidMessage: ErrorMessage? = null
 
+    @field:Json(name = "personalDetailSubmission")
+    var personalDetailSubmission: String? = null
+
+    @field:Json(name = "residentialAddressSubmission")
+    var residentialAddressSubmission: String? = null
+
+    @field:Json(name = "incomeDetailSubmission")
+    var incomeDetailSubmission: String? = null
+
+    @field:Json(name = "incomeDocumentSubmission")
+    var incomeDocumentSubmission: String? = null
+
+    @field:Json(name = "kycDocumentSubmission")
+    var kycDocumentSubmission: String? = null
+
+    @field:Json(name = "pennyDropBankAccountSubmission")
+    var pennyDropBankAccountSubmission: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
+        otpNumber = parcel.readString()
         vendorApplicationId = parcel.readString()
         productId = parcel.readString()
         status = parcel.readString()
@@ -117,7 +135,6 @@ class ApplicationDetail() : Parcelable {
         tenure = parcel.readString()
         brandLogo = parcel.readString()
         brandColor = parcel.readString()
-        otpNumber = parcel.readString()
         vendorDisplayName = parcel.readString()
         leadId = parcel.readString()
         isQDEFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -127,20 +144,23 @@ class ApplicationDetail() : Parcelable {
         userApplicationSubmitted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         leadRejected = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         officeMailIdVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        isBankAccountVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-
-        bankName = parcel.readString()
         bankAccountNumber = parcel.readString()
-        bankAccountNumberEditable = parcel.readString()
         bankIfsc = parcel.readString()
-        bankIfscEditable = parcel.readString()
         accountHolderName = parcel.readString()
+        isBankAccountVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        bankName = parcel.readString()
         nachRazorpayTokenId = parcel.readString()
         leadRejectedReason = parcel.readString()
         isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         showErrorAndroid = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         showErrorAndroidMessage = parcel.readParcelable(ErrorMessage::class.java.classLoader)
+        personalDetailSubmission = parcel.readString()
+        residentialAddressSubmission = parcel.readString()
+        incomeDetailSubmission = parcel.readString()
+        incomeDocumentSubmission = parcel.readString()
+        kycDocumentSubmission = parcel.readString()
+        pennyDropBankAccountSubmission = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -164,20 +184,23 @@ class ApplicationDetail() : Parcelable {
         parcel.writeValue(userApplicationSubmitted)
         parcel.writeValue(leadRejected)
         parcel.writeValue(officeMailIdVerified)
-
-        parcel.writeValue(bankName)
-        parcel.writeValue(bankAccountNumber)
-        parcel.writeValue(bankAccountNumberEditable)
-        parcel.writeValue(bankIfsc)
-        parcel.writeValue(bankIfscEditable)
-        parcel.writeValue(accountHolderName)
+        parcel.writeString(bankAccountNumber)
+        parcel.writeString(bankIfsc)
+        parcel.writeString(accountHolderName)
         parcel.writeValue(isBankAccountVerified)
-        parcel.writeValue(nachRazorpayTokenId)
+        parcel.writeString(bankName)
+        parcel.writeString(nachRazorpayTokenId)
         parcel.writeString(leadRejectedReason)
         parcel.writeValue(isRazorpayFailed)
         parcel.writeValue(showErrorAndroid)
         parcel.writeValue(isEnachSkip)
         parcel.writeParcelable(showErrorAndroidMessage, flags)
+        parcel.writeString(personalDetailSubmission)
+        parcel.writeString(residentialAddressSubmission)
+        parcel.writeString(incomeDetailSubmission)
+        parcel.writeString(incomeDocumentSubmission)
+        parcel.writeString(kycDocumentSubmission)
+        parcel.writeString(pennyDropBankAccountSubmission)
     }
 
     override fun describeContents(): Int {

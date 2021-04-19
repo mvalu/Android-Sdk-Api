@@ -75,7 +75,7 @@ class LeadDetail() : Parcelable {
     @field:Json(name = "leadRejected")
     var leadRejected: Boolean? = false
 
-    @field:Json(name = "confirmLocationSubmission")
+    /*@field:Json(name = "confirmLocationSubmission")
     var confirmLocationSubmission: Boolean? = false
 
     @field:Json(name = "personalDetailSubmission")
@@ -100,7 +100,7 @@ class LeadDetail() : Parcelable {
     var pennyDropBankAccountSubmission: Boolean? = false
 
     @field:Json(name = "bankAccountVerificationCompleted")
-    var bankAccountVerificationCompleted: Boolean? = false
+    var bankAccountVerificationCompleted: Boolean? = false*/
 
     @field:Json(name = "bureauAnswer")
     var bureauAnswer: Boolean? = false
@@ -113,6 +113,9 @@ class LeadDetail() : Parcelable {
 
     @field:Json(name = "leadRejectedReason")
     var leadRejectedReason: String? = null
+
+    @field:Json(name = "sectionDetail")
+    var sectionDetail: SectionDetail? = null
 
     constructor(parcel: Parcel) : this() {
         productName = parcel.readString()
@@ -133,25 +136,16 @@ class LeadDetail() : Parcelable {
 //        earnings = parcel.createTypedArrayList(EarningsItem)
         application = parcel.readParcelable(ApplicationDetail::class.java.classLoader)
         userDetail = parcel.readParcelable(UserDetail::class.java.classLoader)
-//        timeLines = readMapFromBundle(parcel.readBundle())
-        parcel.readMap(timeLines, String.javaClass.classLoader)
+        timeLines = parcel.readValue(Map::class.java.classLoader) as? Map<String, String?>
+//        parcel.readMap(timeLines, String.javaClass.classLoader)
 //        isActive = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         leadRejected = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         bureauAnswer = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         bureauKnowledge = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         bureauVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
 
-        confirmLocationSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        personalDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        bureauConsentTaken = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        residentialAddressSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        pincodeCheckSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        incomeDetailSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        kycDocumentSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        pennyDropBankAccountSubmission = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        bankAccountVerificationCompleted = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-
         leadRejectedReason = parcel.readString()
+        sectionDetail = parcel.readParcelable(SectionDetail::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -174,24 +168,15 @@ class LeadDetail() : Parcelable {
         parcel.writeParcelable(application, flags)
         parcel.writeParcelable(userDetail, flags)
 //        parcel.writeBundle(writeMapToBundle(timeLines))
-        parcel.writeMap(timeLines)
+        parcel.writeValue(timeLines)
+//        parcel.writeMap(timeLines)
 //        parcel.writeValue(isActive)
         parcel.writeValue(leadRejected)
         parcel.writeValue(bureauAnswer)
         parcel.writeValue(bureauKnowledge)
         parcel.writeValue(bureauVerified)
         parcel.writeString(leadRejectedReason)
-
-        parcel.writeValue(confirmLocationSubmission)
-        parcel.writeValue(personalDetailSubmission)
-        parcel.writeValue(bureauConsentTaken)
-        parcel.writeValue(residentialAddressSubmission)
-        parcel.writeValue(pincodeCheckSubmission)
-        parcel.writeValue(incomeDetailSubmission)
-        parcel.writeValue(kycDocumentSubmission)
-        parcel.writeValue(pennyDropBankAccountSubmission)
-        parcel.writeValue(bankAccountVerificationCompleted)
-
+        parcel.writeParcelable(sectionDetail, flags)
     }
 
     override fun describeContents(): Int {

@@ -73,21 +73,6 @@ class UserDetail() : Parcelable {
     @field:Json(name = "photo")
     var photo: String? = null
 
-    @field:Json(name = "bankAccountNumber")
-    var bankAccountNumber: String? = null
-
-    var bankAccountNumberEditable: String? = null
-
-    @field:Json(name = "confirmBankAccountNumber")
-    var confirmBankAccountNumber: String? = null
-
-    var confirmBankAccountNumberEditable: String? = null
-
-    @field:Json(name = "bankIfsc")
-    var bankIfsc: String? = null
-
-    var bankIfscEditable: String? = null
-
     @field:Json(name = "cancelledCheque")
     var cancelledCheque: String? = null
 
@@ -112,9 +97,6 @@ class UserDetail() : Parcelable {
 
     @field:Json(name = "residenceSince")
     var residenceSince: String? = null
-
-//    @field:Json(name = "pincode")
-//    var pinCode: String? = null//We won't use this
 
     @field:Json(name = "professionType")
     var professionType: String? = null
@@ -147,13 +129,10 @@ class UserDetail() : Parcelable {
     var panImage: String? = null
 
     @field:Json(name = "takeHomeSalary")
-    var takeHomeSalary: String? = null
+    var takeHomeSalary: Int? = null
 
     @field:Json(name = "modeOfSalary")
     var modeOfSalary: String? = null
-
-    @field:Json(name = "bankName")
-    var bankName: String? = null
 
     @field:Json(name = "employerName")
     var employerName: String? = null
@@ -293,6 +272,76 @@ class UserDetail() : Parcelable {
     @field:Json(name = "areYouEmployedInCompany")
     var employedInCompany: String? = null
 
+    @field:Json(name = "employment")
+    var employment: String? = null //WORKING_PROFESSIONAL
+
+    @field:Json(name = "companyType")
+    var companyType: String? = null //PRIVATE
+
+    @field:Json(name = "noOfEmployeeInCompany")
+    var noOfEmployeeInCompany: String? = null //0_100
+
+    @field:Json(name = "noOfEmployeeInBusiness")
+    var noOfEmployeeInBusiness: String? = null //0_100
+
+    @field:Json(name = "ownBusiness")
+    var ownBusiness: String? = null //shop_owner
+
+    @field:Json(name = "roleInCompany")
+    var roleInCompany: String? = null //SALES
+
+    @field:Json(name = "companyAreaOfBusiness")
+    var companyAreaOfBusiness: String? = null //HOSPITALITY
+
+    @field:Json(name = "typeOfBusiness")
+    var typeOfBusiness: String? = null //typeOfBusiness
+
+    @field:Json(name = "dateOfSalary")
+    var dateOfSalary: String? = null //"31"
+
+    @field:Json(name = "areYouEmployed")
+    var areYouEmployed: String? = null
+
+    @field:Json(name = "havingOfficeMail")
+    var havingOfficeMail: Boolean? = null
+
+    @field:Json(name = "isOwnABusiness")
+    var isOwnABusiness: String? = null
+
+    @field:Json(name = "shopName")
+    var shopName: String? = null
+
+    @field:Json(name = "gstInvoice")
+    var gstInvoice: String? = null
+
+    @field:Json(name = "gstIssueCertificate")
+    var gstIssueCertificate: String? = null
+
+    @field:Json(name = "shopPhotoInside")
+    var shopPhotoInside: List<String>? = mutableListOf()
+
+    @field:Json(name = "shopPhotoOutside")
+    var shopPhotoOutside: List<String>? = mutableListOf()
+
+    @field:Json(name = "establishmentRegistration")
+    var establishmentRegistration: String? = null
+
+    @field:Json(name = "companyIdCard")
+    var companyIdCard: String? = null
+
+    @field:Json(name = "companyBusinessCard")
+    var companyBusinessCard: String? = null
+
+    @field:Json(name = "nachRazorpayTokenId")
+    var nachRazorpayTokenId: String? = null
+
+    @field:Json(name = "isRazorpayFailed")
+    var isRazorpayFailed: Boolean? = false
+
+    @field:Json(name = "isEnachSkip")
+    var isEnachSkip: Boolean? = false
+
+
     /**
      * Other method
      */
@@ -321,15 +370,13 @@ class UserDetail() : Parcelable {
         email = parcel.readString()
         location = parcel.readParcelable(Location::class.java.classLoader)
         panNumber = parcel.readString()
+        panImage = parcel.readString()
         aadharNumber = parcel.readString()
         aadharCard = parcel.readString()
         photo = parcel.readString()
         aadharCardBack = parcel.readString()
         accountHolderName = parcel.readString()
-        bankAccountNumber = parcel.readString()
         cancelledCheque = parcel.readString()
-        bankIfsc = parcel.readString()
-        confirmBankAccountNumber = parcel.readString()
         status = parcel.readString()
         isAadharVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isPanVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
@@ -338,18 +385,15 @@ class UserDetail() : Parcelable {
         panNumberEditable = parcel.readString()
         aadharNumberEditable = parcel.readString()
         accountHolderNameEditable = parcel.readString()
-        bankAccountNumberEditable = parcel.readString()
-        confirmBankAccountNumberEditable = parcel.readString()
-        bankIfscEditable = parcel.readString()
         residenceSince = parcel.readString()
         residenceType = parcel.readString()
         professionType = parcel.readString()
         profession = parcel.readString()
         isExistingLoan = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        takeHomeSalary = parcel.readString()
+        takeHomeSalary = parcel.readValue(Boolean::class.java.classLoader) as? Int
         modeOfSalary = parcel.readString()
-        bankName = parcel.readString()
         employerName = parcel.readString()
+        designation = parcel.readString()
         timeSpentInCurrentJob = parcel.readString()
         workExperience = parcel.readString()
         fatherName = parcel.readString()
@@ -374,10 +418,14 @@ class UserDetail() : Parcelable {
         isPermanentAddressSame = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         education = parcel.readString()
         lastEducationalInstitute = parcel.readString()
-        parcel.readStringList(bankStatement)
-        parcel.readStringList(salarySlip)
-        parcel.readStringList(idProof)
-        parcel.readStringList(addressProof)
+        bankStatement = parcel.readValue(List::class.java.classLoader) as? List<String>
+        salarySlip = parcel.readValue(List::class.java.classLoader) as? List<String>
+        idProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+        addressProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+//        parcel.readStringList(bankStatement)
+//        parcel.readStringList(salarySlip)
+//        parcel.readStringList(idProof)
+//        parcel.readStringList(addressProof)
         emailAuthToken = parcel.readString()
         isEmailTokenValid = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         panValidateId = parcel.readString()
@@ -392,6 +440,31 @@ class UserDetail() : Parcelable {
         mapPinnedLatitude = parcel.readValue(Double::class.java.classLoader) as? Double
         mapPinnedLongitude = parcel.readValue(Double::class.java.classLoader) as? Double
         employedInCompany = parcel.readString()
+        employment = parcel.readString()
+        companyType = parcel.readString()
+        noOfEmployeeInCompany = parcel.readString()
+        noOfEmployeeInBusiness = parcel.readString()
+        ownBusiness = parcel.readString()
+        roleInCompany = parcel.readString()
+        companyAreaOfBusiness = parcel.readString()
+        typeOfBusiness = parcel.readString()
+        dateOfSalary = parcel.readString()
+        areYouEmployed = parcel.readString()
+        havingOfficeMail = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isOwnABusiness = parcel.readString()
+        shopName = parcel.readString()
+        gstInvoice = parcel.readString()
+        gstIssueCertificate = parcel.readString()
+        shopPhotoInside = parcel.readValue(List::class.java.classLoader) as? List<String>
+        shopPhotoOutside = parcel.readValue(List::class.java.classLoader) as? List<String>
+//        parcel.readStringList(shopPhotoInside)
+//        parcel.readStringList(shopPhotoOutside)
+        establishmentRegistration = parcel.readString()
+        companyIdCard = parcel.readString()
+        companyBusinessCard = parcel.readString()
+        nachRazorpayTokenId = parcel.readString()
+        isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -414,15 +487,13 @@ class UserDetail() : Parcelable {
         parcel.writeString(email)
         parcel.writeParcelable(location, flags)
         parcel.writeString(panNumber)
+        parcel.writeString(panImage)
         parcel.writeString(aadharNumber)
         parcel.writeString(aadharCard)
         parcel.writeString(photo)
         parcel.writeString(aadharCardBack)
         parcel.writeString(accountHolderName)
-        parcel.writeString(bankAccountNumber)
         parcel.writeString(cancelledCheque)
-        parcel.writeString(bankIfsc)
-        parcel.writeString(confirmBankAccountNumber)
         parcel.writeString(status)
         parcel.writeValue(isAadharVerified)
         parcel.writeValue(isPanVerified)
@@ -431,18 +502,15 @@ class UserDetail() : Parcelable {
         parcel.writeString(panNumberEditable)
         parcel.writeString(aadharNumberEditable)
         parcel.writeString(accountHolderNameEditable)
-        parcel.writeString(bankAccountNumberEditable)
-        parcel.writeString(confirmBankAccountNumberEditable)
-        parcel.writeString(bankIfscEditable)
         parcel.writeString(residenceSince)
         parcel.writeString(residenceType)
         parcel.writeString(professionType)
         parcel.writeString(profession)
         parcel.writeValue(isExistingLoan)
-        parcel.writeString(takeHomeSalary)
+        parcel.writeValue(takeHomeSalary)
         parcel.writeString(modeOfSalary)
-        parcel.writeString(bankName)
         parcel.writeString(employerName)
+        parcel.writeString(designation)
         parcel.writeString(timeSpentInCurrentJob)
         parcel.writeString(workExperience)
         parcel.writeString(fatherName)
@@ -467,10 +535,14 @@ class UserDetail() : Parcelable {
         parcel.writeValue(isPermanentAddressSame)
         parcel.writeString(education)
         parcel.writeString(lastEducationalInstitute)
-        parcel.writeList(bankStatement)
-        parcel.writeList(salarySlip)
-        parcel.writeList(idProof)
-        parcel.writeList(addressProof)
+        parcel.writeValue(bankStatement)
+        parcel.writeValue(salarySlip)
+        parcel.writeValue(idProof)
+        parcel.writeValue(addressProof)
+//        parcel.writeList(bankStatement)
+//        parcel.writeList(salarySlip)
+//        parcel.writeList(idProof)
+//        parcel.writeList(addressProof)
         parcel.writeString(emailAuthToken)
         parcel.writeValue(isEmailTokenValid)
         parcel.writeString(panValidateId)
@@ -485,6 +557,31 @@ class UserDetail() : Parcelable {
         parcel.writeValue(mapPinnedLatitude)
         parcel.writeValue(mapPinnedLongitude)
         parcel.writeString(employedInCompany)
+        parcel.writeString(employment)
+        parcel.writeString(companyType)
+        parcel.writeString(noOfEmployeeInCompany)
+        parcel.writeString(noOfEmployeeInBusiness)
+        parcel.writeString(ownBusiness)
+        parcel.writeString(roleInCompany)
+        parcel.writeString(companyAreaOfBusiness)
+        parcel.writeString(typeOfBusiness)
+        parcel.writeString(dateOfSalary)
+        parcel.writeString(areYouEmployed)
+        parcel.writeValue(havingOfficeMail)
+        parcel.writeString(isOwnABusiness)
+        parcel.writeString(shopName)
+        parcel.writeString(gstInvoice)
+        parcel.writeString(gstIssueCertificate)
+        parcel.writeValue(shopPhotoInside)
+        parcel.writeValue(shopPhotoOutside)
+//        parcel.writeList(shopPhotoInside)
+//        parcel.writeList(shopPhotoOutside)
+        parcel.writeString(establishmentRegistration)
+        parcel.writeString(companyIdCard)
+        parcel.writeString(companyBusinessCard)
+        parcel.writeString(nachRazorpayTokenId)
+        parcel.writeValue(isRazorpayFailed)
+        parcel.writeValue(isEnachSkip)
     }
 
     override fun describeContents(): Int {
@@ -502,16 +599,26 @@ class UserDetail() : Parcelable {
     }
 
     class Location() : Parcelable {
-        @JvmSuppressWildcards
-        @field:Json(name = "coordinates")
-        var coordinates: List<Any>? = null
+
+        @field:Json(name = "latitude")
+        var latitude: Double? = null
+
+        @field:Json(name = "longitude")
+        var longitude: Double? = null
+
+        @field:Json(name = "address")
+        var address: String? = null
 
         constructor(parcel: Parcel) : this() {
-            coordinates = parcel.readArrayList(Location::class.java.classLoader)
+            latitude = parcel.readValue(Double::class.java.classLoader) as? Double
+            longitude = parcel.readValue(Double::class.java.classLoader) as? Double
+            address = parcel.readString()
         }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeList(coordinates)
+            parcel.writeValue(latitude)
+            parcel.writeValue(longitude)
+            parcel.writeString(address)
         }
 
         override fun describeContents(): Int {
@@ -527,5 +634,6 @@ class UserDetail() : Parcelable {
                 return arrayOfNulls(size)
             }
         }
+
     }
 }

@@ -10,7 +10,7 @@ object ApiSdkFileUtils {
     fun getMimeType(fileUri: Uri, context: Context): String? {
         return if (ContentResolver.SCHEME_CONTENT.equals(fileUri.getScheme())) {
             val cr: ContentResolver = context?.getContentResolver()!!
-            cr.getType(fileUri)
+            cr.getType(fileUri)?.toLowerCase()
         } else {
             MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                 MimeTypeMap.getFileExtensionFromUrl(

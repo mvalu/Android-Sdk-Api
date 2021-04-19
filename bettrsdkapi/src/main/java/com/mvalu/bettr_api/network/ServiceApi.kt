@@ -1,8 +1,10 @@
 package com.mvalu.bettr_api.network
 
+import com.mvalu.bettr_api.BankAccountIFSCResponseModel
 import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
+import com.mvalu.bettr_api.application_journey.IFSCCityAndBranchApiResponse
 import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.mvalu.bettr_api.application_journey.LeadDetailApiResponse
 import com.mvalu.bettr_api.application_journey.bureau.*
@@ -250,6 +252,62 @@ interface ServiceApi {
     ): Observable<Response<DocumentUploadApiResponse>>
 
     @Multipart
+    @POST("v1/{organizationId}/upload/single/companyIdCard")
+    fun uploadCompanyIDCard(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/companyBusinessCard")
+    fun uploadCompanyBusinessCard(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/gstInvoice")
+    fun uploadGSTInvoice(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/gstIssueCertificate")
+    fun uploadGSTIssueCertificate(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/shopPhotoInside")
+    fun uploadShopInside(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/shopPhotoOutside")
+    fun uploadShopOutside(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
+    @POST("v1/{organizationId}/upload/single/establishmentRegistration")
+    fun uploadShopRegistration(
+        @Path("organizationId") organizationId: String,
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<DocumentUploadApiResponse>>
+
+    @Multipart
     @POST("v1/{organizationId}/upload/single/aadharCardBack")
     fun uploadAadharBack(
         @Path("organizationId") organizationId: String,
@@ -490,4 +548,16 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<RecentMerchantsApiResponse>>
+
+    @GET("v1/{organizationId}/config/search/ifsc-ifsc.config")
+    fun getBranchDetailsFromIFSC(
+        @Path("organizationId") organizationId: String,
+        @Query("q") ifscCode: String
+    ): Observable<Response<IFSCCityAndBranchApiResponse>>
+
+    @GET("v1/{organizationId}/config/search/ifsc.config")
+    fun getIFSCFromBankDetails(
+        @Path("organizationId") organizationId: String,
+        @Query("q") q: String
+    ): Observable<Response<BankAccountIFSCResponseModel>>
 }
