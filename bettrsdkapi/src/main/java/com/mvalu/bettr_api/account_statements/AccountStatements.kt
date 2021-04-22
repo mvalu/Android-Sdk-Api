@@ -20,6 +20,7 @@ object AccountStatements : ApiSdkBase() {
         null
     private var accountStatementTransactionInfoCallback: ApiResponseCallback<StatementTransactionInfo>? =
         null
+    private var statementDetailSummaryCallback: ApiResponseCallback<List<StatementSummaryItem>>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -77,6 +78,25 @@ object AccountStatements : ApiSdkBase() {
                 statementTransactionId
             ),
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API
+        )
+    }
+
+    fun getAccountStatementDetailSummary(
+        statementDetailSummaryCallback: ApiResponseCallback<List<StatementSummaryItem>>,
+        accountId: String,
+        statementId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.statementDetailSummaryCallback = statementDetailSummaryCallback
+        callApi(
+            serviceApi.getAccountStatementDetailSummary(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                statementId
+            ),
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API
         )
     }
 
