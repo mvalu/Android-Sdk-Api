@@ -2,6 +2,7 @@ package com.mvalu.bettr_api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.telephony.TelephonyManager
 import com.mvalu.bettr_api.base.ApiSdkBase
@@ -18,6 +19,8 @@ import com.mvalu.bettr_api.network.DeviceInfo
 import com.mvalu.bettr_api.utils.BettrApiSdkLogger
 
 const val PRODUCT_TYPE = "CC"
+const val PREFS_NAME: String = "api_shared_pref"
+const val PREF_ACCESS_TOKEN: String = "access_token"
 
 object BettrApiSdk : ApiSdkBase() {
 
@@ -92,7 +95,7 @@ object BettrApiSdk : ApiSdkBase() {
         this.initCallback = initCallback
 
         if (isSdkInitialized) {
-            initCallback?.onError("Sdk already initialized")
+            initCallback?.onSuccess()
             BettrApiSdkLogger.printError(TAG, "Sdk already initialized")
         } else {
             Validate.notNull(applicationContext, "Application context")
@@ -122,6 +125,10 @@ object BettrApiSdk : ApiSdkBase() {
             request.deviceInfo = getDeviceInfo()
             request.marketCampaign = campaignInfo
             request.imei = getImei(applicationContext)
+            if(getPrefAccessToken(PREF_ACCESS_TOKEN) != null){
+                isSdkInitialized = true
+                ACCESS_TOKEN = getPrefAccessToken(PREF_ACCESS_TOKEN)!!
+            }
             callApi(
                 serviceApi.generateToken(getOrganizationId(), request),
                 ApiTag.GENERATE_ACCESS_TOKEN_API
@@ -138,6 +145,7 @@ object BettrApiSdk : ApiSdkBase() {
             this.ORGANIZATION_ID = ""
             this.USER_ID = ""
             ACCESS_TOKEN = ""
+            savePrefAccessToken(PREF_ACCESS_TOKEN, null)
             isSdkInitialized = false
             initCallback?.onSuccess()
         } else {
@@ -196,6 +204,7 @@ object BettrApiSdk : ApiSdkBase() {
                 BettrApiSdkLogger.printInfo(TAG, "Token generated successfully")
                 val tokenResponse = response as GenerateTokenResponse
                 ACCESS_TOKEN = tokenResponse.result?.token!!
+                savePrefAccessToken(PREF_ACCESS_TOKEN, ACCESS_TOKEN)
                 isSdkInitialized = true
                 initCallback?.onSuccess()
             }
@@ -205,6 +214,8 @@ object BettrApiSdk : ApiSdkBase() {
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         when (apiTag) {
             ApiTag.GENERATE_ACCESS_TOKEN_API -> {
+                savePrefAccessToken(PREF_ACCESS_TOKEN, null)
+                isSdkInitialized = false
                 BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
                 initCallback?.onError(errorMessage)
             }
@@ -238,9 +249,23 @@ object BettrApiSdk : ApiSdkBase() {
     override fun onAuthError(apiTag: ApiTag) {
         when (apiTag) {
             ApiTag.GENERATE_ACCESS_TOKEN_API -> {
+                savePrefAccessToken(PREF_ACCESS_TOKEN, null)
+                isSdkInitialized = false
                 BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
                 initCallback?.onError(ErrorMessage.SDK_INITIALIZATION_ERROR.value)
             }
         }
+    }
+
+    private fun getSharedPref(): SharedPreferences? {
+        return applicationContext?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
+    private fun savePrefAccessToken(key: String, value: String?) {
+        getSharedPref()?.edit()?.putString(key, value)?.apply()
+    }
+
+    private fun getPrefAccessToken(key: String): String? {
+        return getSharedPref()?.getString(key, null)
     }
 }
