@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.network
 
 import com.mvalu.bettr_api.BankAccountIFSCResponseModel
+import com.mvalu.bettr_api.account_statements.AccountStatementDetailSummaryApiResponse
 import com.mvalu.bettr_api.account_statements.AccountStatementsApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionInfoApiResponse
 import com.mvalu.bettr_api.account_statements.transactions.AccountStatementTransactionsApiResponse
@@ -137,6 +138,13 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummary")
+    fun getAccountStatementDetailSummary(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("statementId") statementId: String
+    ): Observable<Response<AccountStatementDetailSummaryApiResponse>>
 
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/{paymentId}")
     fun getPaymentInfo(

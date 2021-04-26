@@ -20,6 +20,7 @@ object AccountStatements : ApiSdkBase() {
         null
     private var accountStatementTransactionInfoCallback: ApiResponseCallback<StatementTransactionInfo>? =
         null
+    private var statementDetailSummaryCallback: ApiResponseCallback<List<StatementSummaryItem>>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
@@ -80,6 +81,25 @@ object AccountStatements : ApiSdkBase() {
         )
     }
 
+    fun getAccountStatementDetailSummary(
+        statementDetailSummaryCallback: ApiResponseCallback<List<StatementSummaryItem>>,
+        accountId: String,
+        statementId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.statementDetailSummaryCallback = statementDetailSummaryCallback
+        callApi(
+            serviceApi.getAccountStatementDetailSummary(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                statementId
+            ),
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API
+        )
+    }
+
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
@@ -106,6 +126,15 @@ object AccountStatements : ApiSdkBase() {
                     accountStatementTransactionInfoApiResponse.results!!
                 )
             }
+
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Account Statement detail summary fetched")
+                val statementDetailSummaryApiResponse =
+                    response as AccountStatementDetailSummaryApiResponse
+                statementDetailSummaryCallback?.onSuccess(
+                    statementDetailSummaryApiResponse.results!!
+                )
+            }
         }
     }
 
@@ -122,6 +151,10 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
                 accountStatementTransactionInfoCallback?.onError(errorCode, errorMessage)
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API -> {
+                statementDetailSummaryCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -148,6 +181,13 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
                 accountStatementTransactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API -> {
+                statementDetailSummaryCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.API_TIMEOUT_ERROR.value
                 )
@@ -181,6 +221,13 @@ object AccountStatements : ApiSdkBase() {
                     ErrorMessage.NETWORK_ERROR.value
                 )
             }
+
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API -> {
+                statementDetailSummaryCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
+            }
         }
     }
 
@@ -206,6 +253,13 @@ object AccountStatements : ApiSdkBase() {
 
             ApiTag.ACCOUNT_STATEMENT_TRANSACTIONS_INFO_API -> {
                 accountStatementTransactionInfoCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
+            }
+
+            ApiTag.ACCOUNT_STATEMENT_DETAIL_SUMMARY_API -> {
+                statementDetailSummaryCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value
                 )
