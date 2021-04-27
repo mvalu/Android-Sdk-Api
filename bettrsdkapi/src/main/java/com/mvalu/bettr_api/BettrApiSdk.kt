@@ -128,6 +128,7 @@ object BettrApiSdk : ApiSdkBase() {
             if(getPrefAccessToken(PREF_ACCESS_TOKEN) != null){
                 isSdkInitialized = true
                 ACCESS_TOKEN = getPrefAccessToken(PREF_ACCESS_TOKEN)!!
+                initCallback?.onSuccess()
             }
             callApi(
                 serviceApi.generateToken(getOrganizationId(), request),
