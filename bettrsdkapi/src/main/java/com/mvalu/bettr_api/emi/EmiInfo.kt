@@ -9,8 +9,8 @@ class EmiInfo() : Parcelable {
     @field:Json(name = "id")
     var id: String? = null // Emi id.
 
-    @field:Json(name = "transactionId")
-    var transactionId: String? = null // key can be LmsCCTransactionId
+    @field:Json(name = "LmsCCTransactionId")
+    var transactionId: String? = null
 
     @field:Json(name = "amount")
     var amount: Double? = null //Principal amount
@@ -30,9 +30,6 @@ class EmiInfo() : Parcelable {
     @field:Json(name = "createdAt")
     var createdAt: String? = null
 
-    @field:Json(name = "startedOn")
-    var startedOn: String? = null
-
     @field:Json(name = "totalAmountPayable")
     var totalAmountPayable: Double? = null
 
@@ -51,7 +48,6 @@ class EmiInfo() : Parcelable {
         penaltyAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         status = parcel.readString()
         createdAt = parcel.readString()
-        startedOn = parcel.readString()
         totalAmountPayable = parcel.readValue(Double::class.java.classLoader) as? Double
         emiAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         processingFees = parcel.readValue(Double::class.java.classLoader) as? Double
@@ -66,7 +62,6 @@ class EmiInfo() : Parcelable {
         parcel.writeValue(penaltyAmount)
         parcel.writeString(status)
         parcel.writeString(createdAt)
-        parcel.writeString(startedOn)
         parcel.writeValue(totalAmountPayable)
         parcel.writeValue(emiAmount)
         parcel.writeValue(processingFees)

@@ -20,6 +20,8 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
 import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
+import com.mvalu.bettr_api.emi.ConvertToEmiApiRequest
+import com.mvalu.bettr_api.emi.ConvertToEmiApiResponse
 import com.mvalu.bettr_api.home_module.AccountInfoApiResponse
 import com.mvalu.bettr_api.home_module.HomeModuleApiResponse
 import com.mvalu.bettr_api.home_module.statement.HomeModuleStatementApiResponse
@@ -568,4 +570,12 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Query("q") q: String
     ): Observable<Response<BankAccountIFSCResponseModel>>
+
+    @POST("v1/{organizationId}/lms/cc/account/{accountId}/transaction/{transactionId}/convertToEmi")
+    fun convertToEmi(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("transactionId") transactionId: String,
+        @Body convertToEmiApiRequest: ConvertToEmiApiRequest
+    ): Observable<Response<ConvertToEmiApiResponse>>
 }
