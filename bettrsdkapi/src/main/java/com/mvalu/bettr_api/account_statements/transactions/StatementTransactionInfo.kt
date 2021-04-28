@@ -2,6 +2,7 @@ package com.mvalu.bettr_api.account_statements.transactions
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.mvalu.bettr_api.emi.EmiInfo
 import com.squareup.moshi.Json
 
 class StatementTransactionInfo() : Parcelable {
@@ -65,6 +66,9 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "eligibleForEmiData")
     var eligibleEmiData: List<EligibleEmiData>? = null
 
+    @field:Json(name = "convertedEmiInfo")
+    var convertedEmiInfo: EmiInfo? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         type = parcel.readString()
@@ -86,6 +90,7 @@ class StatementTransactionInfo() : Parcelable {
         eligibleForEmi = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         eligibleEmiROI = parcel.readValue(Double::class.java.classLoader) as? Float
         eligibleEmiData = parcel.createTypedArrayList(EligibleEmiData)
+        convertedEmiInfo = parcel.readParcelable(EmiInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -109,6 +114,7 @@ class StatementTransactionInfo() : Parcelable {
         parcel.writeValue(eligibleForEmi)
         parcel.writeValue(eligibleEmiROI)
         parcel.writeTypedList(eligibleEmiData)
+        parcel.writeParcelable(convertedEmiInfo, flags)
     }
 
     override fun describeContents(): Int {
