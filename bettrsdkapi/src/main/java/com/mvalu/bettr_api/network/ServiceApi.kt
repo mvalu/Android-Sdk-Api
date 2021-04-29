@@ -578,4 +578,11 @@ interface ServiceApi {
         @Path("transactionId") transactionId: String,
         @Body convertToEmiApiRequest: ConvertToEmiApiRequest
     ): Observable<Response<ConvertToEmiApiResponse>>
+
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/transaction/{transactionId}/emiPrincipal")
+    fun getTransactionEmiInfo(
+        @Path("organizationId") organizationId: String,
+        @Path("accountId") accountId: String,
+        @Path("transactionId") transactionId: String
+    ): Observable<Response<ConvertToEmiApiResponse>>
 }
