@@ -5,6 +5,7 @@ import com.mvalu.bettr_api.account_statements.AccountStatements
 import com.mvalu.bettr_api.application_journey.ApplicationJourney
 import com.mvalu.bettr_api.card_user.CardUser
 import com.mvalu.bettr_api.downloads.DocumentDownload
+import com.mvalu.bettr_api.emi.Emi
 import com.mvalu.bettr_api.home_module.HomeModule
 import com.mvalu.bettr_api.injection.module.NetworkModule
 import com.mvalu.bettr_api.login.TokenGeneration
@@ -40,4 +41,5 @@ interface AppComponent {
     fun inject(plasticCard: PlasticCard)
     fun inject(searchFieldData: SearchFieldData)
     fun inject(upiPayment: UPIPayment)
+    fun inject(emi: Emi)
 }
