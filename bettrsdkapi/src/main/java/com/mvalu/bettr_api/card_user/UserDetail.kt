@@ -341,6 +341,33 @@ class UserDetail() : Parcelable {
     @field:Json(name = "isEnachSkip")
     var isEnachSkip: Boolean? = false
 
+    @field:Json(name = "isSalarySlipSkipped")
+    var isSalarySlipSkipped: Boolean? = false
+
+    @field:Json(name = "isBankStatementSkipped")
+    var isBankStatementSkipped: Boolean? = false
+
+    @field:Json(name = "isCompanyIdCardSkipped")
+    var isCompanyIdCardSkipped: Boolean? = false
+
+    @field:Json(name = "isCompanyBusinessCardSkipped")
+    var isCompanyBusinessCardSkipped: Boolean? = false
+
+    @field:Json(name = "isGstInvoiceSkipped")
+    var isGstInvoiceSkipped: Boolean? = false
+
+    @field:Json(name = "isGstIssueCertificateSkipped")
+    var isGstIssueCertificateSkipped: Boolean? = false
+
+    @field:Json(name = "isShopPhotoInsideSkipped")
+    var isShopPhotoInsideSkipped: Boolean? = false
+
+    @field:Json(name = "isShopPhotoOutsideSkipped")
+    var isShopPhotoOutsideSkipped: Boolean? = false
+
+    @field:Json(name = "isEstablishmentRegistrationSkipped")
+    var isEstablishmentRegistrationSkipped: Boolean? = false
+
 
     /**
      * Other method
@@ -465,6 +492,15 @@ class UserDetail() : Parcelable {
         nachRazorpayTokenId = parcel.readString()
         isRazorpayFailed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isEnachSkip = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isSalarySlipSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isBankStatementSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isCompanyIdCardSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isCompanyBusinessCardSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isGstInvoiceSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isGstIssueCertificateSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isShopPhotoInsideSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isShopPhotoOutsideSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isEstablishmentRegistrationSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -582,6 +618,15 @@ class UserDetail() : Parcelable {
         parcel.writeString(nachRazorpayTokenId)
         parcel.writeValue(isRazorpayFailed)
         parcel.writeValue(isEnachSkip)
+        parcel.writeValue(isSalarySlipSkipped)
+        parcel.writeValue(isBankStatementSkipped)
+        parcel.writeValue(isCompanyIdCardSkipped)
+        parcel.writeValue(isCompanyBusinessCardSkipped)
+        parcel.writeValue(isGstInvoiceSkipped)
+        parcel.writeValue(isGstIssueCertificateSkipped)
+        parcel.writeValue(isShopPhotoInsideSkipped)
+        parcel.writeValue(isShopPhotoOutsideSkipped)
+        parcel.writeValue(isEstablishmentRegistrationSkipped)
     }
 
     override fun describeContents(): Int {
