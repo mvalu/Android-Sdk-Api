@@ -12,6 +12,9 @@ class VerifyMerchantResult() : Parcelable {
     @field:Json(name = "merchantName")
     var merchantName: String? = null
 
+    @field:Json(name = "acceptedName")
+    var acceptedName: String? = null
+
     @field:Json(name = "merchantVpa")
     var merchantVpa: String? = null
 
@@ -27,6 +30,7 @@ class VerifyMerchantResult() : Parcelable {
     constructor(parcel: Parcel) : this() {
         upiMerchantId = parcel.readString()
         merchantName = parcel.readString()
+        acceptedName = parcel.readString()
         merchantVpa = parcel.readString()
         category = parcel.readString()
         createdAt = parcel.readString()
@@ -36,6 +40,7 @@ class VerifyMerchantResult() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(upiMerchantId)
         parcel.writeString(merchantName)
+        parcel.writeString(acceptedName)
         parcel.writeString(merchantVpa)
         parcel.writeString(category)
         parcel.writeString(createdAt)
