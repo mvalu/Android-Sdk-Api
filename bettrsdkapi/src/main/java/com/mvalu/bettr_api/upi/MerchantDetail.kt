@@ -6,6 +6,9 @@ class MerchantDetail {
     @field:Json(name = "merchantName")
     var merchantName: String? = null
 
+    @field:Json(name = "acceptedName")
+    var acceptedName: String? = null
+
     @field:Json(name = "merchantVpa")
     var merchantVpa: String? = null
 

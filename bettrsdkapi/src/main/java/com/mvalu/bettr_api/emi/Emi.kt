@@ -11,14 +11,15 @@ import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
 
 object Emi : ApiSdkBase() {
     private const val TAG = "Emi"
-    private var ConvertToEmiCallback: ApiResponseCallback<EmiInfo>? = null
+    private var convertToEmiCallback: ApiResponseCallback<EmiInfo>? = null
+    private var emiInfoCallback: ApiResponseCallback<EmiInfo>? = null
 
     init {
         BettrApiSdk.getAppComponent().inject(this)
     }
 
     fun convertToEmi(
-        ConvertToEmiCallback: ApiResponseCallback<EmiInfo>,
+        convertToEmiCallback: ApiResponseCallback<EmiInfo>,
         accountId: String,
         transactionId: String,
         duration: Int
@@ -26,7 +27,7 @@ object Emi : ApiSdkBase() {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
-        this.ConvertToEmiCallback = ConvertToEmiCallback
+        this.convertToEmiCallback = convertToEmiCallback
         callApi(
             serviceApi.convertToEmi(
                 BettrApiSdk.getOrganizationId(),
@@ -38,12 +39,36 @@ object Emi : ApiSdkBase() {
         )
     }
 
+    fun getTransactionEmiInfo(
+        emiInfoCallback: ApiResponseCallback<EmiInfo>,
+        accountId: String,
+        transactionId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.emiInfoCallback = emiInfoCallback
+        callApi(
+            serviceApi.getTransactionEmiInfo(
+                BettrApiSdk.getOrganizationId(),
+                accountId,
+                transactionId
+            ),
+            ApiTag.TRANSACTION_EMI_INFO_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.CONVERT_TO_EMI_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Convert to api response fetched")
                 val convertToEmiApiResponse = response as ConvertToEmiApiResponse
-                ConvertToEmiCallback?.onSuccess(convertToEmiApiResponse.results!!)
+                convertToEmiCallback?.onSuccess(convertToEmiApiResponse.results!!)
+            }
+            ApiTag.TRANSACTION_EMI_INFO_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Transaction emi info fetched")
+                val convertToEmiApiResponse = response as ConvertToEmiApiResponse
+                emiInfoCallback?.onSuccess(convertToEmiApiResponse.results!!)
             }
         }
     }
@@ -52,7 +77,10 @@ object Emi : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
             ApiTag.CONVERT_TO_EMI_API -> {
-                ConvertToEmiCallback?.onError(errorCode, errorMessage)
+                convertToEmiCallback?.onError(errorCode, errorMessage)
+            }
+            ApiTag.TRANSACTION_EMI_INFO_API -> {
+                emiInfoCallback?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -61,7 +89,13 @@ object Emi : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
             ApiTag.CONVERT_TO_EMI_API -> {
-                ConvertToEmiCallback?.onError(
+                convertToEmiCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.API_TIMEOUT_ERROR.value
+                )
+            }
+            ApiTag.TRANSACTION_EMI_INFO_API -> {
+                emiInfoCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.API_TIMEOUT_ERROR.value
                 )
@@ -73,7 +107,13 @@ object Emi : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.NETWORK_ERROR.value)
         when (apiTag) {
             ApiTag.CONVERT_TO_EMI_API -> {
-                ConvertToEmiCallback?.onError(
+                convertToEmiCallback?.onError(
+                    NO_NETWORK_ERROR_CODE,
+                    ErrorMessage.NETWORK_ERROR.value
+                )
+            }
+            ApiTag.TRANSACTION_EMI_INFO_API -> {
+                emiInfoCallback?.onError(
                     NO_NETWORK_ERROR_CODE,
                     ErrorMessage.NETWORK_ERROR.value
                 )
@@ -85,7 +125,13 @@ object Emi : ApiSdkBase() {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.AUTH_ERROR.value)
         when (apiTag) {
             ApiTag.CONVERT_TO_EMI_API -> {
-                ConvertToEmiCallback?.onError(
+                convertToEmiCallback?.onError(
+                    NOT_SPECIFIED_ERROR_CODE,
+                    ErrorMessage.AUTH_ERROR.value
+                )
+            }
+            ApiTag.TRANSACTION_EMI_INFO_API -> {
+                emiInfoCallback?.onError(
                     NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value
                 )

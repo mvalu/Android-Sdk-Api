@@ -26,6 +26,9 @@ class TransactionInfo() : Parcelable {
     @field:Json(name = "merchantName")
     var merchantName: String? = null
 
+    @field:Json(name = "acceptedName")
+    var acceptedName: String? = null
+
     @field:Json(name = "merchantCategory")
     var merchantCategory: String? = null
 
@@ -68,7 +71,7 @@ class TransactionInfo() : Parcelable {
     @field:Json(name = "eligibleForEmiData")
     var eligibleEmiData: List<EligibleEmiData>? = null
 
-    @field:Json(name = "convertedEmiInfo")
+    @field:Json(name = "emiPrinciple")
     var convertedEmiInfo: EmiInfo? = null
 
     constructor(parcel: Parcel) : this() {
@@ -78,6 +81,7 @@ class TransactionInfo() : Parcelable {
         amount = parcel.readValue(Double::class.java.classLoader) as? Double
         transactionType = parcel.readString()
         merchantName = parcel.readString()
+        acceptedName = parcel.readString()
         merchantCategory = parcel.readString()
         merchantSubCategory = parcel.readString()
         customerUserId = parcel.readString()
@@ -102,6 +106,7 @@ class TransactionInfo() : Parcelable {
         parcel.writeValue(amount)
         parcel.writeString(transactionType)
         parcel.writeString(merchantName)
+        parcel.writeString(acceptedName)
         parcel.writeString(merchantCategory)
         parcel.writeString(merchantSubCategory)
         parcel.writeString(customerUserId)
