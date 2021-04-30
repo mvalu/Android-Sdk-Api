@@ -69,7 +69,7 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "eligibleForEmiData")
     var eligibleEmiData: List<EligibleEmiData>? = null
 
-    @field:Json(name = "convertedEmiInfo")
+    @field:Json(name = "emiPrinciple")
     var convertedEmiInfo: EmiInfo? = null
 
     constructor(parcel: Parcel) : this() {
