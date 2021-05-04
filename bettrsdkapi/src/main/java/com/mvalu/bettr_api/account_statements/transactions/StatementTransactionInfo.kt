@@ -2,6 +2,7 @@ package com.mvalu.bettr_api.account_statements.transactions
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.mvalu.bettr_api.emi.EmiInfo
 import com.squareup.moshi.Json
 
 class StatementTransactionInfo() : Parcelable {
@@ -22,6 +23,9 @@ class StatementTransactionInfo() : Parcelable {
 
     @field:Json(name = "merchantName")
     var merchantName: String? = null
+
+    @field:Json(name = "acceptedName")
+    var acceptedName: String? = null
 
     @field:Json(name = "merchantCategory")
     var merchantCategory: String? = null
@@ -56,6 +60,18 @@ class StatementTransactionInfo() : Parcelable {
     @field:Json(name = "status")
     var status: String? = null
 
+    @field:Json(name = "eligibleForEmi")
+    var eligibleForEmi: Boolean? = false
+
+    @field:Json(name = "eligibleForEmiROI")
+    var eligibleEmiROI: Float? = null
+
+    @field:Json(name = "eligibleForEmiData")
+    var eligibleEmiData: List<EligibleEmiData>? = null
+
+    @field:Json(name = "emiPrinciple")
+    var convertedEmiInfo: EmiInfo? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         type = parcel.readString()
@@ -63,6 +79,7 @@ class StatementTransactionInfo() : Parcelable {
         amount = parcel.readValue(Double::class.java.classLoader) as? Double
         transactionType = parcel.readString()
         merchantName = parcel.readString()
+        acceptedName = parcel.readString()
         merchantCategory = parcel.readString()
         merchantSubCategory = parcel.readString()
         customerUserId = parcel.readString()
@@ -74,6 +91,10 @@ class StatementTransactionInfo() : Parcelable {
         deletedAt = parcel.readString()
         transactionDate = parcel.readString()
         status = parcel.readString()
+        eligibleForEmi = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        eligibleEmiROI = parcel.readValue(Double::class.java.classLoader) as? Float
+        eligibleEmiData = parcel.createTypedArrayList(EligibleEmiData)
+        convertedEmiInfo = parcel.readParcelable(EmiInfo::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -83,6 +104,7 @@ class StatementTransactionInfo() : Parcelable {
         parcel.writeValue(amount)
         parcel.writeString(transactionType)
         parcel.writeString(merchantName)
+        parcel.writeString(acceptedName)
         parcel.writeString(merchantCategory)
         parcel.writeString(merchantSubCategory)
         parcel.writeString(customerUserId)
@@ -94,6 +116,10 @@ class StatementTransactionInfo() : Parcelable {
         parcel.writeString(deletedAt)
         parcel.writeString(transactionDate)
         parcel.writeString(status)
+        parcel.writeValue(eligibleForEmi)
+        parcel.writeValue(eligibleEmiROI)
+        parcel.writeTypedList(eligibleEmiData)
+        parcel.writeParcelable(convertedEmiInfo, flags)
     }
 
     override fun describeContents(): Int {
