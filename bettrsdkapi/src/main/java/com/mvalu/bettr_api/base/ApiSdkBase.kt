@@ -39,6 +39,9 @@ abstract class ApiSdkBase {
                             401 -> {
                                 onAuthError(apiTag)
                             }
+                            400 -> {
+                                onApiError(errorCode, apiTag, getErrorMessage400(errorResponse!!))
+                            }
                             500 -> {
                                 onApiError(errorCode, apiTag, getErrorMessage(errorResponse!!))
                             }
@@ -79,6 +82,27 @@ abstract class ApiSdkBase {
             val jsonObject = JSONObject(responseBody.string())
             val errorObject = jsonObject.getJSONObject("error")
             errorObject.getString("message")
+        } catch (e: Exception) {
+            e.message!!
+        }
+    }
+
+    private fun getErrorMessage400(responseBody: ResponseBody): String {
+        return try {
+            var message: String? = null
+            val jsonObject = JSONObject(responseBody.string())
+            val errorObject = jsonObject.getJSONObject("error")
+            val errorArray = errorObject.getJSONArray("message")
+            for (i in 0 until errorArray.length()) {
+                val item = errorArray.getJSONObject(i)
+                val arr = item.getJSONArray("messages")
+                message = if (message == null) {
+                    arr[0].toString()
+                } else {
+                    message + ", " + arr[0].toString()
+                }
+            }
+            message ?: ""
         } catch (e: Exception) {
             e.message!!
         }
