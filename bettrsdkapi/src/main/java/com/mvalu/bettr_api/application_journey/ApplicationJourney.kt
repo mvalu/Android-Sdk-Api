@@ -12,6 +12,7 @@ import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContent
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentRequest
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentResult
 import com.mvalu.bettr_api.application_journey.documents.*
+import com.mvalu.bettr_api.application_journey.income.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
@@ -86,6 +87,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         null
     private var ifscDetailsCallBack: ApiResponseCallback<List<BankAccountIFSCResponseModel.IFSC>>? =
         null
+    private var emailSendOtpCallBack: ApiResponseCallback<EmailSendOtpApiResponse.Result>? = null
+
+    private var emailVerifyOtpCallBack: ApiResponseCallback<EmailVerifyOtpApiResponse.Result>? = null
 
     fun getLead(
         leadId: String,
@@ -870,6 +874,53 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun emailSendOtp(
+        emailSendOtpCallBack: ApiResponseCallback<EmailSendOtpApiResponse.Result>,
+        email: String,
+        type: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.emailSendOtpCallBack = emailSendOtpCallBack
+
+        callApi(
+            serviceApi.emailSendOtp(BettrApiSdk.getOrganizationId(), EmailSendOtpRequest(email, type)),
+            ApiTag.EMAIL_SEND_OTP_API
+        )
+    }
+
+    fun emailResendOtp(
+        emailSendOtpCallBack: ApiResponseCallback<EmailSendOtpApiResponse.Result>,
+        otpId: String
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.emailSendOtpCallBack = emailSendOtpCallBack
+
+        callApi(
+            serviceApi.emailResendOtp(BettrApiSdk.getOrganizationId(), EmailResendOtpRequest(otpId)),
+            ApiTag.EMAIL_RESEND_OTP_API
+        )
+    }
+
+    fun emailVerifyOtp(
+        emailVerifyOtpCallBack: ApiResponseCallback<EmailVerifyOtpApiResponse.Result>,
+        otpId: String,
+        otp: Int
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.emailVerifyOtpCallBack = emailVerifyOtpCallBack
+
+        callApi(
+            serviceApi.emailVerifyOtp(BettrApiSdk.getOrganizationId(), EmailVerifyOtpRequest(otpId, otp)),
+            ApiTag.EMAIL_VERIFY_OTP_API
+        )
+    }
+
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
             ApiTag.GST_INVOICE_UPLOAD_API -> {
@@ -1010,6 +1061,16 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val ifscDetailsApiResponse = response as BankAccountIFSCResponseModel
                 ifscDetailsCallBack?.onSuccess(ifscDetailsApiResponse.results!!)
             }
+            ApiTag.EMAIL_SEND_OTP_API, ApiTag.EMAIL_RESEND_OTP_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Email send otp/resend successfully")
+                val emailSendOtpApiResponse = response as EmailSendOtpApiResponse
+                emailSendOtpCallBack?.onSuccess(emailSendOtpApiResponse.results!!)
+            }
+            ApiTag.EMAIL_VERIFY_OTP_API -> {
+                BettrApiSdkLogger.printInfo(TAG, "Email verified otp successfully")
+                val emailVerifyOtpApiResponse = response as EmailVerifyOtpApiResponse
+                emailVerifyOtpCallBack?.onSuccess(emailVerifyOtpApiResponse.results!!)
+            }
         }
     }
 
@@ -1096,6 +1157,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             }
             ApiTag.IFSC_DETAILS_API -> {
                 ifscDetailsCallBack?.onError(errorCode, errorMessage)
+            }
+            ApiTag.EMAIL_SEND_OTP_API, ApiTag.EMAIL_RESEND_OTP_API -> {
+                emailSendOtpCallBack?.onError(errorCode, errorMessage)
+            }
+            ApiTag.EMAIL_VERIFY_OTP_API -> {
+                emailVerifyOtpCallBack?.onError(errorCode, errorMessage)
             }
         }
     }
@@ -1218,6 +1285,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.API_TIMEOUT_ERROR.value)
             }
+            ApiTag.EMAIL_SEND_OTP_API, ApiTag.EMAIL_RESEND_OTP_API -> {
+                emailSendOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
+            ApiTag.EMAIL_VERIFY_OTP_API -> {
+                emailVerifyOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.API_TIMEOUT_ERROR.value)
+            }
         }
     }
 
@@ -1330,6 +1403,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.NETWORK_ERROR.value)
             }
+            ApiTag.EMAIL_SEND_OTP_API, ApiTag.EMAIL_RESEND_OTP_API -> {
+                emailSendOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
+            }
+            ApiTag.EMAIL_VERIFY_OTP_API -> {
+                emailVerifyOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.NETWORK_ERROR.value)
+            }
         }
     }
 
@@ -1441,6 +1520,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.IFSC_DETAILS_API -> {
                 ifscDetailsCallBack?.onError(NOT_SPECIFIED_ERROR_CODE,
                     ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.EMAIL_SEND_OTP_API, ApiTag.EMAIL_RESEND_OTP_API -> {
+                emailSendOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
+            }
+            ApiTag.EMAIL_VERIFY_OTP_API -> {
+                emailVerifyOtpCallBack?.onError(NOT_SPECIFIED_ERROR_CODE, ErrorMessage.AUTH_ERROR.value)
             }
         }
     }
