@@ -460,6 +460,7 @@ class UserDetail() : Parcelable {
         bankStatement = parcel.readValue(List::class.java.classLoader) as? List<String>
         salarySlip = parcel.readValue(List::class.java.classLoader) as? List<String>
         idProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+        addressProofType = parcel.readString()
         addressProof = parcel.readValue(List::class.java.classLoader) as? List<String>
 //        parcel.readStringList(bankStatement)
 //        parcel.readStringList(salarySlip)
@@ -589,6 +590,7 @@ class UserDetail() : Parcelable {
         parcel.writeValue(bankStatement)
         parcel.writeValue(salarySlip)
         parcel.writeValue(idProof)
+        parcel.writeString(addressProofType)
         parcel.writeValue(addressProof)
 //        parcel.writeList(bankStatement)
 //        parcel.writeList(salarySlip)
