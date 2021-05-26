@@ -16,6 +16,7 @@ import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContent
 import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
 import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsApiResponse
 import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
+import com.mvalu.bettr_api.application_journey.income.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
@@ -585,4 +586,22 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("transactionId") transactionId: String
     ): Observable<Response<ConvertToEmiApiResponse>>
+
+    @POST("v1/{organizationId}/mail/initMailVerification")
+    fun emailSendOtp(
+        @Path("organizationId") organizationId: String,
+        @Body emailSendOtpRequest: EmailSendOtpRequest
+    ): Observable<Response<EmailSendOtpApiResponse>>
+
+    @POST("v1/{organizationId}/mail/resendOTP")
+    fun emailResendOtp(
+        @Path("organizationId") organizationId: String,
+        @Body emailResendOtpRequest: EmailResendOtpRequest
+    ): Observable<Response<EmailSendOtpApiResponse>>
+
+    @POST("v1/{organizationId}/mail/verifyOTP")
+    fun emailVerifyOtp(
+        @Path("organizationId") organizationId: String,
+        @Body emailVerifyOtpRequest: EmailVerifyOtpRequest
+    ): Observable<Response<EmailVerifyOtpApiResponse>>
 }

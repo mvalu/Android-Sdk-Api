@@ -151,6 +151,10 @@ class ApplicationJourneyContentResult {
     }
 
     class DropdownDetail {
+
+        @field:Json(name = "addressProofType")
+        var addressProofType: List<DropdownItem>? = null
+
         @field:Json(name = "city")
         var cities: List<DropdownItem>? = null
 
