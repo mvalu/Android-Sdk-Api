@@ -60,6 +60,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "email")
     var email: String? = null
 
+    @field:Json(name = "isEmailVerified")
+    var isEmailVerified: Boolean? = null
+
     @JvmSuppressWildcards
     @field:Json(name = "location")
     var location: Location? = null
@@ -157,6 +160,12 @@ class UserDetail() : Parcelable {
 
     @field:Json(name = "officeEmail")
     var officeEmail: String? = null
+
+    @field:Json(name = "isOfficeEmailVerified")
+    var isOfficeEmailVerified: Boolean? = null
+
+    @field:Json(name = "isOfficeEmailSkipped")
+    var isOfficeEmailSkipped: Boolean? = null
 
     @field:Json(name = "officeAddress1")
     var officeAddress1: String? = null
@@ -395,6 +404,7 @@ class UserDetail() : Parcelable {
         dateOfBirth = parcel.readString()
         dateOfBirthInput = parcel.readString()
         email = parcel.readString()
+        isEmailVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         location = parcel.readParcelable(Location::class.java.classLoader)
         panNumber = parcel.readString()
         panImage = parcel.readString()
@@ -427,6 +437,8 @@ class UserDetail() : Parcelable {
         motherName = parcel.readString()
         maritalStatus = parcel.readString()
         officeEmail = parcel.readString()
+        isOfficeEmailVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        isOfficeEmailSkipped = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         officeAddress1 = parcel.readString()
         officeAddress2 = parcel.readString()
         officeAddressLocality = parcel.readString()
@@ -448,6 +460,7 @@ class UserDetail() : Parcelable {
         bankStatement = parcel.readValue(List::class.java.classLoader) as? List<String>
         salarySlip = parcel.readValue(List::class.java.classLoader) as? List<String>
         idProof = parcel.readValue(List::class.java.classLoader) as? List<String>
+        addressProofType = parcel.readString()
         addressProof = parcel.readValue(List::class.java.classLoader) as? List<String>
 //        parcel.readStringList(bankStatement)
 //        parcel.readStringList(salarySlip)
@@ -521,6 +534,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(dateOfBirth)
         parcel.writeString(dateOfBirthInput)
         parcel.writeString(email)
+        parcel.writeValue(isEmailVerified)
         parcel.writeParcelable(location, flags)
         parcel.writeString(panNumber)
         parcel.writeString(panImage)
@@ -553,6 +567,8 @@ class UserDetail() : Parcelable {
         parcel.writeString(motherName)
         parcel.writeString(maritalStatus)
         parcel.writeString(officeEmail)
+        parcel.writeValue(isOfficeEmailVerified)
+        parcel.writeValue(isOfficeEmailSkipped)
         parcel.writeString(officeAddress1)
         parcel.writeString(officeAddress2)
         parcel.writeString(officeAddressLocality)
@@ -574,6 +590,7 @@ class UserDetail() : Parcelable {
         parcel.writeValue(bankStatement)
         parcel.writeValue(salarySlip)
         parcel.writeValue(idProof)
+        parcel.writeString(addressProofType)
         parcel.writeValue(addressProof)
 //        parcel.writeList(bankStatement)
 //        parcel.writeList(salarySlip)

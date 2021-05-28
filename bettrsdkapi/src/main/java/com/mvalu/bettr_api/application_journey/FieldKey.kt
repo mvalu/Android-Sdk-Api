@@ -35,6 +35,7 @@ enum class FieldKey(val value: String) {
     TYPE_OF_BUSINESS("typeOfBusiness"),
     NO_OF_EMPLOYEES_IN_BUSINESS("noOfEmployeeInBusiness"),
     ARE_YOU_EMPLOYED("areYouEmployed"),
+    OFFICE_EMAIL("officeEmail"),
 
     /*** Income documents section */
     SALARY_SLIP("salarySlip"),
