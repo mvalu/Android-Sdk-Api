@@ -78,12 +78,14 @@ abstract class ApiSdkBase {
     }
 
     private fun getErrorMessage(responseBody: ResponseBody): String {
+        var message: String? = null
         return try {
-            val jsonObject = JSONObject(responseBody.string())
+            message = responseBody.string() //once you perform .string(), that value gets removed from responseBody object.
+            val jsonObject = JSONObject(message)
             val errorObject = jsonObject.getJSONObject("error")
             errorObject.getString("message")
         } catch (e: Exception) {
-            e.message!!
+            if (message.isNullOrBlank()) e.message!! else message
         }
     }
 
