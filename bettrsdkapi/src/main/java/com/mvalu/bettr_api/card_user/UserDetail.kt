@@ -134,6 +134,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "takeHomeSalary")
     var takeHomeSalary: Int? = null
 
+    @field:Json(name = "familyMonthlyIncome")
+    var familyMonthlyIncome: Int? = null
+
     @field:Json(name = "modeOfSalary")
     var modeOfSalary: String? = null
 
@@ -311,6 +314,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "areYouEmployed")
     var areYouEmployed: String? = null
 
+    @field:Json(name = "havingITR")
+    var havingITR: String? = null
+
     @field:Json(name = "havingOfficeMail")
     var havingOfficeMail: Boolean? = null
 
@@ -428,6 +434,7 @@ class UserDetail() : Parcelable {
         profession = parcel.readString()
         isExistingLoan = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         takeHomeSalary = parcel.readValue(Boolean::class.java.classLoader) as? Int
+        familyMonthlyIncome = parcel.readValue(Boolean::class.java.classLoader) as? Int
         modeOfSalary = parcel.readString()
         employerName = parcel.readString()
         designation = parcel.readString()
@@ -490,6 +497,7 @@ class UserDetail() : Parcelable {
         typeOfBusiness = parcel.readString()
         dateOfSalary = parcel.readString()
         areYouEmployed = parcel.readString()
+        havingITR = parcel.readString()
         havingOfficeMail = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         isOwnABusiness = parcel.readString()
         shopName = parcel.readString()
@@ -558,6 +566,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(profession)
         parcel.writeValue(isExistingLoan)
         parcel.writeValue(takeHomeSalary)
+        parcel.writeValue(familyMonthlyIncome)
         parcel.writeString(modeOfSalary)
         parcel.writeString(employerName)
         parcel.writeString(designation)
@@ -620,6 +629,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(typeOfBusiness)
         parcel.writeString(dateOfSalary)
         parcel.writeString(areYouEmployed)
+        parcel.writeString(havingITR)
         parcel.writeValue(havingOfficeMail)
         parcel.writeString(isOwnABusiness)
         parcel.writeString(shopName)
