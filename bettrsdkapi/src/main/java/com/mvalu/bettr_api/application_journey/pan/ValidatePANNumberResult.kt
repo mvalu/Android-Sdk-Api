@@ -1,5 +1,6 @@
 package com.mvalu.bettr_api.application_journey.pan
 
+import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.squareup.moshi.Json
 
 class ValidatePANNumberResult {
@@ -8,6 +9,9 @@ class ValidatePANNumberResult {
 
     @field:Json(name = "status")
     var status: Boolean = false
+
+    @field:Json(name = "leadDetail")
+    var leadDetail: LeadDetail? = null
 
     class Data {
         @field:Json(name = "pan_number")

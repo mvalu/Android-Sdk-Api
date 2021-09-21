@@ -155,6 +155,9 @@ class UserDetail() : Parcelable {
     @field:Json(name = "fatherName")
     var fatherName: String? = null
 
+    @field:Json(name = "husbandName")
+    var husbandName: String? = null
+
     @field:Json(name = "motherName")
     var motherName: String? = null
 
@@ -441,6 +444,7 @@ class UserDetail() : Parcelable {
         timeSpentInCurrentJob = parcel.readString()
         workExperience = parcel.readString()
         fatherName = parcel.readString()
+        husbandName = parcel.readString()
         motherName = parcel.readString()
         maritalStatus = parcel.readString()
         officeEmail = parcel.readString()
@@ -573,6 +577,7 @@ class UserDetail() : Parcelable {
         parcel.writeString(timeSpentInCurrentJob)
         parcel.writeString(workExperience)
         parcel.writeString(fatherName)
+        parcel.writeString(husbandName)
         parcel.writeString(motherName)
         parcel.writeString(maritalStatus)
         parcel.writeString(officeEmail)
