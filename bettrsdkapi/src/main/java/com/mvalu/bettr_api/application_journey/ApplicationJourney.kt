@@ -140,6 +140,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     fun validatePANNumber(
         panNumber: String,
         leadName: String,
+        id:String,
         validatePANNumberCallBack: ApiResponseCallback<ValidatePANNumberResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
@@ -150,7 +151,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             .apply {
                 pan = panNumber
                 name = leadName
-
+                leadId = id
             }
         callApi(
             serviceApi.validatePANNumber(BettrApiSdk.getOrganizationId(), validatePANNumberRequest),
