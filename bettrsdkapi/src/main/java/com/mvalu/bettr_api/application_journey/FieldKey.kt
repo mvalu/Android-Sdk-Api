@@ -8,6 +8,8 @@ enum class FieldKey(val value: String) {
     PAN_NUMBER("panNumber"),
     DOB("dateOfBirth"),
     MARITAL_STATUS("maritalStatus"),
+    HUSBAND_NAME("husbandName"),
+    FATHER_NAME("fatherName"),
 
     /*** Residential details section */
     ADDRESS_LINE_1("addressLine1"),
