@@ -333,6 +333,17 @@ interface ServiceApi {
         @Body request: VerifyDocumentsRequest
     ): Observable<Response<VerifyDocumentsApiResponse>>
 
+    /*----------------------new document verify api--------*/
+    @POST("v1/{organizationId}/application/{applicationId}/leadDocumentVerifyNew")
+    fun verifyDocumentsNew(
+        @Path("organizationId") organizationId: String,
+        @Path("applicationId") applicationId: String,
+        @Body request: VerifyDocumentsRequest
+    ): Observable<Response<VerifyDocumentsApiResponse>>
+
+    /*------------------------------*/
+
+
     @POST("v1/{organizationId}/leads/screenDetail")
     fun fetchCheckList(
         @Path("organizationId") organizationId: String,

@@ -528,7 +528,49 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ),
             ApiTag.VERIFY_DOCUMENTS_API
         )
+        /*callApi(
+            serviceApi.verifyDocumentsNew(
+                BettrApiSdk.getOrganizationId(),
+                applicationId,
+                verifyDocumentsRequest
+            ),
+            ApiTag.VERIFY_DOCUMENTS_API
+        )*/
     }
+
+    fun verifyDocumentsNew(
+        panCard: String?,
+        profilePic: String?,
+        aadharFront: String?,
+        aadharBack: String?,
+        applicationId: String,
+        docType: String,
+        verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.verifyDocumentsCallBack = verifyDocumentsCallBack
+        val verifyDocumentsRequest = VerifyDocumentsRequest().apply {
+            this.userId = BettrApiSdk.getUserId()
+            this.leadId = applicationId
+            this.pan = panCard
+            this.photo = profilePic
+            this.aadharFront = aadharFront
+            this.aadharBack = aadharBack
+            this.productType = PRODUCT_TYPE
+            this.docType = docType
+        }
+        callApi(
+            serviceApi.verifyDocumentsNew(
+                BettrApiSdk.getOrganizationId(),
+                applicationId,
+                verifyDocumentsRequest
+            ),
+            ApiTag.VERIFY_DOCUMENTS_API
+        )
+    }
+
 
     fun fetchCheckList(
         leadId: String,
