@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 class VerifyDocumentsResult {
     @field:Json(name = "status")
-    var status: Status? = null
+    var status: Boolean? = false
 
     @field:Json(name = "leadUpdateFields")
     var leadUpdateFields: VerifiedDocumentsDetails? = null
