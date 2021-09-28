@@ -528,14 +528,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ),
             ApiTag.VERIFY_DOCUMENTS_API
         )
-        /*callApi(
-            serviceApi.verifyDocumentsNew(
-                BettrApiSdk.getOrganizationId(),
-                applicationId,
-                verifyDocumentsRequest
-            ),
-            ApiTag.VERIFY_DOCUMENTS_API
-        )*/
     }
 
     fun verifyDocumentsNew(
