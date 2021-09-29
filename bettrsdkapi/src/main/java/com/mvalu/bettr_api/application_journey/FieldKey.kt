@@ -41,7 +41,7 @@ enum class FieldKey(val value: String) {
     EMPLOYMENT_TYPE("employmentType"),
     DO_YOU_FILE_ITR("doYouFileItr"),
     FAMILY_MONTHLY_INCOME("familyMonthlyIncome"),
-    OFFICE_ADDRESS("officeAddress"),
+    OFFICE_ADDRESS("officeAddress1"),
 
     /*** Income documents section */
     SALARY_SLIP("salarySlip"),
