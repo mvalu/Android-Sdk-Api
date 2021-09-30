@@ -39,7 +39,7 @@ enum class FieldKey(val value: String) {
     ARE_YOU_EMPLOYED("areYouEmployed"),
     OFFICE_EMAIL("officeEmail"),
     EMPLOYMENT_TYPE("employmentType"),
-    DO_YOU_FILE_ITR("doYouFileItr"),
+    DO_YOU_FILE_ITR("havingITR"),
     FAMILY_MONTHLY_INCOME("familyMonthlyIncome"),
     OFFICE_ADDRESS("officeAddress1"),
 
