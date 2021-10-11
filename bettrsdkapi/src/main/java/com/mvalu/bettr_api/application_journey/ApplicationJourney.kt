@@ -95,7 +95,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
 
-    fun callApiToUploadAadharXmlFile(
+    fun uploadAadharXmlFile(
         body: MultipartBody.Part,
         description: RequestBody,
         uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>
@@ -107,7 +107,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         callApi(serviceApi.uploadFileAadharXml(description, body), ApiTag.UPLOAD_AADHAR_XML_FILE)
     }
 
-    fun callApiToSubmitAadharKyc(
+    fun submitAadharKyc(
         accountId: String,
         aadharKycRequest: AadharKycRequest,
         submitAdharKycCallBack: ApiResponseCallback<AadharKycResponse.Result>
