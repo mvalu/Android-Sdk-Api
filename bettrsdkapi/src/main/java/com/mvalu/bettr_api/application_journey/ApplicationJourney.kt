@@ -91,6 +91,34 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var emailVerifyOtpCallBack: ApiResponseCallback<EmailVerifyOtpApiResponse.Result>? = null
 
+    private var submitAdharKycCallBack: ApiResponseCallback<AadharKycResponse.Result>? = null
+
+    private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
+
+    fun callApiToUploadAadharXmlFile(
+        body: MultipartBody.Part,
+        description: RequestBody,
+        uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadAdharXmlCallBack = uploadAdharXmlCallBack
+        callApi(serviceApi.uploadFileAadharXml(description, body), ApiTag.UPLOAD_AADHAR_XML_FILE)
+    }
+
+    fun callApiToSubmitAadharKyc(
+        accountId: String,
+        aadharKycRequest: AadharKycRequest,
+        submitAdharKycCallBack: ApiResponseCallback<AadharKycResponse.Result>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.submitAdharKycCallBack = submitAdharKycCallBack
+        callApi(serviceApi.submitAadharKyc(accountId, aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+    }
+
     fun getLead(
         leadId: String,
         getLeadCallBack: ApiResponseCallback<LeadDetail>
@@ -958,6 +986,16 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
+            ApiTag.UPLOAD_AADHAR_XML_FILE -> {
+                val adharUploadRes = response as FileUploadResponse
+                uploadAdharXmlCallBack?.onSuccess(adharUploadRes.result!!)
+            }
+
+            ApiTag.AADHAR_KYC_SUBMIT_API -> {
+                val adharKycsubmitRes = response as AadharKycResponse
+                submitAdharKycCallBack?.onSuccess(adharKycsubmitRes.result!!)
+            }
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "gst invoice uploaded successfully")
                 val gstInvoiceUploadApiResponse = response as DocumentUploadApiResponse
@@ -1112,6 +1150,14 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
+            ApiTag.UPLOAD_AADHAR_XML_FILE -> {
+                uploadAdharXmlCallBack?.onError(errorCode, errorMessage)
+            }
+
+            ApiTag.AADHAR_KYC_SUBMIT_API -> {
+                submitAdharKycCallBack?.onError(errorCode, errorMessage)
+            }
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 uploadGSTInvoiceCallBack?.onError(errorMessage)
             }
@@ -1205,6 +1251,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onTimeout(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 uploadGSTInvoiceCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }

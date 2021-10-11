@@ -13,9 +13,7 @@ import com.mvalu.bettr_api.application_journey.checklist.CheckListApiResponse
 import com.mvalu.bettr_api.application_journey.checklist.CheckListRequest
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentApiResponse
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentRequest
-import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
-import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsApiResponse
-import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
+import com.mvalu.bettr_api.application_journey.documents.*
 import com.mvalu.bettr_api.application_journey.income.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
@@ -615,4 +613,17 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body emailVerifyOtpRequest: EmailVerifyOtpRequest
     ): Observable<Response<EmailVerifyOtpApiResponse>>
+
+    @Multipart
+    @POST("upload/single/aadhaarxml")
+    fun uploadFileAadharXml(
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<FileUploadResponse>>
+
+    @POST("lms/cc/account/{accountId}/submitKyc")
+    fun submitAadharKyc(
+        @Path("accountId") accountId: String,
+        @Body aadharKycRequest: AadharKycRequest
+    ): Observable<Response<AadharKycResponse>>
 }
