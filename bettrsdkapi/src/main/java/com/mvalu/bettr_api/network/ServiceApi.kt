@@ -18,6 +18,7 @@ import com.mvalu.bettr_api.application_journey.income.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeRequest
 import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
 import com.mvalu.bettr_api.emi.ConvertToEmiApiRequest
 import com.mvalu.bettr_api.emi.ConvertToEmiApiResponse
@@ -185,6 +186,14 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("pincode") pinCode: String
     ): Observable<Response<ValidatePincodeApiResponse>>
+
+    @GET("v1/{organizationId}/leads/{leadId}/pincheckwithbureau")
+    fun validatePincodeNew(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body validatPincodeRequestModel:ValidatePincodeRequest
+    ): Observable<Response<ValidatePincodeApiResponse>>
+
 
     @POST("v1/{organizationId}/integration/bureau")
     fun checkBureauStatus(

@@ -17,6 +17,7 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeResult
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.CryptLib
@@ -200,6 +201,29 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.VALIDATE_PINCODE_API
         )
     }
+
+    fun validatePincodeNew(
+        pinCode: String,
+        userid: String,
+        leadId: String,
+        validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.validatePincodeCallBack = validatePincodeCallBack
+        val validatePincodeRequest = ValidatePincodeRequest()
+            .apply {
+                userId=userid
+                pincode=pinCode
+            }
+        callApi(
+            serviceApi.validatePincodeNew(BettrApiSdk.getOrganizationId(),leadId, validatePincodeRequest),
+            ApiTag.VALIDATE_PINCODE_API
+        )
+    }
+
+
 
     fun checkBureauStatus(
         leadId: String,
