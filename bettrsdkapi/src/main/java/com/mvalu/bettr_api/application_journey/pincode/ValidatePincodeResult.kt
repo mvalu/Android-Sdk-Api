@@ -21,4 +21,7 @@ class ValidatePincodeResult {
 
     @field:Json(name = "leadObj")
     var leadObj: LeadDetail? = null
+
+    @field:Json(name = "msg")
+    var msg:String? = null
 }
