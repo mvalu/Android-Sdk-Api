@@ -117,6 +117,13 @@ class LeadDetail() : Parcelable {
     @field:Json(name = "sectionDetail")
     var sectionDetail: SectionDetail? = null
 
+    @field:Json(name = "lastStep")
+    var lastStep: String? = null
+
+    @field:Json(name = "nextStep")
+    var nextStep: String? = null
+
+
     constructor(parcel: Parcel) : this() {
         productName = parcel.readString()
         createdAt = parcel.readString()
@@ -146,6 +153,8 @@ class LeadDetail() : Parcelable {
 
         leadRejectedReason = parcel.readString()
         sectionDetail = parcel.readParcelable(SectionDetail::class.java.classLoader)
+        lastStep = parcel.readString()
+        nextStep = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -177,6 +186,8 @@ class LeadDetail() : Parcelable {
         parcel.writeValue(bureauVerified)
         parcel.writeString(leadRejectedReason)
         parcel.writeParcelable(sectionDetail, flags)
+        parcel.writeString(lastStep)
+        parcel.writeString(nextStep)
     }
 
     override fun describeContents(): Int {
