@@ -146,7 +146,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         leadDetail.productType = PRODUCT_TYPE
         encryptLeadData(leadDetail)
         callApi(
-            serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
+            serviceApi.updateLeadNew(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
             ApiTag.UPDATE_LEAD_API
         )
     }
