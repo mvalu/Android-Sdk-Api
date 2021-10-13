@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 class AadharKycResponse : ApiBaseResponse() {
 
     @field:Json(name = "results")
-    var result: Result? = null
+    var result: KycSubmitResult? = null
 
     class Result {
         @field:Json(name = "accountInfo")
