@@ -169,6 +169,13 @@ interface ServiceApi {
         @Body lead: LeadDetail?
     ): Observable<Response<LeadDetailApiResponse>>
 
+    @PUT("v1/{organizationId}/leads/{leadId}/new?ignoreValidation=true")
+    fun updateLeadNew(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body lead: LeadDetail?
+    ): Observable<Response<LeadDetailApiResponse>>
+
     @GET("v1/{organizationId}/leads/{leadId}")
     fun getLead(
         @Path("organizationId") organizationId: String,
