@@ -194,7 +194,7 @@ interface ServiceApi {
         @Path("pincode") pinCode: String
     ): Observable<Response<ValidatePincodeApiResponse>>
 
-    @GET("v1/{organizationId}/leads/{leadId}/pincheckwithbureau")
+    @POST("v1/{organizationId}/leads/{leadId}/pincheckwithbureau")
     fun validatePincodeNew(
         @Path("organizationId") organizationId: String,
         @Path("leadId") leadId: String,
