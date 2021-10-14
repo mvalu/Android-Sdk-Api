@@ -109,7 +109,6 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun submitAadharKyc(
-        organizationId: String,
         aadharKycRequest: AadharKycRequest,
         submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
     ) {
@@ -117,11 +116,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
         this.submitAdharKycCallBack = submitAdharKycCallBack
-        callApi(serviceApi.submitAadharKycNew(organizationId, aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+        callApi(serviceApi.submitAadharKycNew(BettrApiSdk.getOrganizationId(), aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
     }
 
     fun getAdharAddrs(
-        organizationId: String,
         leadRequest: LeadRequest,
         submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
     ) {
@@ -129,7 +127,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
         this.submitAdharKycCallBack = submitAdharKycCallBack
-        callApi(serviceApi.getAdharAddrss(organizationId, leadRequest), ApiTag.GET_AADHAR_ADDRESS_API)
+        callApi(serviceApi.getAdharAddrss(BettrApiSdk.getOrganizationId(), leadRequest), ApiTag.GET_AADHAR_ADDRESS_API)
     }
 
     fun getLead(
