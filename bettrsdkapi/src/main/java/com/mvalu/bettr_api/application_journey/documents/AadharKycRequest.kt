@@ -5,10 +5,10 @@ import com.squareup.moshi.Json
 class AadharKycRequest(passcode: String?, aadhaarFileUrl: String?, aadharData: String?) {
 
     @field:Json(name = "leadId")
-    var leadId: String? = null
+    var leadId: Int? = null
 
     @field:Json(name = "userId")
-    var userId: String? = null
+    var userId: Int? = null
 
     @field:Json(name = "passcode")
     var passcode: String? = passcode
