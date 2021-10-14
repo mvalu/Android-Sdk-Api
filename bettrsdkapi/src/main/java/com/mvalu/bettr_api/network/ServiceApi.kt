@@ -642,4 +642,16 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Body aadharKycRequest: AadharKycRequest
     ): Observable<Response<AadharKycResponse>>
+
+    @POST("v1/{{organizationId}}/okyc/okycSubmit?ignoreValidation=true")
+    fun submitAadharKycNew(
+        @Path("organizationId") organizationId: String,
+        @Body aadharKycRequest: AadharKycRequest
+    ): Observable<Response<AadharKycResponse>>
+
+    @POST("v1/{{organizationId}}/okyc/getAddress?ignoreValidation=true")
+    fun getAdharAddrss(
+        @Path("organizationId") organizationId: String,
+        @Body request: LeadRequest
+    ): Observable<Response<AadharKycResponse>>
 }

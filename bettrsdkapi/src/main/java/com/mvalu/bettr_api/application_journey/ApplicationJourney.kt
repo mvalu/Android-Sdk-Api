@@ -109,7 +109,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     fun submitAadharKyc(
-        accountId: String,
+        organizationId: String,
         aadharKycRequest: AadharKycRequest,
         submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
     ) {
@@ -117,7 +117,19 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
         }
         this.submitAdharKycCallBack = submitAdharKycCallBack
-        callApi(serviceApi.submitAadharKyc(accountId, aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+        callApi(serviceApi.submitAadharKycNew(organizationId, aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+    }
+
+    fun getAdharAddrs(
+        organizationId: String,
+        leadRequest: LeadRequest,
+        submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.submitAdharKycCallBack = submitAdharKycCallBack
+        callApi(serviceApi.getAdharAddrss(organizationId, leadRequest), ApiTag.GET_AADHAR_ADDRESS_API)
     }
 
     fun getLead(
@@ -1015,7 +1027,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAdharXmlCallBack?.onSuccess(adharUploadRes.result!!)
             }
 
-            ApiTag.AADHAR_KYC_SUBMIT_API -> {
+            ApiTag.AADHAR_KYC_SUBMIT_API,ApiTag.GET_AADHAR_ADDRESS_API -> {
                 val adharKycsubmitRes = response as AadharKycResponse
                 submitAdharKycCallBack?.onSuccess(adharKycsubmitRes.result!!)
             }
@@ -1178,7 +1190,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 uploadAdharXmlCallBack?.onError(errorCode, errorMessage)
             }
 
-            ApiTag.AADHAR_KYC_SUBMIT_API -> {
+            ApiTag.AADHAR_KYC_SUBMIT_API,ApiTag.GET_AADHAR_ADDRESS_API -> {
                 submitAdharKycCallBack?.onError(errorCode, errorMessage)
             }
 

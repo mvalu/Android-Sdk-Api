@@ -12,6 +12,15 @@ class KycSubmitResult {
     var addressParam: AddressParam? = null
 
     class AddressParam {
+        @field:Json(name = "leadId")
+        var leadId: String? = null
+
+        @field:Json(name = "organizationId")
+        var organisationId: String? = null
+
+        @field:Json(name = "address")
+        var address: String? = null
+
         @field:Json(name = "house")
         var house: String? = null
 
