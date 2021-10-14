@@ -643,13 +643,13 @@ interface ServiceApi {
         @Body aadharKycRequest: AadharKycRequest
     ): Observable<Response<AadharKycResponse>>
 
-    @POST("v1/{{organizationId}}/okyc/okycSubmit?ignoreValidation=true")
+    @POST("v1/{organizationId}/okyc/okycSubmit")
     fun submitAadharKycNew(
         @Path("organizationId") organizationId: String,
         @Body aadharKycRequest: AadharKycRequest
     ): Observable<Response<AadharKycResponse>>
 
-    @POST("v1/{{organizationId}}/okyc/getAddress?ignoreValidation=true")
+    @POST("v1/{organizationId}/okyc/getAddress")
     fun getAdharAddrss(
         @Path("organizationId") organizationId: String,
         @Body request: LeadRequest
