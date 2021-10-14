@@ -92,7 +92,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var emailVerifyOtpCallBack: ApiResponseCallback<EmailVerifyOtpApiResponse.Result>? = null
 
-    private var submitAdharKycCallBack: ApiResponseCallback<AadharKycResponse.Result>? = null
+    private var submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>? = null
 
     private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
 
@@ -111,7 +111,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     fun submitAadharKyc(
         accountId: String,
         aadharKycRequest: AadharKycRequest,
-        submitAdharKycCallBack: ApiResponseCallback<AadharKycResponse.Result>
+        submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
