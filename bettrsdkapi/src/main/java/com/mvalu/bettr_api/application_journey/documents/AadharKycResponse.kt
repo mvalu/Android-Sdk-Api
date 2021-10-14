@@ -9,8 +9,8 @@ class AadharKycResponse : ApiBaseResponse() {
     @field:Json(name = "results")
     var result: KycSubmitResult? = null
 
-    class Result {
-        @field:Json(name = "accountInfo")
-        var accountInfo: AccountInfo? = null
-    }
+//    class Result {
+//        @field:Json(name = "accountInfo")
+//        var accountInfo: AccountInfo? = null
+//    }
 }
