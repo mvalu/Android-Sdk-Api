@@ -1,9 +1,8 @@
 package com.mvalu.bettr_api.application_journey.documents
 
-import com.mvalu.bettr_api.network.ApiBaseResponse
 import com.squareup.moshi.Json
 
-class KycSubmitResult : ApiBaseResponse() {
+class KycSubmitResult {
 
     @field:Json(name = "status")
     var status: Boolean? = null
