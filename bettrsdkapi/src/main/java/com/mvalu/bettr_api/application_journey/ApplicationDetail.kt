@@ -132,6 +132,8 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "okycStatus")
     var okycStatus: String? = null
 
+    @field:Json(name = "riskSegment")
+    var riskSegment: Int? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -174,6 +176,7 @@ class ApplicationDetail() : Parcelable {
         panImageStatus = parcel.readString()
         selfieImageStatus = parcel.readString()
         okycStatus = parcel.readString()
+        riskSegment = parcel.readValue(Int::class.java.classLoader) as? Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -217,6 +220,7 @@ class ApplicationDetail() : Parcelable {
         parcel.writeString(panImageStatus)
         parcel.writeString(selfieImageStatus)
         parcel.writeString(okycStatus)
+        parcel.writeValue(riskSegment)
     }
 
     override fun describeContents(): Int {
