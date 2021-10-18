@@ -96,6 +96,10 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
 
+    private var getBureauAddrsCallBack: ApiResponseCallback<ArrayList<BureauAddressResponse.BureauAddressResult>>? = null
+
+
+
     fun uploadAadharXmlFile(
         body: MultipartBody.Part,
         description: RequestBody,
@@ -117,6 +121,17 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         }
         this.submitAdharKycCallBack = submitAdharKycCallBack
         callApi(serviceApi.submitAadharKycNew(BettrApiSdk.getOrganizationId(), aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+    }
+
+    fun getBureauAddress(
+        leadId: String,
+        getBureauAddrsCallBack: ApiResponseCallback<ArrayList<BureauAddressResponse.BureauAddressResult>>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.getBureauAddrsCallBack = getBureauAddrsCallBack
+        callApi(serviceApi.getBureauAddrss(BettrApiSdk.getOrganizationId(),leadId), ApiTag.GET_BUREAU_ADDRESS_API)
     }
 
     fun callConfirAdharAddrsApi(
@@ -1032,6 +1047,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
+            ApiTag.GET_BUREAU_ADDRESS_API -> {
+                val bureauAddrsResponse = response as BureauAddressResponse
+                getBureauAddrsCallBack?.onSuccess(bureauAddrsResponse.result!!)
+            }
+
             ApiTag.UPLOAD_AADHAR_XML_FILE -> {
                 val adharUploadRes = response as FileUploadResponse
                 uploadAdharXmlCallBack?.onSuccess(adharUploadRes.result!!)
@@ -1196,6 +1216,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
+            ApiTag.GET_BUREAU_ADDRESS_API -> {
+                getBureauAddrsCallBack?.onError(errorCode,errorMessage)
+            }
             ApiTag.UPLOAD_AADHAR_XML_FILE -> {
                 uploadAdharXmlCallBack?.onError(errorCode, errorMessage)
             }
