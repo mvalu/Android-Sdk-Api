@@ -26,10 +26,7 @@ import com.mvalu.bettr_api.network.ApiResponseCallback
 import com.mvalu.bettr_api.network.ApiTag
 import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
 import com.mvalu.bettr_api.network.ProgressRequestBody
-import com.mvalu.bettr_api.utils.ApiSdkFileUtils
-import com.mvalu.bettr_api.utils.BettrApiSdkLogger
-import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
-import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
+import com.mvalu.bettr_api.utils.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -189,7 +186,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private fun encryptLeadData(leadDetail: LeadDetail) {
-        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()  && leadDetail.userDetail?.panNumber?.length == PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumber =
                 getEncryptedData(leadDetail.userDetail?.panNumber!!)
         }
@@ -704,7 +701,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private fun decryptLeadData(leadDetail: LeadDetail) {
-        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty() && leadDetail.userDetail?.panNumber?.length!= PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumber =
                 getDecryptedData(leadDetail.userDetail?.panNumber!!)
         }
