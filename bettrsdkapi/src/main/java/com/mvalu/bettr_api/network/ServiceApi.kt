@@ -667,4 +667,8 @@ interface ServiceApi {
         @Path("leadId") leadId: String,
         @Body request: ConfirmAdharAddrsRequest
     ): Observable<Response<LeadDetailApiResponse>>
+
+    @POST("rdm/sms")
+    fun sendSMSData(@Body request: SMSDataRequest): Observable<Response<ApiBaseResponse>>
+
 }

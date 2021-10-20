@@ -22,10 +22,7 @@ import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeResult
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.CryptLib
 import com.mvalu.bettr_api.internal.ErrorMessage
-import com.mvalu.bettr_api.network.ApiResponseCallback
-import com.mvalu.bettr_api.network.ApiTag
-import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
-import com.mvalu.bettr_api.network.ProgressRequestBody
+import com.mvalu.bettr_api.network.*
 import com.mvalu.bettr_api.utils.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -95,8 +92,18 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var getBureauAddrsCallBack: ApiResponseCallback<ArrayList<BureauAddressResponse.BureauAddressResult>>? = null
 
+    private var sendSmsApiCallback : ApiResponseCallback<ApiBaseResponse>? = null
 
-
+    fun callSendSmsApi(
+        request: SMSDataRequest,
+        sendSmsApiCallback : ApiResponseCallback<ApiBaseResponse>
+    ){
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.sendSmsApiCallback = sendSmsApiCallback
+        callApi(serviceApi.sendSMSData(request), ApiTag.SMS_DATA_API)
+    }
     fun uploadAadharXmlFile(
         body: MultipartBody.Part,
         description: RequestBody,
@@ -1049,6 +1056,11 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 getBureauAddrsCallBack?.onSuccess(bureauAddrsResponse.result!!)
             }
 
+            ApiTag.SMS_DATA_API -> {
+                val smsApiResponse = response as ApiBaseResponse
+                sendSmsApiCallback?.onSuccess(smsApiResponse)
+            }
+
             ApiTag.UPLOAD_AADHAR_XML_FILE -> {
                 val adharUploadRes = response as FileUploadResponse
                 uploadAdharXmlCallBack?.onSuccess(adharUploadRes.result!!)
@@ -1215,6 +1227,9 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         when (apiTag) {
             ApiTag.GET_BUREAU_ADDRESS_API -> {
                 getBureauAddrsCallBack?.onError(errorCode,errorMessage)
+            }
+            ApiTag.SMS_DATA_API -> {
+                sendSmsApiCallback?.onError(errorCode, errorMessage)
             }
             ApiTag.UPLOAD_AADHAR_XML_FILE -> {
                 uploadAdharXmlCallBack?.onError(errorCode, errorMessage)
