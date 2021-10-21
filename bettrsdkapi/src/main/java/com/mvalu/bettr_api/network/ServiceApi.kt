@@ -671,4 +671,18 @@ interface ServiceApi {
     @POST("rdm/sms")
     fun sendSMSData(@Body request: SMSDataRequest): Observable<Response<ApiBaseResponse>>
 
+    @POST("v1/{organizationId}/leads/{leadId}/addressSubmit")
+    fun addressSubmit(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body request: AddressSubmitRequest
+    ): Observable<Response<LeadDetailApiResponse>>
+
+    @POST("v1/{organizationId}/leads/{leadId}/companySubmit")
+    fun companySubmit(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body request: CompanyNameSubmitRequest
+    ): Observable<Response<LeadDetailApiResponse>>
+
 }

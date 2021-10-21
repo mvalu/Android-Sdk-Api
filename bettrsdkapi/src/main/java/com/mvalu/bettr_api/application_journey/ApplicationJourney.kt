@@ -150,6 +150,30 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         callApi(serviceApi.selectAdharAddress(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.SET_ADHAR_ADDRS_API)
     }
 
+    fun callAddrsSubmitApi(
+        leadId: String,
+        request: AddressSubmitRequest,
+        updateLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.updateLeadCallBack = updateLeadCallBack
+        callApi(serviceApi.addressSubmit(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.ADDRESS_SUBMIT_API)
+    }
+
+    fun callCompanyNameSubmitApi(
+        leadId: String,
+        request: CompanyNameSubmitRequest,
+        updateLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.updateLeadCallBack = updateLeadCallBack
+        callApi(serviceApi.companySubmit(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.COMPANY_NAME_SUBMIT_API)
+    }
+
     fun getAdharAddrs(
         leadRequest: LeadRequest,
         submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
@@ -1106,7 +1130,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val companyBusinessCardUploadApiResponse = response as DocumentUploadApiResponse
                 uploadCompanyBusinessCardCallBack?.onSuccess(companyBusinessCardUploadApiResponse.results!!)
             }
-            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API -> {
+            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API, ApiTag.COMPANY_NAME_SUBMIT_API, ApiTag.ADDRESS_SUBMIT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead updated successfully")
                 val updateLeadApiResponse = response as LeadDetailApiResponse
                 decryptLeadData(updateLeadApiResponse.results!!)
@@ -1260,7 +1284,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
                 uploadCompanyBusinessCardCallBack?.onError(errorMessage)
             }
-            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API -> {
+            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API, ApiTag.COMPANY_NAME_SUBMIT_API, ApiTag.ADDRESS_SUBMIT_API -> {
                 updateLeadCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.GET_LEAD_API -> {
