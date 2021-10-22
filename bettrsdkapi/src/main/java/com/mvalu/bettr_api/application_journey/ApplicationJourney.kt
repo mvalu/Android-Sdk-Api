@@ -90,7 +90,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
 
-    private var getBureauAddrsCallBack: ApiResponseCallback<ArrayList<BureauAddressResponse.BureauAddressResult>>? = null
+    private var getBureauAddrsCallBack: ApiResponseCallback<List<BureauAddressResponse.BureauAddressResult>>? = null
 
     private var sendSmsApiCallback : ApiResponseCallback<ApiBaseResponse>? = null
 
@@ -129,7 +129,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     fun getBureauAddress(
         leadId: String,
-        getBureauAddrsCallBack: ApiResponseCallback<ArrayList<BureauAddressResponse.BureauAddressResult>>
+        getBureauAddrsCallBack: ApiResponseCallback<List<BureauAddressResponse.BureauAddressResult>>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
             throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
