@@ -655,7 +655,7 @@ interface ServiceApi {
         @Body request: LeadRequest
     ): Observable<Response<AadharKycResponse>>
 
-    @POST("v1/{organizationId}/leads/{leadId}/getBureauAddress")
+    @GET("v1/{organizationId}/leads/{leadId}/getBureauAddress")
     fun getBureauAddrss(
         @Path("organizationId") organizationId: String,
         @Path("leadId") leadId: String
