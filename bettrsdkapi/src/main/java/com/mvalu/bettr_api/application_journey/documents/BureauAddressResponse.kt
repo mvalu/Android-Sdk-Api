@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 class BureauAddressResponse : ApiBaseResponse() {
 
     @field:Json(name = "results")
-    var result: ArrayList<BureauAddressResult>? = null
+    var result: List<BureauAddressResult>? = null
 
 
 
