@@ -14,6 +14,9 @@ class KycSubmitResult {
     @field:Json(name = "matchScore")
     var matchScore: Int? = null
 
+    @field:Json(name = "leadObj")
+    var leadObj: LeadObj? = null
+
     @field:Json(name = "addressParams")
     var addressParam: AddressParam? = null
 
@@ -27,8 +30,8 @@ class KycSubmitResult {
         @field:Json(name = "leadRejectedReason")
         var leadRejectedReason: String? = null
 
-        @field:Json(name = "house")
-        var house: String? = null
+        @field:Json(name = "applicationDetail")
+        var applicationDetail: ApplicationDetail? = null
 
         class ApplicationDetail {
             @field:Json(name = "status")
