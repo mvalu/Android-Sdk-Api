@@ -8,8 +8,42 @@ class KycSubmitResult {
     @field:Json(name = "status")
     var status: Boolean? = null
 
+    @field:Json(name = "msg")
+    var msg: String? = null
+
+    @field:Json(name = "matchScore")
+    var matchScore: Int? = null
+
     @field:Json(name = "addressParams")
     var addressParam: AddressParam? = null
+
+    class LeadObj {
+        @field:Json(name = "status")
+        var status: String? = null
+
+        @field:Json(name = "leadRejected")
+        var leadRejected: Boolean? = null
+
+        @field:Json(name = "leadRejectedReason")
+        var leadRejectedReason: String? = null
+
+        @field:Json(name = "house")
+        var house: String? = null
+
+        class ApplicationDetail {
+            @field:Json(name = "status")
+            var status: String? = null
+
+            @field:Json(name = "leadRejected")
+            var leadRejected: Boolean? = null
+
+            @field:Json(name = "leadRejectedReason")
+            var leadRejectedReason: String? = null
+
+            @field:Json(name = "okycStatus")
+            var okycStatus: String? = null
+        }
+    }
 
     class AddressParam {
         @field:Json(name = "leadId")
@@ -48,4 +82,6 @@ class KycSubmitResult {
         @field:Json(name = "pincode")
         var pincode: String? = null
     }
+
+
 }
