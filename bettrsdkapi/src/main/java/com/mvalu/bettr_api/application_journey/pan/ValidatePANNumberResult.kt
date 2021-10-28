@@ -13,6 +13,9 @@ class ValidatePANNumberResult {
     @field:Json(name = "leadDetail")
     var leadDetail: LeadDetail? = null
 
+    @field:Json(name = "namematchscore")
+    var namematchscore: Int? = 0
+
     class Data {
         @field:Json(name = "pan_number")
         var panNumber: String? = null
