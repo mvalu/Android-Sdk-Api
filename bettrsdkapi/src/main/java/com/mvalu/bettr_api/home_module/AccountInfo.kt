@@ -62,8 +62,8 @@ class AccountInfo() : Parcelable {
     @field:Json(name = "scanAndPayEnable")
     var scanAndPayEnable: Boolean? = null
 
-    @field:Json(name = "cardHolderName")
-    var cardHolderName: String? = null
+    @field:Json(name = "cardUserName")
+    var cardUserName: String? = null
 
 
     constructor(parcel: Parcel) : this() {
@@ -86,7 +86,7 @@ class AccountInfo() : Parcelable {
         status = parcel.readString()
         userVpa = parcel.readString()
         scanAndPayEnable = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
-        cardHolderName = parcel.readString()
+        cardUserName = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -109,7 +109,7 @@ class AccountInfo() : Parcelable {
         parcel.writeString(status)
         parcel.writeString(userVpa)
         parcel.writeValue(scanAndPayEnable)
-        parcel.writeString(cardHolderName)
+        parcel.writeString(cardUserName)
     }
 
     override fun describeContents(): Int {
