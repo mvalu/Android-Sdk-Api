@@ -62,7 +62,7 @@ class AccountInfo() : Parcelable {
     @field:Json(name = "scanAndPayEnable")
     var scanAndPayEnable: Boolean? = null
 
-    @field:Json(name = "cardholdername")
+    @field:Json(name = "cardHolderName")
     var cardHolderName: String? = null
 
 
