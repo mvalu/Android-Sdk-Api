@@ -82,6 +82,7 @@ class AccountInfo() : Parcelable {
         status = parcel.readString()
         userVpa = parcel.readString()
         scanAndPayEnable = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -104,6 +105,7 @@ class AccountInfo() : Parcelable {
         parcel.writeString(status)
         parcel.writeString(userVpa)
         parcel.writeValue(scanAndPayEnable)
+
     }
 
     override fun describeContents(): Int {
