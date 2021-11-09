@@ -14,4 +14,7 @@ class PaymentSummaryResult {
 
     @field:Json(name = "fineInfo")
     var fineInfo: FineInfo? = null
+
+    @field:Json(name = "unbilledInfo")
+    var unbilledInfo: UnbilledInfo? = null
 }
