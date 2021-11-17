@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.injection.module
 
 import android.util.Base64
+import android.util.Log
 import com.mvalu.bettr_api.BettrApiSdk
 import com.mvalu.bettr_api.BuildConfig
 import com.mvalu.bettr_api.network.ServiceApi
@@ -49,6 +50,8 @@ object NetworkModule {
         val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
+
+        Log.i("-----x-signed-key",Base64.encodeToString(BettrApiSdk.generateSignedSecretKey().toByteArray(), Base64.NO_WRAP))
 
         val headerInterceptor = Interceptor {
             val request = it.request().newBuilder()
