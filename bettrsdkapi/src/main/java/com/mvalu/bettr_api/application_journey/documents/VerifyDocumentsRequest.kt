@@ -23,4 +23,8 @@ class VerifyDocumentsRequest {
 
     @field:Json(name = "aadharBack")
     var aadharBack: String? = null
+
+    @field:Json(name = "docType")
+    var docType: String? = null
+
 }

@@ -1,16 +1,23 @@
 package com.mvalu.bettr_api.application_journey.documents
 
+import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.squareup.moshi.Json
 
 class VerifyDocumentsResult {
     @field:Json(name = "status")
-    var status: Status? = null
+    var status: Boolean? = false
 
     @field:Json(name = "leadUpdateFields")
     var leadUpdateFields: VerifiedDocumentsDetails? = null
 
     @field:Json(name = "nextStep")
     var nextStep: Boolean = false
+
+    @field:Json(name = "error")
+    var error: String? = null
+
+    @field:Json(name = "leadObj")
+    var leadObj: LeadDetail? = null
 
     class VerifiedDocumentsDetails {
         @field:Json(name = "pan")

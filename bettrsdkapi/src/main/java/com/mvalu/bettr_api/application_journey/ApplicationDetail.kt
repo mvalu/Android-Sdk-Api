@@ -123,6 +123,25 @@ class ApplicationDetail() : Parcelable {
     @field:Json(name = "pennyDropBankAccountSubmission")
     var pennyDropBankAccountSubmission: String? = null
 
+    @field:Json(name = "panImageStatus")
+    var panImageStatus: String? = null
+
+    @field:Json(name = "selfieImageStatus")
+    var selfieImageStatus: String? = null
+
+    @field:Json(name = "okycStatus")
+    var okycStatus: String? = null
+
+    @field:Json(name = "riskSegment")
+    var riskSegment: Int? = null
+
+
+    @field:Json(name = "smsPolicyStatus")
+    var smsPolicyStatus: String? = null
+
+    @field:Json(name = "statusChangeReason")
+    var statusChangeReason: String? = null
+
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
         otpNumber = parcel.readString()
@@ -161,6 +180,12 @@ class ApplicationDetail() : Parcelable {
         incomeDocumentSubmission = parcel.readString()
         kycDocumentSubmission = parcel.readString()
         pennyDropBankAccountSubmission = parcel.readString()
+        panImageStatus = parcel.readString()
+        selfieImageStatus = parcel.readString()
+        okycStatus = parcel.readString()
+        riskSegment = parcel.readValue(Int::class.java.classLoader) as? Int
+        smsPolicyStatus = parcel.readString()
+        statusChangeReason = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -201,6 +226,12 @@ class ApplicationDetail() : Parcelable {
         parcel.writeString(incomeDocumentSubmission)
         parcel.writeString(kycDocumentSubmission)
         parcel.writeString(pennyDropBankAccountSubmission)
+        parcel.writeString(panImageStatus)
+        parcel.writeString(selfieImageStatus)
+        parcel.writeString(okycStatus)
+        parcel.writeValue(riskSegment)
+        parcel.writeValue(smsPolicyStatus)
+        parcel.writeValue(statusChangeReason)
     }
 
     override fun describeContents(): Int {

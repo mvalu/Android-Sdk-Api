@@ -202,6 +202,12 @@ class ApplicationJourneyContentResult {
 
         @field:Json(name = "residenceType")
         var residenceType: List<DropdownItem>? = null
+
+        @field:Json(name = "havingITR")
+        var havingITR: List<DropdownItem>? = null
+
+        @field:Json(name = "professionType")
+        var professionType: List<DropdownItem>? = null
     }
 
     class RangeDetail {

@@ -10,4 +10,7 @@ class ValidatePANNumberRequest {
     @field:Json(name = "name")
     var name: String? = null
 
+    @field:Json(name = "leadId")
+    var leadId: String? = null
+
 }

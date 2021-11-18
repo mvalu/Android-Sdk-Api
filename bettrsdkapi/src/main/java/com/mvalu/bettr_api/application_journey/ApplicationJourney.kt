@@ -17,18 +17,13 @@ import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberResult
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeResult
 import com.mvalu.bettr_api.base.ApiSdkBase
 import com.mvalu.bettr_api.internal.CryptLib
 import com.mvalu.bettr_api.internal.ErrorMessage
-import com.mvalu.bettr_api.network.ApiResponseCallback
-import com.mvalu.bettr_api.network.ApiTag
-import com.mvalu.bettr_api.network.DocumentUploadApiResponseCallback
-import com.mvalu.bettr_api.network.ProgressRequestBody
-import com.mvalu.bettr_api.utils.ApiSdkFileUtils
-import com.mvalu.bettr_api.utils.BettrApiSdkLogger
-import com.mvalu.bettr_api.utils.NOT_SPECIFIED_ERROR_CODE
-import com.mvalu.bettr_api.utils.NO_NETWORK_ERROR_CODE
+import com.mvalu.bettr_api.network.*
+import com.mvalu.bettr_api.utils.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -91,6 +86,105 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     private var emailVerifyOtpCallBack: ApiResponseCallback<EmailVerifyOtpApiResponse.Result>? = null
 
+    private var submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>? = null
+
+    private var uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>? = null
+
+    private var getBureauAddrsCallBack: ApiResponseCallback<List<BureauAddressResponse.BureauAddressResult>>? = null
+
+    private var sendSmsApiCallback : ApiResponseCallback<ApiBaseResponse>? = null
+
+    fun callSendSmsApi(
+        request: SMSDataRequest,
+        sendSmsApiCallback : ApiResponseCallback<ApiBaseResponse>
+    ){
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.sendSmsApiCallback = sendSmsApiCallback
+        callApi(serviceApi.sendSMSData(request), ApiTag.SMS_DATA_API)
+    }
+    fun uploadAadharXmlFile(
+        body: MultipartBody.Part,
+        description: RequestBody,
+        uploadAdharXmlCallBack: ApiResponseCallback<FileUploadResponse.Result>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.uploadAdharXmlCallBack = uploadAdharXmlCallBack
+        callApi(serviceApi.uploadFileAadharXml(description, body), ApiTag.UPLOAD_AADHAR_XML_FILE)
+    }
+
+    fun submitAadharKyc(
+        aadharKycRequest: AadharKycRequest,
+        submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.submitAdharKycCallBack = submitAdharKycCallBack
+        callApi(serviceApi.submitAadharKycNew(BettrApiSdk.getOrganizationId(), aadharKycRequest), ApiTag.AADHAR_KYC_SUBMIT_API)
+    }
+
+    fun getBureauAddress(
+        leadId: String,
+        getBureauAddrsCallBack: ApiResponseCallback<List<BureauAddressResponse.BureauAddressResult>>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.getBureauAddrsCallBack = getBureauAddrsCallBack
+        callApi(serviceApi.getBureauAddrss(BettrApiSdk.getOrganizationId(),leadId), ApiTag.GET_BUREAU_ADDRESS_API)
+    }
+
+    fun callConfirAdharAddrsApi(
+        leadId: String,
+        request: ConfirmAdharAddrsRequest,
+        updateLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.updateLeadCallBack = updateLeadCallBack
+        callApi(serviceApi.selectAdharAddress(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.SET_ADHAR_ADDRS_API)
+    }
+
+    fun callAddrsSubmitApi(
+        leadId: String,
+        request: AddressSubmitRequest,
+        updateLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.updateLeadCallBack = updateLeadCallBack
+        callApi(serviceApi.addressSubmit(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.ADDRESS_SUBMIT_API)
+    }
+
+    fun callCompanyNameSubmitApi(
+        leadId: String,
+        request: CompanyNameSubmitRequest,
+        updateLeadCallBack: ApiResponseCallback<LeadDetail>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.updateLeadCallBack = updateLeadCallBack
+        callApi(serviceApi.companySubmit(BettrApiSdk.getOrganizationId(), leadId, request), ApiTag.COMPANY_NAME_SUBMIT_API)
+    }
+
+    fun getAdharAddrs(
+        leadRequest: LeadRequest,
+        submitAdharKycCallBack: ApiResponseCallback<KycSubmitResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.submitAdharKycCallBack = submitAdharKycCallBack
+        callApi(serviceApi.getAdharAddrss(BettrApiSdk.getOrganizationId(), leadRequest), ApiTag.GET_AADHAR_ADDRESS_API)
+    }
+
     fun getLead(
         leadId: String,
         getLeadCallBack: ApiResponseCallback<LeadDetail>
@@ -117,13 +211,13 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         leadDetail.productType = PRODUCT_TYPE
         encryptLeadData(leadDetail)
         callApi(
-            serviceApi.updateLead(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
+            serviceApi.updateLeadNew(BettrApiSdk.getOrganizationId(), leadId, leadDetail),
             ApiTag.UPDATE_LEAD_API
         )
     }
 
     private fun encryptLeadData(leadDetail: LeadDetail) {
-        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()  && leadDetail.userDetail?.panNumber?.length == PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumber =
                 getEncryptedData(leadDetail.userDetail?.panNumber!!)
         }
@@ -140,6 +234,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     fun validatePANNumber(
         panNumber: String,
         leadName: String,
+        id:String,
         validatePANNumberCallBack: ApiResponseCallback<ValidatePANNumberResult>
     ) {
         if (!BettrApiSdk.isSdkInitialized()) {
@@ -150,7 +245,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             .apply {
                 pan = panNumber
                 name = leadName
-
+                leadId = id
             }
         callApi(
             serviceApi.validatePANNumber(BettrApiSdk.getOrganizationId(), validatePANNumberRequest),
@@ -171,6 +266,29 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.VALIDATE_PINCODE_API
         )
     }
+
+    fun validatePincodeNew(
+        pinCode: String,
+        userid: String,
+        leadId: String,
+        validatePincodeCallBack: ApiResponseCallback<ValidatePincodeResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.validatePincodeCallBack = validatePincodeCallBack
+        val validatePincodeRequest = ValidatePincodeRequest()
+            .apply {
+                userId=userid
+                pincode=pinCode
+            }
+        callApi(
+            serviceApi.validatePincodeNew(BettrApiSdk.getOrganizationId(),leadId, validatePincodeRequest),
+            ApiTag.VALIDATE_PINCODE_API
+        )
+    }
+
+
 
     fun checkBureauStatus(
         leadId: String,
@@ -529,6 +647,40 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun verifyDocumentsNew(
+        panCard: String?,
+        profilePic: String?,
+        aadharFront: String?,
+        aadharBack: String?,
+        applicationId: String,
+        docType: String,
+        verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.verifyDocumentsCallBack = verifyDocumentsCallBack
+        val verifyDocumentsRequest = VerifyDocumentsRequest().apply {
+            this.userId = BettrApiSdk.getUserId()
+            this.leadId = applicationId
+            this.pan = panCard
+            this.photo = profilePic
+            this.aadharFront = aadharFront
+            this.aadharBack = aadharBack
+            this.productType = PRODUCT_TYPE
+            this.docType = docType
+        }
+        callApi(
+            serviceApi.verifyDocumentsNew(
+                BettrApiSdk.getOrganizationId(),
+                applicationId,
+                verifyDocumentsRequest
+            ),
+            ApiTag.VERIFY_DOCUMENTS_API
+        )
+    }
+
+
     fun fetchCheckList(
         leadId: String,
         checkListCallBack: ApiResponseCallback<CheckListResult>
@@ -580,7 +732,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private fun decryptLeadData(leadDetail: LeadDetail) {
-        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty()) {
+        if (!leadDetail.userDetail?.panNumber.isNullOrEmpty() && leadDetail.userDetail?.panNumber?.length!= PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumber =
                 getDecryptedData(leadDetail.userDetail?.panNumber!!)
         }
@@ -923,6 +1075,26 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
     override fun onApiSuccess(apiTag: ApiTag, response: Any) {
         when (apiTag) {
+            ApiTag.GET_BUREAU_ADDRESS_API -> {
+                val bureauAddrsResponse = response as BureauAddressResponse
+                getBureauAddrsCallBack?.onSuccess(bureauAddrsResponse.result!!)
+            }
+
+            ApiTag.SMS_DATA_API -> {
+                val smsApiResponse = response as ApiBaseResponse
+                sendSmsApiCallback?.onSuccess(smsApiResponse)
+            }
+
+            ApiTag.UPLOAD_AADHAR_XML_FILE -> {
+                val adharUploadRes = response as FileUploadResponse
+                uploadAdharXmlCallBack?.onSuccess(adharUploadRes.result!!)
+            }
+
+            ApiTag.AADHAR_KYC_SUBMIT_API,ApiTag.GET_AADHAR_ADDRESS_API -> {
+                val adharKycsubmitRes = response as AadharKycResponse
+                submitAdharKycCallBack?.onSuccess(adharKycsubmitRes.result!!)
+            }
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "gst invoice uploaded successfully")
                 val gstInvoiceUploadApiResponse = response as DocumentUploadApiResponse
@@ -958,7 +1130,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 val companyBusinessCardUploadApiResponse = response as DocumentUploadApiResponse
                 uploadCompanyBusinessCardCallBack?.onSuccess(companyBusinessCardUploadApiResponse.results!!)
             }
-            ApiTag.UPDATE_LEAD_API -> {
+            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API, ApiTag.COMPANY_NAME_SUBMIT_API, ApiTag.ADDRESS_SUBMIT_API -> {
                 BettrApiSdkLogger.printInfo(TAG, "Lead updated successfully")
                 val updateLeadApiResponse = response as LeadDetailApiResponse
                 decryptLeadData(updateLeadApiResponse.results!!)
@@ -1077,6 +1249,20 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onApiError(errorCode: Int, apiTag: ApiTag, errorMessage: String) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + errorMessage)
         when (apiTag) {
+            ApiTag.GET_BUREAU_ADDRESS_API -> {
+                getBureauAddrsCallBack?.onError(errorCode,errorMessage)
+            }
+            ApiTag.SMS_DATA_API -> {
+                sendSmsApiCallback?.onError(errorCode, errorMessage)
+            }
+            ApiTag.UPLOAD_AADHAR_XML_FILE -> {
+                uploadAdharXmlCallBack?.onError(errorCode, errorMessage)
+            }
+
+            ApiTag.AADHAR_KYC_SUBMIT_API,ApiTag.GET_AADHAR_ADDRESS_API -> {
+                submitAdharKycCallBack?.onError(errorCode, errorMessage)
+            }
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 uploadGSTInvoiceCallBack?.onError(errorMessage)
             }
@@ -1098,7 +1284,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             ApiTag.COMPANY_BUSINESS_CARD_UPLOAD_API -> {
                 uploadCompanyBusinessCardCallBack?.onError(errorMessage)
             }
-            ApiTag.UPDATE_LEAD_API -> {
+            ApiTag.UPDATE_LEAD_API, ApiTag.SET_ADHAR_ADDRS_API, ApiTag.COMPANY_NAME_SUBMIT_API, ApiTag.ADDRESS_SUBMIT_API -> {
                 updateLeadCallBack?.onError(errorCode, errorMessage)
             }
             ApiTag.GET_LEAD_API -> {
@@ -1170,6 +1356,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     override fun onTimeout(apiTag: ApiTag) {
         BettrApiSdkLogger.printInfo(TAG, apiTag.name + " " + ErrorMessage.API_TIMEOUT_ERROR.value)
         when (apiTag) {
+
             ApiTag.GST_INVOICE_UPLOAD_API -> {
                 uploadGSTInvoiceCallBack?.onError(ErrorMessage.API_TIMEOUT_ERROR.value)
             }

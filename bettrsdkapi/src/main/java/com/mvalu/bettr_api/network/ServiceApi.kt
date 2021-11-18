@@ -13,13 +13,12 @@ import com.mvalu.bettr_api.application_journey.checklist.CheckListApiResponse
 import com.mvalu.bettr_api.application_journey.checklist.CheckListRequest
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentApiResponse
 import com.mvalu.bettr_api.application_journey.content.ApplicationJourneyContentRequest
-import com.mvalu.bettr_api.application_journey.documents.DocumentUploadApiResponse
-import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsApiResponse
-import com.mvalu.bettr_api.application_journey.documents.VerifyDocumentsRequest
+import com.mvalu.bettr_api.application_journey.documents.*
 import com.mvalu.bettr_api.application_journey.income.*
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberApiResponse
 import com.mvalu.bettr_api.application_journey.pan.ValidatePANNumberRequest
 import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeApiResponse
+import com.mvalu.bettr_api.application_journey.pincode.ValidatePincodeRequest
 import com.mvalu.bettr_api.downloads.DocumentDownloadApiResponse
 import com.mvalu.bettr_api.emi.ConvertToEmiApiRequest
 import com.mvalu.bettr_api.emi.ConvertToEmiApiResponse
@@ -170,6 +169,13 @@ interface ServiceApi {
         @Body lead: LeadDetail?
     ): Observable<Response<LeadDetailApiResponse>>
 
+    @PUT("v1/{organizationId}/leads/{leadId}/new")
+    fun updateLeadNew(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body lead: LeadDetail?
+    ): Observable<Response<LeadDetailApiResponse>>
+
     @GET("v1/{organizationId}/leads/{leadId}")
     fun getLead(
         @Path("organizationId") organizationId: String,
@@ -187,6 +193,14 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Path("pincode") pinCode: String
     ): Observable<Response<ValidatePincodeApiResponse>>
+
+    @POST("v1/{organizationId}/leads/{leadId}/pincheckwithbureau")
+    fun validatePincodeNew(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body validatPincodeRequestModel:ValidatePincodeRequest
+    ): Observable<Response<ValidatePincodeApiResponse>>
+
 
     @POST("v1/{organizationId}/integration/bureau")
     fun checkBureauStatus(
@@ -332,6 +346,17 @@ interface ServiceApi {
         @Path("applicationId") applicationId: String,
         @Body request: VerifyDocumentsRequest
     ): Observable<Response<VerifyDocumentsApiResponse>>
+
+    /*----------------------new document verify api--------*/
+    @POST("v1/{organizationId}/application/{applicationId}/leadDocumentVerifyNew")
+    fun verifyDocumentsNew(
+        @Path("organizationId") organizationId: String,
+        @Path("applicationId") applicationId: String,
+        @Body request: VerifyDocumentsRequest
+    ): Observable<Response<VerifyDocumentsApiResponse>>
+
+    /*------------------------------*/
+
 
     @POST("v1/{organizationId}/leads/screenDetail")
     fun fetchCheckList(
@@ -604,4 +629,60 @@ interface ServiceApi {
         @Path("organizationId") organizationId: String,
         @Body emailVerifyOtpRequest: EmailVerifyOtpRequest
     ): Observable<Response<EmailVerifyOtpApiResponse>>
+
+    @Multipart
+    @POST("upload/single/aadhaarxml")
+    fun uploadFileAadharXml(
+        @Part("fileData") description: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Observable<Response<FileUploadResponse>>
+
+    @POST("lms/cc/account/{accountId}/submitKyc")
+    fun submitAadharKyc(
+        @Path("accountId") accountId: String,
+        @Body aadharKycRequest: AadharKycRequest
+    ): Observable<Response<AadharKycResponse>>
+
+    @POST("v1/{organizationId}/okyc/okycSubmit")
+    fun submitAadharKycNew(
+        @Path("organizationId") organizationId: String,
+        @Body aadharKycRequest: AadharKycRequest
+    ): Observable<Response<AadharKycResponse>>
+
+    @POST("v1/{organizationId}/okyc/getAddress")
+    fun getAdharAddrss(
+        @Path("organizationId") organizationId: String,
+        @Body request: LeadRequest
+    ): Observable<Response<AadharKycResponse>>
+
+    @GET("v1/{organizationId}/leads/{leadId}/getBureauAddress")
+    fun getBureauAddrss(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String
+    ): Observable<Response<BureauAddressResponse>>
+
+    @POST("v1/{organizationId}/leads/{leadId}/setAddress")
+    fun selectAdharAddress(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body request: ConfirmAdharAddrsRequest
+    ): Observable<Response<LeadDetailApiResponse>>
+
+    @POST("rdm/sms")
+    fun sendSMSData(@Body request: SMSDataRequest): Observable<Response<ApiBaseResponse>>
+
+    @POST("v1/{organizationId}/leads/{leadId}/addressSubmit")
+    fun addressSubmit(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body request: AddressSubmitRequest
+    ): Observable<Response<LeadDetailApiResponse>>
+
+    @POST("v1/{organizationId}/leads/{leadId}/companySubmit")
+    fun companySubmit(
+        @Path("organizationId") organizationId: String,
+        @Path("leadId") leadId: String,
+        @Body request: CompanyNameSubmitRequest
+    ): Observable<Response<LeadDetailApiResponse>>
+
 }

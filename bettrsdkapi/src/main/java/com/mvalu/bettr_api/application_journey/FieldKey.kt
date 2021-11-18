@@ -8,6 +8,8 @@ enum class FieldKey(val value: String) {
     PAN_NUMBER("panNumber"),
     DOB("dateOfBirth"),
     MARITAL_STATUS("maritalStatus"),
+    HUSBAND_NAME("husbandName"),
+    FATHER_NAME("fatherName"),
 
     /*** Residential details section */
     ADDRESS_LINE_1("addressLine1"),
@@ -36,6 +38,10 @@ enum class FieldKey(val value: String) {
     NO_OF_EMPLOYEES_IN_BUSINESS("noOfEmployeeInBusiness"),
     ARE_YOU_EMPLOYED("areYouEmployed"),
     OFFICE_EMAIL("officeEmail"),
+    EMPLOYMENT_TYPE("employmentType"),
+    DO_YOU_FILE_ITR("havingITR"),
+    FAMILY_MONTHLY_INCOME("familyMonthlyIncome"),
+    OFFICE_ADDRESS("officeAddress1"),
 
     /*** Income documents section */
     SALARY_SLIP("salarySlip"),
