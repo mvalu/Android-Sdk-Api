@@ -51,8 +51,6 @@ object NetworkModule {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
 
-        Log.i("-----x-signed-key",Base64.encodeToString(BettrApiSdk.generateSignedSecretKey().toByteArray(), Base64.NO_WRAP))
-
         val headerInterceptor = Interceptor {
             val request = it.request().newBuilder()
                 .addHeader("version-code", BuildConfig.VERSION_CODE.toString())
