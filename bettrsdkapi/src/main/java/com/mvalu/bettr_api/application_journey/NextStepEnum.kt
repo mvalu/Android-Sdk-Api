@@ -19,4 +19,6 @@ enum class NextStepEnum(val value: String) {
     TENTATIVE_OFFER("TENTATIVE_OFFER"),
     COMPANY_NAME("COMPANY_NAME"),
     UNDER_REVIEW("UNDER_REVIEW")
+
+
 }
