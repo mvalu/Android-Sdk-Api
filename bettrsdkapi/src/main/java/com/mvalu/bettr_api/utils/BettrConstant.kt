@@ -19,3 +19,6 @@ const val BASE_URL = "https://development-api.docker.mvalu.ml/api/"
 const val NOT_SPECIFIED_ERROR_CODE = 0
 const val NO_NETWORK_ERROR_CODE = 456
 const val PAN_NUMBER_LENGTH = 10
+
+
+//
