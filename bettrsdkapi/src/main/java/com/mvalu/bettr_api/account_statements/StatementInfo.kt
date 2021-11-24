@@ -2,6 +2,7 @@ package com.mvalu.bettr_api.account_statements
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.mvalu.bettr_api.home_module.DueInfoStatus
 import com.squareup.moshi.Json
 
 class StatementInfo() : Parcelable {
@@ -64,6 +65,9 @@ class StatementInfo() : Parcelable {
 
     @field:Json(name = "pdfUrl")
     var pdfUrl: String? = null
+
+    @field:Json(name = "dueInfoDetail")
+    var dueInfoDetail: DueInfoDetail? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
