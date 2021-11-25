@@ -57,6 +57,11 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "totalStatementDue")
     var totalStatementDue: Double? = null
 
+
+    @field:Json(name = "totalMinDue")
+    var totalMinDue: Double? = null
+
+
     @field:Json(name = "minimumAmount")
     var minimumAmount: Double? = null
 
@@ -86,6 +91,8 @@ class StatementInfo() : Parcelable {
         statementTransactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
 //        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         totalStatementDue = parcel.readValue(Double::class.java.classLoader) as? Double
+
+        totalMinDue = parcel.readValue(Double::class.java.classLoader) as? Double
         minimumAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         paymentAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         pdfUrl = parcel.readString()
@@ -108,6 +115,7 @@ class StatementInfo() : Parcelable {
         parcel.writeValue(statementTransactionCount)
 //        parcel.writeValue(transactionAmount)
         parcel.writeValue(totalStatementDue)
+        parcel.writeValue(totalMinDue)
         parcel.writeValue(minimumAmount)
         parcel.writeValue(paymentAmount)
         parcel.writeString(pdfUrl)
