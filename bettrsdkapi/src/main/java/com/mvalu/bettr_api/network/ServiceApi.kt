@@ -162,7 +162,7 @@ interface ServiceApi {
         @Path("transactionId") transactionId: String
     ): Observable<Response<TransactionInfoApiResponse>>
 
-    @PUT("v1/{organizationId}/leads/{leadId}")
+    @PUT("v1/{organizationId}/leads/{leadId}/new")
     fun updateLead(
         @Path("organizationId") organizationId: String,
         @Path("leadId") leadId: String,

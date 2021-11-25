@@ -12,6 +12,9 @@ class PaymentSummaryResult {
     @field:Json(name = "statementBalanceInfo")
     var statementBalanceInfo: StatementBalanceInfo? = null
 
+    @field:Json(name = "lastStementInfo")
+    var lastStementInfo: LastSatementInfo? = null
+
     @field:Json(name = "fineInfo")
     var fineInfo: FineInfo? = null
 

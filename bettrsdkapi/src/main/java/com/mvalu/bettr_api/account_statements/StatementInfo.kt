@@ -2,6 +2,7 @@ package com.mvalu.bettr_api.account_statements
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.mvalu.bettr_api.home_module.DueInfoStatus
 import com.squareup.moshi.Json
 
 class StatementInfo() : Parcelable {
@@ -56,6 +57,11 @@ class StatementInfo() : Parcelable {
     @field:Json(name = "totalStatementDue")
     var totalStatementDue: Double? = null
 
+
+    @field:Json(name = "totalMinDue")
+    var totalMinDue: Double? = null
+
+
     @field:Json(name = "minimumAmount")
     var minimumAmount: Double? = null
 
@@ -64,6 +70,9 @@ class StatementInfo() : Parcelable {
 
     @field:Json(name = "pdfUrl")
     var pdfUrl: String? = null
+
+    @field:Json(name = "dueInfoDetail")
+    var dueInfoDetail: DueInfoDetail? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -82,6 +91,8 @@ class StatementInfo() : Parcelable {
         statementTransactionCount = parcel.readValue(Double::class.java.classLoader) as? Int
 //        transactionAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         totalStatementDue = parcel.readValue(Double::class.java.classLoader) as? Double
+
+        totalMinDue = parcel.readValue(Double::class.java.classLoader) as? Double
         minimumAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         paymentAmount = parcel.readValue(Double::class.java.classLoader) as? Double
         pdfUrl = parcel.readString()
@@ -104,6 +115,7 @@ class StatementInfo() : Parcelable {
         parcel.writeValue(statementTransactionCount)
 //        parcel.writeValue(transactionAmount)
         parcel.writeValue(totalStatementDue)
+        parcel.writeValue(totalMinDue)
         parcel.writeValue(minimumAmount)
         parcel.writeValue(paymentAmount)
         parcel.writeString(pdfUrl)

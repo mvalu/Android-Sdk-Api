@@ -28,4 +28,6 @@ class HomeModuleResults {
 
     @field:Json(name = "requiredPinSet")
     var requiredPinSet: Boolean? = false
+
+
 }
