@@ -3,6 +3,7 @@ package com.mvalu.bettr_api.settings
 import com.mvalu.bettr_api.home_module.AccountInfo
 import com.mvalu.bettr_api.home_module.CardInfo
 import com.mvalu.bettr_api.home_module.DueInfo
+import com.mvalu.bettr_api.payment.summary.NewSpendsInfo
 import com.mvalu.bettr_api.payment.summary.PaymentDueInfo
 import com.squareup.moshi.Json
 
@@ -19,4 +20,8 @@ class SettingsInfo {
 
     @field:Json(name = "activatePlasticCardOption")
     var showActivatePlasticCard: Boolean? = false
+
+    @field:Json(name = "newSpendsInfo")
+    var newSpendsInfo: NewSpendsInfo? = null
+
 }

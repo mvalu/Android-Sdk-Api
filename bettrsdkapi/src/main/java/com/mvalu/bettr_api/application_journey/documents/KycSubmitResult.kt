@@ -1,6 +1,7 @@
 package com.mvalu.bettr_api.application_journey.documents
 
 
+import com.mvalu.bettr_api.application_journey.LeadDetail
 import com.squareup.moshi.Json
 
 class KycSubmitResult {
@@ -15,7 +16,7 @@ class KycSubmitResult {
     var matchScore: Int? = null
 
     @field:Json(name = "leadObj")
-    var leadObj: LeadObj? = null
+    var leadObj: LeadDetail? = null
 
     @field:Json(name = "addressParams")
     var addressParam: AddressParam? = null
