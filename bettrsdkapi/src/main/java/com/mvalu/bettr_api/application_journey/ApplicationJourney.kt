@@ -698,7 +698,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             this.docType = docType
         }
         callApi(
-            serviceApi.verifyDocumentsNew(
+            serviceApi.verifySelfieRecaptureDocumentsNew(
                 BettrApiSdk.getOrganizationId(),
                 applicationId,
                 verifyDocumentsRequest
