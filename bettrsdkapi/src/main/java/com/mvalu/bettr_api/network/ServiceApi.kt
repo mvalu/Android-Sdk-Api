@@ -355,6 +355,14 @@ interface ServiceApi {
         @Body request: VerifyDocumentsRequest
     ): Observable<Response<VerifyDocumentsApiResponse>>
 
+
+    @POST("v1/{organizationId}/application/{applicationId}/leadRecaptureSelfieVerify")
+    fun verifySelfieRecaptureDocumentsNew(
+        @Path("organizationId") organizationId: String,
+        @Path("applicationId") applicationId: String,
+        @Body request: VerifyDocumentsRequest
+    ): Observable<Response<VerifyDocumentsApiResponse>>
+
     /*------------------------------*/
 
 
