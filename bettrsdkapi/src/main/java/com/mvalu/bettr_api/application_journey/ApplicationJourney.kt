@@ -680,6 +680,33 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    fun verifySelfieReDocumentsNew(
+        profilePic: String?,
+        applicationId: String,
+        docType: String,
+        verifyDocumentsCallBack: ApiResponseCallback<VerifyDocumentsResult>
+    ) {
+        if (!BettrApiSdk.isSdkInitialized()) {
+            throw IllegalArgumentException(ErrorMessage.SDK_NOT_INITIALIZED_ERROR.value)
+        }
+        this.verifyDocumentsCallBack = verifyDocumentsCallBack
+        val verifyDocumentsRequest = VerifyDocumentsRequest().apply {
+            this.userId = BettrApiSdk.getUserId()
+            this.leadId = applicationId
+            this.photo = profilePic
+            this.productType = PRODUCT_TYPE
+            this.docType = docType
+        }
+        callApi(
+            serviceApi.verifySelfieRecaptureDocumentsNew(
+                BettrApiSdk.getOrganizationId(),
+                applicationId,
+                verifyDocumentsRequest
+            ),
+            ApiTag.VERIFY_DOCUMENTS_API
+        )
+    }
+
 
     fun fetchCheckList(
         leadId: String,
