@@ -119,6 +119,10 @@ class UserDetail() : Parcelable {
     @field:Json(name = "panNumber")
     var panNumber: String? = null
 
+
+    @field:Json(name = "panNumberAsText")
+    var panNumberAsText: String? = null
+
     @Transient
     var panNumberEditable: String? = null
 
@@ -416,6 +420,7 @@ class UserDetail() : Parcelable {
         isEmailVerified = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         location = parcel.readParcelable(Location::class.java.classLoader)
         panNumber = parcel.readString()
+        panNumberAsText = parcel.readString()
         panImage = parcel.readString()
         aadharNumber = parcel.readString()
         aadharCard = parcel.readString()
@@ -549,6 +554,7 @@ class UserDetail() : Parcelable {
         parcel.writeValue(isEmailVerified)
         parcel.writeParcelable(location, flags)
         parcel.writeString(panNumber)
+        parcel.writeString(panNumberAsText)
         parcel.writeString(panImage)
         parcel.writeString(aadharNumber)
         parcel.writeString(aadharCard)
