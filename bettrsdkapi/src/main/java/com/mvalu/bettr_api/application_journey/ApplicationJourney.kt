@@ -773,7 +773,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private fun getDecryptedDataWithoutRandomIV(value: String): String {
-        return CryptLib().decryptCipherText(
+        return CryptLib().decryptCipherText2(
             value,
             CryptLib.CRYPT_KEY,
             ""
