@@ -221,6 +221,12 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
             leadDetail.userDetail?.panNumber =
                 getEncryptedData(leadDetail.userDetail?.panNumber!!)
         }
+
+        if (!leadDetail.userDetail?.panNumberAsText.isNullOrEmpty() && leadDetail.userDetail?.panNumberAsText?.length!= PAN_NUMBER_LENGTH) {
+            leadDetail.userDetail?.panNumberAsText =
+                getEncryptedDataWithoutRandomIV(leadDetail.userDetail?.panNumberAsText!!)
+        }
+
         if (!leadDetail.application?.bankAccountNumber.isNullOrEmpty()) {
             leadDetail.application?.bankAccountNumber =
                 getEncryptedData(leadDetail.application?.bankAccountNumber!!)
@@ -751,6 +757,14 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    private fun getEncryptedDataWithoutRandomIV(value: String): String {
+        return CryptLib().encryptPlainText(
+            value,
+            CryptLib.CRYPT_KEY,
+            ""
+        )
+    }
+
     private fun getDecryptedData(value: String): String {
         return CryptLib().decryptCipherTextWithRandomIV(
             value,
@@ -758,10 +772,23 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         )
     }
 
+    private fun getDecryptedDataWithoutRandomIV(value: String): String {
+        return CryptLib().decryptCipherText(
+            value,
+            CryptLib.CRYPT_KEY,
+            ""
+        )
+    }
+
     private fun decryptLeadData(leadDetail: LeadDetail) {
         if (!leadDetail.userDetail?.panNumber.isNullOrEmpty() && leadDetail.userDetail?.panNumber?.length!= PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumber =
                 getDecryptedData(leadDetail.userDetail?.panNumber!!)
+        }
+
+        if (!leadDetail.userDetail?.panNumberAsText.isNullOrEmpty() && leadDetail.userDetail?.panNumberAsText?.length!= PAN_NUMBER_LENGTH) {
+            leadDetail.userDetail?.panNumberAsText =
+                getDecryptedDataWithoutRandomIV(leadDetail.userDetail?.panNumberAsText!!)
         }
 
         if (!leadDetail.application?.bankAccountNumber.isNullOrEmpty()) {
