@@ -127,6 +127,11 @@ public final class CryptLib {
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
+    public String encryptPlainText2(String plainText, String key, String iv) throws Exception {
+        byte[] bytes = encryptDecrypt(plainText, key, EncryptMode.ENCRYPT, iv);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
     public String decryptCipherText(String cipherText, String key, String iv) throws Exception {
         byte[] bytes = encryptDecrypt(cipherText, CryptLib.SHA256(key, 32), EncryptMode.DECRYPT, iv);
         return new String(bytes);

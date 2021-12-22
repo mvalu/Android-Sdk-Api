@@ -758,7 +758,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
     }
 
     private fun getEncryptedDataWithoutRandomIV(value: String): String {
-        return CryptLib().encryptPlainText(
+        return CryptLib().encryptPlainText2(
             value,
             CryptLib.CRYPT_KEY,
             ""
