@@ -222,7 +222,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
                 getEncryptedData(leadDetail.userDetail?.panNumber!!)
         }
 
-        if (!leadDetail.userDetail?.panNumberAsText.isNullOrEmpty() && leadDetail.userDetail?.panNumberAsText?.length!= PAN_NUMBER_LENGTH) {
+        if (!leadDetail.userDetail?.panNumberAsText.isNullOrEmpty() && leadDetail.userDetail?.panNumberAsText?.length== PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumberAsText =
                 getEncryptedDataWithoutRandomIV(leadDetail.userDetail?.panNumberAsText!!)
         }
