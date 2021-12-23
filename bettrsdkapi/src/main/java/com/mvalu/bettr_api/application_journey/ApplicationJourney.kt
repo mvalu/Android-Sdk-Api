@@ -224,7 +224,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
 
         if (!leadDetail.userDetail?.panNumberAsText.isNullOrEmpty() && leadDetail.userDetail?.panNumberAsText?.length== PAN_NUMBER_LENGTH) {
             leadDetail.userDetail?.panNumberAsText =
-                getEncryptedDataWithoutRandomIV(leadDetail.userDetail?.panNumberAsText!!)
+                getEncryptedDataWithoutRandomIV(leadDetail.userDetail?.panNumberAsText!!).trim()
         }
 
         if (!leadDetail.application?.bankAccountNumber.isNullOrEmpty()) {
