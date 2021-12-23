@@ -761,7 +761,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         return CryptLib().encryptPlainText2(
             value,
             CryptLib.CRYPT_KEY,
-            ""
+            "".trim()
         )
     }
 
@@ -776,7 +776,7 @@ object ApplicationJourney : ApiSdkBase(), ProgressRequestBody.DocumentUploadCall
         return CryptLib().decryptCipherText2(
             value,
             CryptLib.CRYPT_KEY,
-            ""
+            "".trim()
         )
     }
 
