@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    compileSdkVersion 31
+    buildToolsVersion "29.0.2"
 
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -40,7 +40,7 @@ buildscript {
     ext.dagger2_version = '2.24'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 }
@@ -48,7 +48,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 }
