@@ -34,7 +34,7 @@ public final class CryptLib {
     private byte[] _key, _iv;
 
     public CryptLib() throws NoSuchAlgorithmException, NoSuchPaddingException {
-        // initialize the cipher with transformation AES/CBC/PKCS5Padding
+        // initialize the cipher with transformation AES/CBC/PKCS5Padding   ok
         _cx = Cipher.getInstance("AES/CBC/PKCS5Padding");
         _key = new byte[32]; //256 bit key space
         _iv = new byte[16]; //128 bit IV
@@ -127,8 +127,19 @@ public final class CryptLib {
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
+    public String encryptPlainText2(String plainText, String key, String iv) throws Exception {
+        byte[] bytes = encryptDecrypt(plainText, key, EncryptMode.ENCRYPT, iv);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
     public String decryptCipherText(String cipherText, String key, String iv) throws Exception {
         byte[] bytes = encryptDecrypt(cipherText, CryptLib.SHA256(key, 32), EncryptMode.DECRYPT, iv);
+        return new String(bytes);
+    }
+
+
+    public String decryptCipherText2(String cipherText, String key, String iv) throws Exception {
+        byte[] bytes = encryptDecrypt(cipherText, key, EncryptMode.DECRYPT, iv);
         return new String(bytes);
     }
 
