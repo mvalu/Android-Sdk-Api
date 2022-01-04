@@ -23,4 +23,8 @@ class PaymentSummaryResult {
 
     @field:Json(name = "paymentInfo")
     var paymentInfo: PaymentInfo? = null
+
+    @field:Json(name = "cashbackInfo")
+    var cashbackInfo: CashbackInfo? = null
+
 }
