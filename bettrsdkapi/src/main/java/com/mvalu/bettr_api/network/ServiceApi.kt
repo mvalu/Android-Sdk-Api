@@ -67,7 +67,8 @@ interface ServiceApi {
         @Body generateTokenRequest: GenerateTokenRequest
     ): Observable<Response<GenerateTokenResponse>>
 
-    @GET("v1/{organizationId}/rm/cc_home_module")
+    //new endpoint as per Shubhankar and vinoth old : customer_home_module
+    @GET("v1/{organizationId}/rm/cc_home_module_Statement_New")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
     @GET("v1/{organizationId}/rm/cc_statement_module")
@@ -120,8 +121,8 @@ interface ServiceApi {
         @Query("amountEnd") amountEnd: Int?,
         @Query("category") category: String?
     ): Observable<Response<CardTransactionsApiResponse>>
-
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement")
+//Statement Api : added /new at last api shared by Vinoth 12/jan/22
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/new")
     fun getAccountStatements(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
@@ -433,7 +434,8 @@ interface ServiceApi {
         @Body rewardPointsRedeemRequest: RewardPointsRedeemRequest
     ): Observable<Response<SettingsGenericApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummary")
+//new endpoint added as per Shubhankar and Vinoth old ->quickPaymentSummary
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummaryNew")
     fun getPaymentSummary(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
