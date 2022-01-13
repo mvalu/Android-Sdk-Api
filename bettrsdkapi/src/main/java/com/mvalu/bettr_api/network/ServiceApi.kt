@@ -67,7 +67,7 @@ interface ServiceApi {
         @Body generateTokenRequest: GenerateTokenRequest
     ): Observable<Response<GenerateTokenResponse>>
 
-    //new endpoint as per Shubhankar and vinoth old : customer_home_module
+    //new endpoint as per Shubhankar and vinoth old : cc_home_module_Statement
     @GET("v1/{organizationId}/rm/cc_home_module_Statement_New")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
