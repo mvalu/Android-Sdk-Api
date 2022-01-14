@@ -4,7 +4,7 @@ package com.mvalu.bettr_api.utils
 //const val BASE_URL = "https://development-api.docker.mvalu.ml/api/"
 
 //pre-prod
-const val BASE_URL = "https://api-new.mvalu.ml/api/"
+//const val BASE_URL = "https://api-new.mvalu.ml/api/"
 
 
 
@@ -13,7 +13,7 @@ const val BASE_URL = "https://api-new.mvalu.ml/api/"
 
 
 //prod
-//const val BASE_URL = "https://api.mvalu.ml/api/"
+const val BASE_URL = "https://api.mvalu.ml/api/"
 
 //testing
 //const val BASE_URL = "https://test-api.docker.mvalu.ml/api/"
