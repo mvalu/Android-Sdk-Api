@@ -74,9 +74,10 @@ object NetworkModule {
         val clientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         clientBuilder.readTimeout(3 * 60, TimeUnit.SECONDS)
         clientBuilder.connectTimeout(60, TimeUnit.SECONDS)
-        if (BettrApiSdk.isLoggingBehaviourEnabled()) {
-            clientBuilder.addInterceptor(loggingInterceptor)
-        }
+//        if (BettrApiSdk.isLoggingBehaviourEnabled()) {
+//            clientBuilder.addInterceptor(loggingInterceptor)
+//        }
+        clientBuilder.addInterceptor(loggingInterceptor)
         clientBuilder.addInterceptor(headerInterceptor)
 
         return Retrofit.Builder()
