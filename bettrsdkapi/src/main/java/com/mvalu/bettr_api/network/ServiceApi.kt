@@ -141,8 +141,8 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
-
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummary")
+//old api ststatementSummary changed to statementSummaryNew as per Vinoth and Shubhankar
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummaryNew")
     fun getAccountStatementDetailSummary(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
