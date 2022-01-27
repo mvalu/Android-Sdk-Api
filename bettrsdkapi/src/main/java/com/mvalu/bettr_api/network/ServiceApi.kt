@@ -68,7 +68,7 @@ interface ServiceApi {
     ): Observable<Response<GenerateTokenResponse>>
 
     //new endpoint as per Shubhankar and vinoth old : cc_home_module
-    @GET("v1/{organizationId}/rm/cc_home_module")
+    @GET("v1/{organizationId}/rm/cc_home_module_Statement_New")
     fun getCardHomeModule(@Path("organizationId") organizationId: String): Observable<Response<HomeModuleApiResponse>>
 
     @GET("v1/{organizationId}/rm/cc_statement_module")
@@ -122,7 +122,7 @@ interface ServiceApi {
         @Query("category") category: String?
     ): Observable<Response<CardTransactionsApiResponse>>
 //Statement Api : added /new at last api shared by Vinoth 12/jan/22
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/new")
     fun getAccountStatements(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
@@ -142,7 +142,7 @@ interface ServiceApi {
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummary")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummaryNew")
     fun getAccountStatementDetailSummary(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
@@ -435,13 +435,13 @@ interface ServiceApi {
     ): Observable<Response<SettingsGenericApiResponse>>
 
 //new endpoint added as per Shubhankar and Vinoth old ->quickPaymentSummary
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummary")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummaryNew")
     fun getPaymentSummary(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String
     ): Observable<Response<PaymentSummaryApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}")
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/newstatement")
     fun getSettingsInfo(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
