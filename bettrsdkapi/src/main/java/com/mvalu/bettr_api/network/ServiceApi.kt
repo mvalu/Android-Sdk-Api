@@ -121,7 +121,7 @@ interface ServiceApi {
         @Query("amountEnd") amountEnd: Int?,
         @Query("category") category: String?
     ): Observable<Response<CardTransactionsApiResponse>>
-//Statement Api : added /new at last api shared by Vinoth 12/jan/22
+    //Statement Api : added /new at last api shared by Vinoth 12/jan/22
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/new")
     fun getAccountStatements(
         @Path("organizationId") organizationId: String,
@@ -141,7 +141,7 @@ interface ServiceApi {
         @Path("accountId") accountId: String,
         @Path("statementTransactionId") statementTransactionId: String
     ): Observable<Response<AccountStatementTransactionInfoApiResponse>>
-//old api ststatementSummary changed to statementSummaryNew as per Vinoth and Shubhankar
+    //old api ststatementSummary changed to statementSummaryNew as per Vinoth and Shubhankar
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/statement/{statementId}/statementSummaryNew")
     fun getAccountStatementDetailSummary(
         @Path("organizationId") organizationId: String,
@@ -434,7 +434,7 @@ interface ServiceApi {
         @Body rewardPointsRedeemRequest: RewardPointsRedeemRequest
     ): Observable<Response<SettingsGenericApiResponse>>
 
-//new endpoint added as per Shubhankar and Vinoth old ->quickPaymentSummary
+    //new endpoint added as per Shubhankar and Vinoth old ->quickPaymentSummary
     @GET("v1/{organizationId}/lms/cc/account/{accountId}/payment/quickPaymentSummaryNew")
     fun getPaymentSummary(
         @Path("organizationId") organizationId: String,
