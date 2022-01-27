@@ -695,5 +695,4 @@ interface ServiceApi {
         @Path("leadId") leadId: String,
         @Body request: CompanyNameSubmitRequest
     ): Observable<Response<LeadDetailApiResponse>>
-
 }
