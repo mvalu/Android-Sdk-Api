@@ -441,7 +441,8 @@ interface ServiceApi {
         @Path("accountId") accountId: String
     ): Observable<Response<PaymentSummaryApiResponse>>
 
-    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}")
+    //new endpoint added /newstatement as per by Shubhankar and vinoth old-> {cardId}
+    @GET("v1/{organizationId}/lms/cc/account/{accountId}/card/{cardId}/newstatement")
     fun getSettingsInfo(
         @Path("organizationId") organizationId: String,
         @Path("accountId") accountId: String,
