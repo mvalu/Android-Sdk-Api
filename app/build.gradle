@@ -45,3 +45,15 @@ dependencies {
 
     implementation project(':bettrsdkapi')
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = 'com.github.mvalu' //your git id
+                artifactId = 'Android-Sdk-Api' //your-repository
+                version = 'phase4-SNAPSHOT' // As same as the Tag
+            }
+        }
+    }
+}
